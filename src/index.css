@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+/** ADD TO CMS **/
+
+.s-filtered-search__results__item.is-highlighted {
+  background-color: #00205b !important;
+}
+
+.s-filtered-search__results__item.is-active .button, 
+.s-filtered-search__results__item.is-highlighted .button {
+  background-color: #ffc72c;
+  color: #000000;
+}
+
+.s-filtered-search__results__item.is-active .button:hover,
+.s-filtered-search__results__item.is-active .button:focus, 
+.s-filtered-search__results__item.is-highlighted .button:hover, 
+.s-filtered-search__results__item.is-highlighted .button:focus  {
+  background-color: #ffffff !important;
+}
+
+.c-map-container--services, .c-map-container--services .c-map-container__inner > div > div {
+  max-height: 574px;
+  min-height: 574px;
+}
+
+.s-filtered-search__results__item.is-active a {
+  color: #fff;
+}
+
+.s-filtered-search__results__item.is-highlighted a, 
+.s-filtered-search__results__item.is-highlighted h5 {
+  color: #fff;
+}
+
+.s-filtered-search__results__item.is-highlighted p {
+  color: #f4f4f4;
+}
+
+
+
+.s-filtered-search__results__item.is-highlighted a:hover, 
+.s-filtered-search__results__item.is-highlighted a:focus, 
+.s-filtered-search__results__item.is-active a:hover, 
+.s-filtered-search__results__item.is-active a:focus {
+  text-decoration: none;
+}
