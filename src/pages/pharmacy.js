@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import MapContainer from '../components/map-container';
+import '../index.css'; // Ensure the CSS file is imported
 
 const Pharmacy = () => {
-  const { id } = useParams();
   const [pharmacy, setPharmacy] = useState(null);
-  const [map, setMap] = useState(null);
 
   useEffect(() => {
-    if (id) {
-      fetchPharmacyData(id);
+    const queryParams = new URLSearchParams(window.location.search);
+    const pharmacyId = queryParams.get('pharmacyId');
+    if (pharmacyId) {
+      fetchPharmacyData(pharmacyId);
     }
-  }, [id]);
+  }, []);
 
   const fetchPharmacyData = async (id) => {
     try {
@@ -19,38 +20,45 @@ const Pharmacy = () => {
       const data = response.data;
       if (data && data.response && data.response.resultPacket && data.response.resultPacket.results) {
         setPharmacy(data.response.resultPacket.results[0]);
-        initializeMap(data.response.resultPacket.results[0]);
       }
     } catch (error) {
       console.error('Error fetching pharmacy data:', error);
     }
   };
 
-  const initializeMap = (pharmacy) => {
-    const { latitude, longitude } = pharmacy.metaData;
-    const mapOptions = {
-      zoom: 15,
-      center: new google.maps.LatLng(latitude, longitude),
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-    };
-    const map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    new google.maps.Marker({
-      position: new google.maps.LatLng(latitude, longitude),
-      map: map,
-      title: pharmacy.title,
-    });
-    setMap(map);
-  };
-
   if (!pharmacy) {
     return <div>Loading...</div>;
   }
+
+  const { latitude, longitude } = pharmacy.metaData;
 
   return (
     <div>
       <h1>{pharmacy.title}</h1>
       <p>{pharmacy.metaData.address}</p>
-      <div id="map" style={{ height: '500px', width: '100%' }}></div>
+      <div className="c-map-container--services" style={{ height: '500px', width: '100%' }}>
+        <MapContainer
+          mapCenter={{ lat: parseFloat(latitude), lng: parseFloat(longitude) }}
+          zoom={15}
+          locations={[{
+            id: pharmacy.metaData.id,
+            name: pharmacy.title,
+            geometry: {
+              coordinates: [parseFloat(longitude), parseFloat(latitude)]
+            }
+          }]}
+          selectedLocation={{
+            id: pharmacy.metaData.id,
+            name: pharmacy.title,
+            geometry: {
+              coordinates: [parseFloat(longitude), parseFloat(latitude)]
+            }
+          }}
+          handleDataReceived={() => {}}
+          handleSelectLocation={() => {}}
+          handleCenterChange={() => {}}
+        />
+      </div>
     </div>
   );
 };
