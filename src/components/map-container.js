@@ -445,8 +445,8 @@ class MapContainer extends Component {
         : this.state.willZoomOut
         ? this.zoomOutLevel:this.zoomLevelDist;
 
-      //console.log('zoom incoming');
-      //console.log(zoom);
+      console.log('zoom incoming');
+      console.log(zoom);
 
       const newMapProps = Object.assign({}, this.state.mapProps, {
         bounds: this.state.mapProps.bounds,
@@ -526,6 +526,8 @@ class MapContainer extends Component {
   }
 
   onSelectLocation(location, showDetails, center) {
+    console.log('Selected Location incoming');
+    console.log(location);
     this.props.handleSelectLocation(
       location,
       showDetails,

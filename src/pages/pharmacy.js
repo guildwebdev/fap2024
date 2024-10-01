@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MapContainer from '../components/map-container';
 import '../index.css'; // Ensure the CSS file is imported
+import getOpeningHours from '../helpers/get-opening-hours';
 
 const Pharmacy = () => {
   const [pharmacy, setPharmacy] = useState(null);
@@ -32,28 +33,89 @@ const Pharmacy = () => {
 
   const { latitude, longitude } = pharmacy.metaData;
 
+  const locations = [{
+    id: pharmacy.metaData.id,
+    name: pharmacy.title,
+    geometry: {
+      coordinates: [parseFloat(longitude), parseFloat(latitude)]
+    },
+    address: pharmacy.metaData.address,
+    address2: pharmacy.metaData.address2,
+    address3: pharmacy.metaData.address3,
+    city: pharmacy.metaData.city,
+    state: pharmacy.metaData.state,
+    postcode: pharmacy.metaData.postcode,
+    phone: pharmacy.metaData.phone,
+    fax: pharmacy.metaData.fax,
+    email: pharmacy.metaData.email,
+    services: pharmacy.metaData.services,
+    language: pharmacy.metaData.language,
+    website: pharmacy.metaData.website,
+    facebook: pharmacy.metaData.facebook,
+    twitter: pharmacy.metaData.twitter,
+    instagram: pharmacy.metaData.instagram,
+    bookingurl: pharmacy.metaData.bookingurl,
+    gcvpBookingURL: pharmacy.metaData.gcvpBookingURL,
+    memberType: pharmacy.metaData.memberType,
+    extendedHours: pharmacy.metaData.extendedHours,
+    weekends: pharmacy.metaData.weekends,
+    kmFromOrigin: pharmacy.metaData.kmFromOrigin,
+    monday: getOpeningHours('monday'),
+    tuesday: getOpeningHours('tuesday'),
+    wedneday: getOpeningHours('wednesday'),
+    thursday: getOpeningHours('thursday'),
+    friday: getOpeningHours('friday'),
+    saturday: getOpeningHours('saturday'),
+    sunday: getOpeningHours('sunday')
+  }];
+
+  const selectedLocation = {
+    id: pharmacy.metaData.id,
+    name: pharmacy.title,
+    geometry: {
+      coordinates: [parseFloat(longitude), parseFloat(latitude)]
+    },
+    address: pharmacy.metaData.address,
+    address2: pharmacy.metaData.address2,
+    address3: pharmacy.metaData.address3,
+    city: pharmacy.metaData.city,
+    state: pharmacy.metaData.state,
+    postcode: pharmacy.metaData.postcode,
+    phone: pharmacy.metaData.phone,
+    fax: pharmacy.metaData.fax,
+    email: pharmacy.metaData.email,
+    services: pharmacy.metaData.services,
+    language: pharmacy.metaData.language,
+    website: pharmacy.metaData.website,
+    facebook: pharmacy.metaData.facebook,
+    twitter: pharmacy.metaData.twitter,
+    instagram: pharmacy.metaData.instagram,
+    bookingurl: pharmacy.metaData.bookingurl,
+    gcvpBookingURL: pharmacy.metaData.gcvpBookingURL,
+    memberType: pharmacy.metaData.memberType,
+    extendedHours: pharmacy.metaData.extendedHours,
+    weekends: pharmacy.metaData.weekends,
+    kmFromOrigin: pharmacy.metaData.kmFromOrigin,
+    monday: getOpeningHours('monday'),
+    tuesday: getOpeningHours('tuesday'),
+    wedneday: getOpeningHours('wednesday'),
+    thursday: getOpeningHours('thursday'),
+    friday: getOpeningHours('friday'),
+    saturday: getOpeningHours('saturday'),
+    sunday: getOpeningHours('sunday')
+  };
+
   return (
     <div>
       <h1>{pharmacy.title}</h1>
       <p>{pharmacy.metaData.address}</p>
+      <p>{pharmacy.metaData.bookingurl}</p>
       <div className="c-map-container--services" style={{ height: '500px', width: '100%' }}>
         <MapContainer
           mapCenter={{ lat: parseFloat(latitude), lng: parseFloat(longitude) }}
           zoom={15}
-          locations={[{
-            id: pharmacy.metaData.id,
-            name: pharmacy.title,
-            geometry: {
-              coordinates: [parseFloat(longitude), parseFloat(latitude)]
-            }
-          }]}
-          selectedLocation={{
-            id: pharmacy.metaData.id,
-            name: pharmacy.title,
-            geometry: {
-              coordinates: [parseFloat(longitude), parseFloat(latitude)]
-            }
-          }}
+          locations={locations}
+          selectedLocation={selectedLocation}
           handleDataReceived={() => {}}
           handleSelectLocation={() => {}}
           handleCenterChange={() => {}}

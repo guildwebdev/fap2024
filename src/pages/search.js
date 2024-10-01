@@ -156,6 +156,9 @@ class Search extends Component {
   onDataReceived(data) {
     const locs = this.getLocationsWithinBounds(data);
 
+    console.log('Locations incoming:');
+    console.log(locs);
+
     // for some reason in dev we get duplicates
     const locations = [];
     locs.forEach(loc => {

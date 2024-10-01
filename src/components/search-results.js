@@ -49,6 +49,11 @@ class SearchResults extends Component {
   }
 
   render() {
+    console.log('Search Results incoming:');
+    console.log(this.props.results);
+    console.log('Selected Location incoming');
+    console.log(this.props.selectedLocation);
+
     const results = this.props.results.length === 0 ? 
       <div className="s-filtered-search__no-results">No results found.</div> : 
       this.props.results.map( result => (
