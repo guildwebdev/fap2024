@@ -687,7 +687,7 @@ class MapContainer extends Component {
   render() {
     console.log('MapContainer rendering with selecteLocation:',this.props.selectedLocation);
 
-    const markerComponent = this.props.markerComponent || MapMarker;
+    const markerComponent = this.props.useSimpleMarker ? SimpleMapMarker : MapMarker;
 
     const markers = this.state.clusteredLocations.map(location => {
       if (location.name) {
@@ -788,7 +788,7 @@ MapContainer.propTypes = {
   selectedLocation: PropTypes.object,
   zoom: PropTypes.number,
   zoomIn: PropTypes.bool,
-  markerComponent: PropTypes.elementType
+  useSimpleMarker: PropTypes.bool
 };
 
 MapContainer.defaultProps = {

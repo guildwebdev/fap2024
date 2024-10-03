@@ -63,14 +63,7 @@ const Pharmacy = () => {
     memberType: pharmacy.metaData.membershipType,
     extendedHours: pharmacy.metaData.extendedHours,
     weekends: pharmacy.metaData.weekends,
-    kmFromOrigin: pharmacy.kmFromOrigin,
-    monday: getOpeningHours(pharmacy.metaData, 'monday'),
-    tuesday: getOpeningHours(pharmacy.metaData, 'tuesday'),
-    wedneday: getOpeningHours(pharmacy.metaData, 'wednesday'),
-    thursday: getOpeningHours(pharmacy.metaData, 'thursday'),
-    friday: getOpeningHours(pharmacy.metaData, 'friday'),
-    saturday: getOpeningHours(pharmacy.metaData, 'saturday'),
-    sunday: getOpeningHours(pharmacy.metaData, 'sunday')
+    kmFromOrigin: pharmacy.kmFromOrigin
   }];
 
   const selectedLocation = {
@@ -99,14 +92,7 @@ const Pharmacy = () => {
     memberType: pharmacy.metaData.membershipType,
     extendedHours: pharmacy.metaData.extendedHours,
     weekends: pharmacy.metaData.weekends,
-    kmFromOrigin: pharmacy.kmFromOrigin,
-    monday: getOpeningHours(pharmacy.metaData, 'monday'),
-    tuesday: getOpeningHours(pharmacy.metaData, 'tuesday'),
-    wedneday: getOpeningHours(pharmacy.metaData, 'wednesday'),
-    thursday: getOpeningHours(pharmacy.metaData, 'thursday'),
-    friday: getOpeningHours(pharmacy.metaData, 'friday'),
-    saturday: getOpeningHours(pharmacy.metaData, 'saturday'),
-    sunday: getOpeningHours(pharmacy.metaData, 'sunday')
+    kmFromOrigin: pharmacy.kmFromOrigin
   };
 
   return (
@@ -123,7 +109,7 @@ const Pharmacy = () => {
           handleDataReceived={() => {}}
           handleSelectLocation={() => {}}
           handleCenterChange={() => {}}
-          markerComponent={SimpleMapMarker}
+          useSimpleMarker={true}
         />
       </div>
     </div>
