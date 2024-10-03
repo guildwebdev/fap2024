@@ -3,6 +3,7 @@ import axios from 'axios';
 import MapContainer from '../components/map-container';
 import '../index.css'; // Ensure the CSS file is imported
 import getOpeningHours from '../helpers/get-opening-hours';
+import SimpleMapMarker from '../components/simple-map-marker';
 
 const Pharmacy = () => {
   const [pharmacy, setPharmacy] = useState(null);
@@ -21,6 +22,9 @@ const Pharmacy = () => {
       const data = response.data;
       if (data && data.response && data.response.resultPacket && data.response.resultPacket.results) {
         setPharmacy(data.response.resultPacket.results[0]);
+        console.log('Pharmacy data:',data.response.resultPacket.results[0]);
+      } else {
+        console.error('Pharmacy data not found or in unexpected format');
       }
     } catch (error) {
       console.error('Error fetching pharmacy data:', error);
@@ -56,17 +60,17 @@ const Pharmacy = () => {
     instagram: pharmacy.metaData.instagram,
     bookingurl: pharmacy.metaData.bookingurl,
     gcvpBookingURL: pharmacy.metaData.gcvpBookingURL,
-    memberType: pharmacy.metaData.memberType,
+    memberType: pharmacy.metaData.membershipType,
     extendedHours: pharmacy.metaData.extendedHours,
     weekends: pharmacy.metaData.weekends,
-    kmFromOrigin: pharmacy.metaData.kmFromOrigin,
-    monday: getOpeningHours('monday'),
-    tuesday: getOpeningHours('tuesday'),
-    wedneday: getOpeningHours('wednesday'),
-    thursday: getOpeningHours('thursday'),
-    friday: getOpeningHours('friday'),
-    saturday: getOpeningHours('saturday'),
-    sunday: getOpeningHours('sunday')
+    kmFromOrigin: pharmacy.kmFromOrigin,
+    monday: getOpeningHours(pharmacy.metaData, 'monday'),
+    tuesday: getOpeningHours(pharmacy.metaData, 'tuesday'),
+    wedneday: getOpeningHours(pharmacy.metaData, 'wednesday'),
+    thursday: getOpeningHours(pharmacy.metaData, 'thursday'),
+    friday: getOpeningHours(pharmacy.metaData, 'friday'),
+    saturday: getOpeningHours(pharmacy.metaData, 'saturday'),
+    sunday: getOpeningHours(pharmacy.metaData, 'sunday')
   }];
 
   const selectedLocation = {
@@ -92,17 +96,17 @@ const Pharmacy = () => {
     instagram: pharmacy.metaData.instagram,
     bookingurl: pharmacy.metaData.bookingurl,
     gcvpBookingURL: pharmacy.metaData.gcvpBookingURL,
-    memberType: pharmacy.metaData.memberType,
+    memberType: pharmacy.metaData.membershipType,
     extendedHours: pharmacy.metaData.extendedHours,
     weekends: pharmacy.metaData.weekends,
-    kmFromOrigin: pharmacy.metaData.kmFromOrigin,
-    monday: getOpeningHours('monday'),
-    tuesday: getOpeningHours('tuesday'),
-    wedneday: getOpeningHours('wednesday'),
-    thursday: getOpeningHours('thursday'),
-    friday: getOpeningHours('friday'),
-    saturday: getOpeningHours('saturday'),
-    sunday: getOpeningHours('sunday')
+    kmFromOrigin: pharmacy.kmFromOrigin,
+    monday: getOpeningHours(pharmacy.metaData, 'monday'),
+    tuesday: getOpeningHours(pharmacy.metaData, 'tuesday'),
+    wedneday: getOpeningHours(pharmacy.metaData, 'wednesday'),
+    thursday: getOpeningHours(pharmacy.metaData, 'thursday'),
+    friday: getOpeningHours(pharmacy.metaData, 'friday'),
+    saturday: getOpeningHours(pharmacy.metaData, 'saturday'),
+    sunday: getOpeningHours(pharmacy.metaData, 'sunday')
   };
 
   return (
@@ -119,6 +123,7 @@ const Pharmacy = () => {
           handleDataReceived={() => {}}
           handleSelectLocation={() => {}}
           handleCenterChange={() => {}}
+          markerComponent={SimpleMapMarker}
         />
       </div>
     </div>

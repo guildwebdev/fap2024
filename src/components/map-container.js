@@ -16,6 +16,8 @@ import getLocationsURLForRadius from "../helpers/get-locations-url";
 import globalSettings from "../settings/global";
 import initDatabase from "../settings/init-database";
 
+import SimpleMapMarker from "./simple-map-marker";
+
 class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -683,6 +685,10 @@ class MapContainer extends Component {
 
 
   render() {
+    console.log('MapContainer rendering with selecteLocation:',this.props.selectedLocation);
+
+    const markerComponent = this.props.markerComponent || MapMarker;
+
     const markers = this.state.clusteredLocations.map(location => {
       if (location.name) {
         const isActive = this.props.selectedLocation.name === location.name;
@@ -692,7 +698,7 @@ class MapContainer extends Component {
           this.props.highlightedLocation.name === location.name;
 
         return (
-          <MapMarker
+          <markerComponent
             active={isActive}
             handleDetailsClick={this.props.handleDetailsClick}
             handleDetailsHide={this.props.handleDetailsHide}
@@ -781,7 +787,8 @@ MapContainer.propTypes = {
   mapCenter: PropTypes.object,
   selectedLocation: PropTypes.object,
   zoom: PropTypes.number,
-  zoomIn: PropTypes.bool
+  zoomIn: PropTypes.bool,
+  markerComponent: PropTypes.elementType
 };
 
 MapContainer.defaultProps = {

@@ -4,12 +4,17 @@ import React from 'react';
 import moment from 'moment';
 
 const getOpeningHours = ( location, day ) => {
+  //console.log('Location:',location);
+  //console.log('Day:',day);
+  
+  
   //If no location param - exit out
   //Should never happen....
   if( !location ) return;
 
   //Print opening hours of 'day'
   if( day && location[day] ) {
+    console.log('have both params')
       return(( !location[day].open ) ?
         'closed' :
         location[day].open + ' to ' + location[day].close );
@@ -17,6 +22,7 @@ const getOpeningHours = ( location, day ) => {
 
   //Show today's hours
   else if( !day ) {
+    console.log('show todays hours');
     const today = moment().format('dddd').toLowerCase();
     const t = location[today];
 
@@ -40,12 +46,16 @@ const getOpeningHours = ( location, day ) => {
 
       //Print today's hours
       if( moment().isAfter( openTime ) && moment().isBefore( closingTime )) {
+        console.log('Open now to:'+t.close);
         return `Open now to ${t.close}`;
       } else {
+        console.log('Closed now');
         return 'Closed now';
       }
     }
-  } 
+  } else {
+    console.log('neither');
+  }
 }
 
 export default getOpeningHours;

@@ -96,6 +96,10 @@ class MapMarker extends Component {
   onSelect( e ) {
     //Pharmacy Pin is clicked
     e.preventDefault();
+
+    console.log('Location data:', this.props.location);
+    console.log('Opening hours', getOpeningHours(this.props.location));
+
     this.props.handleSelectLocation( this.props.location, false, this.willCenterToMarker( e.target ) );
   }
 
@@ -323,6 +327,7 @@ class MapMarker extends Component {
 
     //Get today's opening hours
     const todayHours = () => {
+      console.log('Today hours:', this.props.location[today]);
         if (this.props.location[today] && this.props.location[today].open){
           return `Open ${d.open} to ${d.close}`;
         } else {
