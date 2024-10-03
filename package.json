@@ -1,0 +1,53 @@
+{
+  "name": "map",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.2",
+    "classnames": "^2.2.6",
+    "google-map-react": "^1.1.7",
+    "gsap": "^3.2.6",
+    "js-cookie": "^3.0.0",
+    "js-cookies": "^1.0.4",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-async-script-loader": "^0.3.0",
+    "react-cookies": "^0.1.1",
+    "react-dom": "^16.13.1",
+    "react-facebook-pixel": "^1.0.4",
+    "react-is": "^16.13.1",
+    "react-router-dom": "^6.25.1",
+    "react-scripts": "^5.0.1",
+    "scriptjs": "^2.5.9",
+    "supercluster": "^7.0.0",
+    "sweetalert2": "^11.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version",
+      "ie 11"
+    ]
+  }
+}
