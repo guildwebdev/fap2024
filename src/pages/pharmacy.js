@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MapContainer from '../components/map-container';
+import SimpleMapContainer from '../components/simple-map-container';
 import '../index.css'; // Ensure the CSS file is imported
-import getOpeningHours from '../helpers/get-opening-hours';
-import SimpleMapMarker from '../components/simple-map-marker';
 
 const Pharmacy = () => {
   const [pharmacy, setPharmacy] = useState(null);
@@ -92,16 +90,18 @@ const Pharmacy = () => {
     memberType: pharmacy.metaData.membershipType,
     extendedHours: pharmacy.metaData.extendedHours,
     weekends: pharmacy.metaData.weekends,
-    kmFromOrigin: pharmacy.kmFromOrigin
+    kmFromOrigin: pharmacy.kmFromOrigin,
+    active: true
   };
 
   return (
     <div>
       <h1>{pharmacy.title}</h1>
       <p>{pharmacy.metaData.address}</p>
+      <p>{pharmacy.metaData.phone}</p>
       <p>{pharmacy.metaData.bookingurl}</p>
       <div className="c-map-container--services" style={{ height: '500px', width: '100%' }}>
-        <MapContainer
+        <SimpleMapContainer
           mapCenter={{ lat: parseFloat(latitude), lng: parseFloat(longitude) }}
           zoom={15}
           locations={locations}
@@ -109,7 +109,6 @@ const Pharmacy = () => {
           handleDataReceived={() => {}}
           handleSelectLocation={() => {}}
           handleCenterChange={() => {}}
-          useSimpleMarker={true}
         />
       </div>
     </div>

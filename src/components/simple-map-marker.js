@@ -27,9 +27,9 @@ class SimpleMapMarker extends Component {
     );
   }
 
-  render() {
-console.log('into simple map marker');
 
+  render() {
+    console.log('into SimpleMapMarker');
     const containerClasses = classNames({
       'c-map__marker-container': true,
       'is-highlighted': this.props.highlighted

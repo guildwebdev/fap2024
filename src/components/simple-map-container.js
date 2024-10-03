@@ -4,16 +4,15 @@ import GoogleMapReact from "google-map-react";
 import supercluster from "supercluster";
 import axios from "axios";
 
-import MapMarker from "../components/map-marker";
-import ClusterMarker from "../components/cluster-marker";
 import UserMarker from "../components/user-marker";
 
 import getDistance from "../helpers/get-distance";
 import getLocationsURLForRadius from "../helpers/get-locations-url";
 import globalSettings from "../settings/global";
 import initDatabase from "../settings/init-database";
+import SimpleMapMarker from "../components/simple-map-marker";
 
-class MapContainer extends Component {
+class SimpleMapContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -678,17 +677,15 @@ class MapContainer extends Component {
 
 
   render() {
-    const markers = this.state.clusteredLocations.map(location => {
-      if (location.name) {
-        const isActive = this.props.selectedLocation.name === location.name;
+    const markers = this.state.locations.map(location => {
         const isHighlighted =
           this.props.highlightedLocation &&
           this.props.highlightedLocation.name &&
           this.props.highlightedLocation.name === location.name;
 
         return (
-          <MapMarker
-            active={isActive}
+          <SimpleMapMarker
+            active={true}
             handleDetailsClick={this.props.handleDetailsClick}
             handleDetailsHide={this.props.handleDetailsHide}
             handleSelectLocation={this.onSelectLocation}
@@ -701,18 +698,6 @@ class MapContainer extends Component {
             selectedLocation={this.props.selectedLocation}
           />
         );
-      } else {
-        return (
-          <ClusterMarker
-            count={location.properties.point_count_abbreviated}
-            key={location.properties.cluster_id}
-            lat={location.geometry.coordinates[1]}
-            lng={location.geometry.coordinates[0]}
-            location={location}
-            handleClusterClick = {(location)=>this.handleClusterClick(location)}
-          />
-        );
-      }
     });
 
     const userMarker = !this.state.userLocation.coords ? (
@@ -756,9 +741,9 @@ class MapContainer extends Component {
   }
 }
 
-export default MapContainer;
+export default SimpleMapContainer;
 
-MapContainer.propTypes = {
+SimpleMapContainer.propTypes = {
   autoCenterToUserLocation: PropTypes.bool,
   centerIn: PropTypes.bool,
   defaultLocation: PropTypes.string,
@@ -779,6 +764,6 @@ MapContainer.propTypes = {
   zoomIn: PropTypes.bool
 };
 
-MapContainer.defaultProps = {
+SimpleMapContainer.defaultProps = {
   mapCenter: { lat: -28.570000000000007, lng: 132.08000000000004 }
 };
