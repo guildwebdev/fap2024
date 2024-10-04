@@ -16,6 +16,8 @@ class SimpleMapContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.handleRadiusChange = this.handleRadiusChange.bind(this);
+
     this.defaultMapProps = {
       center: { lat: -28.570000000000007, lng: 132.08000000000004 },
       zoom: props.zoom
@@ -35,6 +37,7 @@ class SimpleMapContainer extends Component {
       willZoomOut: false,
       currSuperCluster: null,
       clusterClicked : false,
+      radius: 10,
     };
 
     this.createMapOptions = {
@@ -304,6 +307,16 @@ class SimpleMapContainer extends Component {
     this.onUserLocated = this.onUserLocated.bind(this);
     this.onUserLocationFailed = this.onUserLocationFailed.bind(this);
     this.getData = this.getData.bind(this);
+  }
+
+  radiusToZoom(radius){
+    return Math.round(14 - Math.log(radius) / Math.log(2));
+  }
+
+  handleRadiusChange = (event) => {
+    const radius = parseInt(event.target.value);
+    const zoom = this.radiusToZoom(radius);
+    this.setState({ radius, mapProps: { ...this.state.mapProps, zoom} });
   }
 
   getZoomLevelByDist(){
@@ -677,27 +690,29 @@ class SimpleMapContainer extends Component {
 
 
   render() {
-    const markers = this.state.locations.map(location => {
-        const isHighlighted =
-          this.props.highlightedLocation &&
-          this.props.highlightedLocation.name &&
-          this.props.highlightedLocation.name === location.name;
+    console.log('simple map - location:', this.props.selectedLocation);
 
-        return (
-          <SimpleMapMarker
-            active={true}
-            handleDetailsClick={this.props.handleDetailsClick}
-            handleDetailsHide={this.props.handleDetailsHide}
-            handleSelectLocation={this.onSelectLocation}
-            handleMouseOver={this.props.handleHighlightLocation}
-            highlighted={isHighlighted}
-            key={location.id}
-            lat={location.geometry.coordinates[1]}
-            lng={location.geometry.coordinates[0]}
-            location={location}
-            selectedLocation={this.props.selectedLocation}
-          />
-        );
+    const markers = this.state.locations.map(location => {
+      const isHighlighted =
+        this.props.highlightedLocation &&
+        this.props.highlightedLocation.name &&
+        this.props.highlightedLocation.name === location.name;
+
+      return (
+        <SimpleMapMarker
+          active={true}
+          handleDetailsClick={this.props.handleDetailsClick}
+          handleDetailsHide={this.props.handleDetailsHide}
+          handleSelectLocation={this.onSelectLocation}
+          handleMouseOver={this.props.handleHighlightLocation}
+          highlighted={isHighlighted}
+          key={location.id}
+          lat={location.geometry.coordinates[1]}
+          lng={location.geometry.coordinates[0]}
+          location={this.props.selectedLocation}
+          selectedLocation={this.props.selectedLocation}
+        />
+      );
     });
 
     const userMarker = !this.state.userLocation.coords ? (
@@ -723,7 +738,10 @@ class SimpleMapContainer extends Component {
           bootstrapURLKeys={{ key: globalSettings.googleMapsAPIKey, v: "3.40" }}
           defaultZoom={this.defaultMapProps.zoom}
           onChange={this.onMapEvent}
-          options={this.createMapOptions}
+          options={{
+            ...this.createMapOptions,
+            zoomControl: false,
+          }}
           zoom={this.state.mapProps.zoom}
           center={this.props.mapCenter}
           yesIWantToUseGoogleMapApiInternals={true}
@@ -736,8 +754,22 @@ class SimpleMapContainer extends Component {
           {markers}
           {userMarker}
         </GoogleMapReact>
+
+        <div className="mt-3">
+          <input
+            type="range"
+            className="form-range"
+            min="1"
+            max="100"
+            value={this.state.radius}
+            onChange={this.handleRadiusChange}
+          />
+          <div className="text-center">
+            Radius: {this.state.radius} km
+          </div>
+        </div>
       </div>
-    );
+    );    
   }
 }
 

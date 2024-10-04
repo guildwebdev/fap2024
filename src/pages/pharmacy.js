@@ -6,6 +6,7 @@ import PharmacyDetails from "../components/pharmacy-details";
 
 const Pharmacy = () => {
   const [pharmacy, setPharmacy] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -13,6 +14,23 @@ const Pharmacy = () => {
     if (pharmacyId) {
       fetchPharmacyData(pharmacyId);
     }
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        }, 
+        (error) => {
+          console.log('error getting user location: ', error);
+        }
+      );
+    } else {
+      console.log('Geolocation not available in this browser');
+    }
+
   }, []);
 
   const fetchPharmacyData = async (id) => {
@@ -30,7 +48,7 @@ const Pharmacy = () => {
     }
   };
 
-  if (!pharmacy) {
+  if (!pharmacy || !userLocation) {
     return <div>Loading...</div>;
   }
 
@@ -92,7 +110,41 @@ const Pharmacy = () => {
     extendedHours: pharmacy.metaData.extendedHours,
     weekends: pharmacy.metaData.weekends,
     kmFromOrigin: pharmacy.kmFromOrigin,
-    active: true
+    active: true,
+    monday: {
+      open: pharmacy.metaData.mondayOpening,
+      close: pharmacy.metaData.mondayClosing
+    },
+    tuesday: {
+      open: pharmacy.metaData.tuesdayOpening,
+      close: pharmacy.metaData.tuesdayClosing
+    },
+    wednesday: {
+      open: pharmacy.metaData.wednesdayOpening,
+      close: pharmacy.metaData.wednesdayClosing
+    },
+    thursday: {
+      open: pharmacy.metaData.thursdayOpening,
+      close: pharmacy.metaData.thursdayClosing
+    },
+    friday: {
+      open: pharmacy.metaData.fridayOpening,
+      close: pharmacy.metaData.fridayClosing
+    },
+    saturday: {
+      open: pharmacy.metaData.saturdayOpening,
+      close: pharmacy.metaData.saturdayClosing
+    },
+    sunday: {
+      open: pharmacy.metaData.sundayOpening,
+      close: pharmacy.metaData.sundayClosing
+    },
+    holidayHours: {
+      date: pharmacy.metaData.PTHEDate,
+      open: pharmacy.metaData.PTHEOpenLabel,
+      close: pharmacy.metaData.PTHECloseLabel,
+      reason: pharmacy.metaData.PTHEReason
+    }
   };
 
   return (
@@ -112,6 +164,7 @@ const Pharmacy = () => {
       <div className="c-map-details--services">
         <PharmacyDetails
           selectedLocation={selectedLocation}
+          userLocation={userLocation}
         />
       </div>
     </div>
