@@ -48,8 +48,10 @@ class SimpleMapMarker extends Component {
       <div className={containerClasses}>
         <div 
           className={mapMarkerClasses} 
-          onClick={this.onSelect}
-        />
+          onClick={this.onSelect} 
+          onMouseEnter={this.onMouseOver} 
+          onMouseOut={this.onMouseOut}>
+        </div>
         
         <div className={bubbleClasses}>
           <h5>{this.props.location.name}</h5>

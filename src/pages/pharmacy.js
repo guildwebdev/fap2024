@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SimpleMapContainer from '../components/simple-map-container';
 import '../index.css'; // Ensure the CSS file is imported
+import PharmacyDetails from "../components/pharmacy-details";
 
 const Pharmacy = () => {
   const [pharmacy, setPharmacy] = useState(null);
@@ -97,9 +98,6 @@ const Pharmacy = () => {
   return (
     <div>
       <h1>{pharmacy.title}</h1>
-      <p>{pharmacy.metaData.address}</p>
-      <p>{pharmacy.metaData.phone}</p>
-      <p>{pharmacy.metaData.bookingurl}</p>
       <div className="c-map-container--services" style={{ height: '500px', width: '100%' }}>
         <SimpleMapContainer
           mapCenter={{ lat: parseFloat(latitude), lng: parseFloat(longitude) }}
@@ -109,6 +107,11 @@ const Pharmacy = () => {
           handleDataReceived={() => {}}
           handleSelectLocation={() => {}}
           handleCenterChange={() => {}}
+        />
+      </div>
+      <div className="c-map-details--services">
+        <PharmacyDetails
+          selectedLocation={selectedLocation}
         />
       </div>
     </div>
