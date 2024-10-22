@@ -534,14 +534,32 @@ class SimpleMapContainer extends Component {
     }
   }
 
-  onSelectLocation(location, showDetails, center) {
+  /*onSelectLocation(location, showDetails, center) {
     this.props.handleSelectLocation(
       location,
       showDetails,
       center,
       this.state.googleMapReference
     );
+  }*/
+
+  onSelectLocation(location, showDetails, center) {
+    console.log('Location selected:', location); // Check if this logs
+    this.props.handleSelectLocation(
+      location,
+      showDetails,
+      center,
+      this.state.googleMapReference
+    );
+    
+    if (this.state.googleMapReference) {
+      const xOffset = 300;
+      const yOffset = -100;
+      console.log('Panning map by:', xOffset, yOffset); // Log the panning
+      this.state.googleMapReference.panBy(xOffset, yOffset);
+    }
   }
+
 
   onUserLocated(position) {
     console.log("user located");
@@ -724,16 +742,25 @@ class SimpleMapContainer extends Component {
       />
     );
 
+
+    /*
+    <div className="mt-3">
+          <input
+            type="range"
+            className="form-range"
+            min="1"
+            max="100"
+            value={this.state.radius}
+            onChange={this.handleRadiusChange}
+          />
+          <div className="text-center">
+            Radius: {this.state.radius} km
+          </div>
+        </div>
+    */
+
     return (
       <div className="c-map-container__inner">
-        <button
-          className="c-map__locate-btn"
-          onClick={this.locateUser}
-          disabled={this.state.isLocating}
-        >
-          Use my location
-        </button>
-
         <GoogleMapReact
           bootstrapURLKeys={{ key: globalSettings.googleMapsAPIKey, v: "3.40" }}
           defaultZoom={this.defaultMapProps.zoom}
@@ -755,19 +782,7 @@ class SimpleMapContainer extends Component {
           {userMarker}
         </GoogleMapReact>
 
-        <div className="mt-3">
-          <input
-            type="range"
-            className="form-range"
-            min="1"
-            max="100"
-            value={this.state.radius}
-            onChange={this.handleRadiusChange}
-          />
-          <div className="text-center">
-            Radius: {this.state.radius} km
-          </div>
-        </div>
+        
       </div>
     );    
   }

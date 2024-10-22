@@ -16,7 +16,7 @@ if (document.getElementById('app-home') || document.getElementById('app-search')
     initDatabase();
 }
 
-if( document.getElementById('app-home')) {
+/*if( document.getElementById('app-home')) {
     ReactDOM.render(
         <MapBasic />,
         document.getElementById('app-home')
@@ -36,7 +36,43 @@ if( document.getElementById('app-home')) {
         <Pharmacy />,
         document.getElementById('app-pharmacy')
     );
+}*/
+
+const homeElements = document.getElementsByClassName('app-home');
+for (let i = 0; i < homeElements.length; i++) {
+    ReactDOM.render(
+        <MapBasic />,
+        homeElements[i]
+    );
 }
+
+const searchElements = document.getElementsByClassName('app-search');
+for (let i = 0; i < searchElements.length; i++) {
+    ReactDOM.render(
+        <Search />,
+        searchElements[i]
+    );
+}
+
+const servicesLandingElements = document.getElementsByClassName('app-services-landing');
+for (let i = 0; i < servicesLandingElements.length; i++) {
+    ReactDOM.render(
+        <MapWithSearch 
+            defaultMapCenter={servicesLandingElements[i].getAttribute('defaultMapCenter')} 
+            serviceKeyword={servicesLandingElements[i].getAttribute('serviceKeyword')} 
+        />,
+        servicesLandingElements[i]
+    );
+}
+
+const pharmacyElements = document.getElementsByClassName('app-pharmacy');
+for (let i = 0; i < pharmacyElements.length; i++) {
+    ReactDOM.render(
+        <Pharmacy />,
+        pharmacyElements[i]
+    );
+}
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

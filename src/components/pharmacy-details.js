@@ -5,6 +5,8 @@ import getOpeningHours from '../helpers/get-opening-hours';
 import fixURL from '../helpers/fix-url';
 
 const PharmacyDetails = ({ selectedLocation, userLocation }) => {
+console.log('details location:', userLocation);
+
     //GET DISTANCE
     const distanceInMeters = getDistance(
         { lat: userLocation.latitude, lng: userLocation.longitude },
@@ -134,7 +136,7 @@ const PharmacyDetails = ({ selectedLocation, userLocation }) => {
         <ul className="no-bullets">
             <li><strong>Open: </strong>{currentStatus}</li>
             <li><strong>Address: </strong>{streetAddress}, {cityAddress}</li>
-            <li><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)}</li>
+            <li><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)} <a className="" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call Now</a></li>
             <li><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</li>
             <li><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></li>
             <li><strong>Distance: </strong>{distanceInKm}km</li>
@@ -203,7 +205,7 @@ const PharmacyDetails = ({ selectedLocation, userLocation }) => {
         {selectedLocation.phone &&(
             <ul className="no-bullets">
                 <li><strong>For more enquiries, call the pharmacy</strong></li>
-                <li><a className="button button-phone" href={`tel:${selectedLocation.phone}`}>Call now</a></li>
+                <li><a className="button button-phone" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call now</a></li>
             </ul>
         )}
         {selectedLocation.bookingurl &&(

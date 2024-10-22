@@ -106,6 +106,21 @@ class Search extends Component {
   }
 
   componentDidMount() {
+    const queryParams = queryStringToJSON();
+  
+    // Handle default services
+    if (queryParams.services) {
+      const defaultServices = queryParams.services.split(',');
+      this.setState({ serviceFilters: defaultServices });
+    }
+
+    if(queryParams.services){
+      console.log('have services');
+      this.onApplyFilters();
+    } else {
+      console.log('no services');
+    }
+
     var userCookie = Cookies.get('fapDetails');
 
     if (userCookie) {

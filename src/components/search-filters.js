@@ -56,6 +56,15 @@ class SearchFilters extends Component {
     else this.removeOverflowWithDelay();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedServices !== this.props.selectedServices) {
+      console.log('componentdidupdate');
+      this.updateOverflowState();
+    } else {
+      console.log('no-componentdidupdate');
+    }
+  }
+
   render() {
     const classes = classNames({
       'c-filters': true,

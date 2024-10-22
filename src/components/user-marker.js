@@ -10,8 +10,8 @@ class UserMarker extends Component {
 
   render() {
     return (
-      <div className="c-map__marker-container">
-        <div className="c-map__marker c-map__marker--user">
+      <div className="fap-map__marker-container">
+        <div className="fap-map__marker fap-map__marker--user">
         </div>
       </div>
     );

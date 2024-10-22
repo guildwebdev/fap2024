@@ -2,16 +2,57 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import getOpeningHours from '../helpers/get-opening-hours';
+import moment from 'moment';
+import getDistance from '../helpers/get-distance';
+import fapIcon from '../imgs/find-a-pharmacy-icon.png';
 
 class SimpleMapMarker extends Component {
   constructor(props) {
     super(props);
     this.onSelect = this.onSelect.bind(this);
+    this.state = {
+      latitude: null,
+      longitude: null,
+      error: null,
+    };
+    this.isComponentMounted = false;
+  }
+
+  componentDidMount() {
+    this.isComponentMounted = true;
+    this.getLocation();
+  }
+
+  componentWillUnmount(){
+    this.isComponentMounted = false;
+  }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (this.isComponentMounted){
+            this.setState({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          }
+        },
+        (error) => {
+          if (this.isComponentMounted){
+            this.setState({ error: error.message });
+          }
+        }
+      );
+    } else {
+      this.setState({ error: 'Geolocation is not supported by this browser.' });
+    }
   }
 
   onSelect(e) {
     e.preventDefault();
-    this.props.handleSelectLocation(this.props.location, false, this.willCenterToMarker(e.target));
+    //this.props.handleSelectLocation(this.props.location, false, this.willCenterToMarker(e.target));
+    this.props.handleSelectLocation(this.props.location, true, this.willCenterToMarker(e.target));
   }
 
   willCenterToMarker(marker) {
@@ -32,9 +73,13 @@ class SimpleMapMarker extends Component {
 
 
   render() {
+    const {latitude, longitude, error} = this.state;
+
     console.log('SimpleMapMarker - location', this.props.location);
+    console.log('User Location:',latitude, longitude, error);
+
     const currentStatus = getOpeningHours(this.props.location);
-    console.log('map-marker status: ',currentStatus);
+    //console.log('map-marker status: ',currentStatus);
 
     //FORMAT ADDRESS
     const streetAddress = [
@@ -67,6 +112,54 @@ class SimpleMapMarker extends Component {
       return directionsUrl;
     }
 
+    //Process current day/time and compare to Pharmacy Opening Hours
+    const today = moment().format('dddd').toLowerCase();
+    const d = this.props.location[today];
+    const xmas = "Fri Jan 26 2024";
+    const todayDate = moment().format('YYYY/MM/DD');
+    var exceptionFlag = false;
+
+    const openingHoursToday = () => {
+      let todayOpening = "";
+      //Check for opening hour exceptions for today
+      //If they exist, print them
+      //Otherwise, print standard hours for today
+      if (this.props.location.openingHourExceptions){
+        var data = this.props.location.openingHourExceptions;
+        for (var i = 0; i < data.length; i++){
+          if (data[i].date == todayDate){
+            todayOpening = (data[i].open === "Closed") ? `Closed (${data[i].reason})`: `Open ${data[i].open} to ${data[i].close} (${data[i].reason})`;
+            exceptionFlag = true;
+          }
+        }      
+      } else {
+        todayOpening = todayHours();
+      }
+
+      if (exceptionFlag == false){
+        todayOpening = todayHours();
+      }
+
+      return todayOpening;
+    };
+
+    //Get today's opening hours
+    const todayHours = () => {
+      //console.log('Today hours:', this.props.location[today]);
+        if (this.props.location[today] && this.props.location[today].open){
+          return `Open ${d.open} to ${d.close}`;
+        } else {
+          return "Closed Today";
+        }
+    };
+
+    //GET DISTANCE
+    const distanceInMeters = getDistance(
+      { lat: latitude, lng: longitude },
+      { lat: this.props.location.geometry.coordinates[1], lng: this.props.location.geometry.coordinates[0] }
+    );
+    const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+
 
     const containerClasses = classNames({
       'c-map__marker-container': true,
@@ -83,27 +176,59 @@ class SimpleMapMarker extends Component {
     });
 
     return (
-      <div className={containerClasses}>
-        <div 
-          className={mapMarkerClasses} 
-          onClick={this.onSelect} 
-          onMouseEnter={this.onMouseOver} 
-          onMouseOut={this.onMouseOut}>
+      <div className="fap-map__location-container">
+        <div className="fap-map__location"></div>
+
+        <div className="fap-map-popup">
+          <div className="fap-map-popup__details">
+            <div className="fap-map-popup__pharmacy-icon">
+              <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
+            </div>
+            <div className="fap-map-popup__singlepharmacy">
+              <div className="fap-map-popup__pharmacy-details">
+                <h4>{this.props.location.name}</h4>
+                <p className="pharmacy-map__details small"><strong>Open:</strong> { openingHoursToday() } | <span className="open-status open-status__opened">{currentStatus}</span></p>
+                <p className="pharmacy-map__details small"><strong>Address:</strong> {streetAddress}, {cityAddress}</p>
+                <p className="pharmacy-map__details small"><strong>Phone:</strong> {formatPhoneNumber(this.props.location.phone)} <a href={`tel:${formatPhoneNumber(this.props.location.phone)}`}>Call Now</a></p>
+                <p className="pharmacy-map__details small"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
+                <p className="pharmacy-map__details small"><strong>Distance:</strong> {distanceInKm}km</p>
+                                  
+              </div>
+
+              <div className="fap-map__more-actions mt-3">
+                <div className="fap-map-popup__actions">
+                  <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
+                    <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn btn-primary" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
+                      <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                      <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                    </button>
+                    <button className="fap-map-popup__for-bookings button-lightblue btn-with-backdrop btn btn-primary" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
+  >
+                      <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
+                      <div className="overlay"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            
+          </div>
         </div>
-        
-        <div className={bubbleClasses}>
-          <h5>{this.props.location.name}</h5>
-          <p>{streetAddress}, {cityAddress}</p>
-          <p>{formatPhoneNumber(this.props.location.phone)}</p>
-          <p>{currentStatus}</p>
-          <p><a className="button map-button" href={directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0])} target="_blank" rel="noopener noreferrer">Get Directions</a></p>
         </div>
-      </div>
+
+
+
+      
     );
   }
 }
 
 SimpleMapMarker.propTypes = {
+  mapCenter: PropTypes.shape({
+    lat: PropTypes.number,
+    lon: PropTypes.number,
+  }),
   active: PropTypes.bool,
   handleSelectLocation: PropTypes.func,
   highlighted: PropTypes.bool,
