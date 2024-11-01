@@ -3756,12 +3756,7 @@ button.notify-modal__btn-primary {
 
 
 .c-map-container__inner {
-  height: 550px;
+  height: 600px;
 }
 
-/*.fap-map, 
-.fap-map .fap-map__inner > div div {
-  max-height:500px;
-  min-height: 500px;
-}*/
 
