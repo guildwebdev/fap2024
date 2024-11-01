@@ -3,6 +3,7 @@ import moment from 'moment';
 import getDistance from '../helpers/get-distance';
 import getOpeningHours from '../helpers/get-opening-hours';
 import fixURL from '../helpers/fix-url';
+import fapIcon from '../imgs/find-a-pharmacy-icon.png';
 
 const PharmacyDetails = ({ selectedLocation, userLocation }) => {
 console.log('details location:', userLocation);
@@ -131,107 +132,160 @@ console.log('details location:', userLocation);
 
 
   return (
-    <div>
-        <h4>{selectedLocation.name}</h4>
-        <ul className="no-bullets">
-            <li><strong>Open: </strong>{currentStatus}</li>
-            <li><strong>Address: </strong>{streetAddress}, {cityAddress}</li>
-            <li><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)} <a className="" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call Now</a></li>
-            <li><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</li>
-            <li><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></li>
-            <li><strong>Distance: </strong>{distanceInKm}km</li>
-        </ul>
+        <div>
+            <section className="pharmacy-single">
+                <div className="pharmacy-single__container container">
+                    <div className="row">
+                        <div className="col-lg-12 py-4">
+                            <h2 className="pharmacy-single__title">PHARMACY</h2>
+                            <div className="pharmacy-single__column">
+                                <div className="fap-pharmacy__left-column">
+                                    <div className="fap-pharmacy__pharmacy-icon">
+                                    <img src={fapIcon} alt={`Find a Pharmacy Icon - ${selectedLocation.name}`}/>
+                                    </div>
+                                    <div className="fap-pharmacy__single-pharmacy">
+                                        <div className="fap-pharmacy__pharmacy-details">
+                                            <h3 className='fap-pharmacy__pharmacy-name'>{selectedLocation.name}</h3>
+                                            <p className='pharmacy-single__details small'><strong>Open: </strong>{currentStatus}</p>
+                                            <p className='pharmacy-single__details small'><strong>Address: </strong>{streetAddress}, {cityAddress}</p>
+                                            <p className='pharmacy-single__details small'><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)} <a className="" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call Now</a></p>
+                                            <p className='pharmacy-single__details small'><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</p>
+                                            <p className='pharmacy-single__details small'><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></p>
+                                            <p className='pharmacy-single__details small'><strong>Distance: </strong>{distanceInKm}km</p>
 
-        <p>
-            {selectedLocation.facebook && (
-                <a 
-                    href={fixURL(selectedLocation.facebook)} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
-                >
-                    <i className="fab fa-facebook"></i>
-                </a>
-            )}
-            {selectedLocation.instagram && (
-                <a 
-                    href={fixURL(selectedLocation.instagram)} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
-                >
-                    <i className="fab fa-instagram"></i>
-                </a>
-            )}
-            {selectedLocation.twitter && (
-                <a 
-                    href={fixURL(selectedLocation.twitter)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
-                >
-                    <i className="fab fa-twitter"></i>
-                </a>
-            )}
-            {selectedLocation.website && (
-                <a 
-                    href={fixURL(selectedLocation.website)} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
-                >
-                    <i className="fas fa-globe"></i>
-                </a>
-            )}
-        </p>
+                                            <hr className='pharmacy-single__separator'/>                                               
 
-        {formattedHolidayHours.length > 0 &&(
-            <ul className="no-bullets">
-                <li><strong>Holiday Trading Hours</strong></li>
-                {formattedHolidayHours.map((holiday, index) => (
-                    <li key={index}>
-                        {holiday.date} {holiday.hours} ({holiday.reason})
-                    </li>
-                ))}
-            </ul>
-        )}
-        <ul className="no-bullets">
-            <li><strong>Standard Trading Hours</strong></li>
-            {days.map(day => (
-                <li key={day}>{day}: {formatOpeningHours(day)}</li>
-            ))}
-        </ul>
-        
-        {selectedLocation.phone &&(
-            <ul className="no-bullets">
-                <li><strong>For more enquiries, call the pharmacy</strong></li>
-                <li><a className="button button-phone" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call now</a></li>
-            </ul>
-        )}
-        {selectedLocation.bookingurl &&(
-            <ul className="no-bullets">
-                <li><strong>Get your appointment</strong></li>
-                <li><a className="button button-calendar" href={selectedLocation.bookingurl} target="_blank" rel="noopener noreferrer">Book Now</a></li>
-            </ul>
-        )}
-        {languages.length > 0 &&(
-            <ul className="no-bullets">
-                <li><strong>Languages</strong></li>
-                {languages.map((language, index) => (
-                <li key={index}>{language.trim()}</li>
-                ))}
-            </ul>
-        )}
-        {services.length > 0 &&(
-            <ul className="no-bullets">
-                <li><strong>Services:</strong></li>
-                {services.map((service, index) => (
-                    <li key={index}>{service.trim()}</li>
-                ))}
-            </ul>
-        )}
-    </div>
-  );
+                                            {formattedHolidayHours.length > 0 &&(
+                                                <div>
+                                                    <p className='pharmacy-single__details small'><strong>Holiday Trading Hours</strong>
+                                                        <span className='pharmacy-single__detail-wrapper'>
+                                                            {formattedHolidayHours.map((holiday, index) => (
+                                                                <span className='pharmacy-single__detail-item' key={index}>
+                                                                    {holiday.date} {holiday.hours} ({holiday.reason})
+                                                                </span>
+                                                            ))}
+                                                        </span>
+                                                    </p>
+                                                    <hr className='pharmacy-single__separator'/>
+                                                </div>
+                                            )}
+    
+                                            <p className='pharmacy-single__details small'><strong>Standard Trading Hours</strong>
+                                                <span className='pharmacy-single__detail-wrapper'>
+                                                    {days.map(day => (
+                                                        <span className='pharmacy-single__detail-item' key={day}>{day}: {formatOpeningHours(day)}</span>
+                                                    ))}
+                                                </span>
+                                            </p>
+
+                                            <hr className='pharmacy-single__separator'/>
+            
+                                            <div className="pharmacy-single__actions">
+                                                {selectedLocation.phone &&( 
+                                                    <div>                                           
+                                                        <p className="pharmacy-single__details small"><strong>For more enquiries, call the pharmacy</strong></p>
+                                                        <button className="pharmacy-single__call-now button-blue btn-with-backdrop btn btn-secondary" onClick={() => window.open(`tel:${formatPhoneNumber(selectedLocation.phone)}`)}>
+                                                            <div className="backdrop">Call now <i className='fa-solid fa-phone-flip'></i></div>
+                                                            <div className="overlay">Call now <i className='fa-solid fa-phone-flip'></i></div>
+                                                        </button>
+                                                        <hr className='pharmacy-single__separator'/>
+                                                    </div>
+                                                )}
+
+                                                {selectedLocation.bookingurl &&(
+                                                    <div>
+                                                        <p className='pharmacy-single__details small'><strong>Get your appointment</strong></p>
+                                                        <button className="button-yellow btn-with-backdrop btn btn-secondary" onClick={() => window.open(selectedLocation.bookingurl, '_blank')}>
+                                                            <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                                                            <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                                                        </button>
+                                                        <hr className='pharmacy-single__separator'/>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <div className='fap-pharmacy__specialities'>
+                                                {selectedLocation.facebook && (
+                                                    <a 
+                                                        href={fixURL(selectedLocation.facebook)} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                    >
+                                                        <i className="fa-brands fa-facebook"></i>
+                                                    </a>
+                                                )}
+                                                {selectedLocation.instagram && (
+                                                    <a 
+                                                        href={fixURL(selectedLocation.instagram)} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                    >
+                                                        <i className="fa-brands fa-instagram"></i>
+                                                    </a>
+                                                )}
+                                                {selectedLocation.twitter && (
+                                                    <a 
+                                                        href={fixURL(selectedLocation.twitter)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                    >
+                                                        <i className="fa-brands fa-x-twitter"></i>
+                                                    </a>
+                                                )}
+                                                {selectedLocation.website && (
+                                                    <a 
+                                                        href={fixURL(selectedLocation.website)} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                    >
+                                                        <i className="fa-solid fa-globe"></i>
+                                                    </a>
+                                                )}
+                                            </div> 
+
+                                            {languages.length > 0 &&(
+                                                <div>
+                                                    <hr className='pharmacy-single__separator'/>
+                                                    <p className="pharmacy-single__details small"><strong>Languages spoken</strong>
+                                                        <span className='pharmacy-single__detail-wrapper'>
+                                                            {languages.map((language, index) => (
+                                                                <span className="pharmacy-single__detail-item" key={index}>{language.trim()}</span>
+                                                            ))}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            )}                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="fap-pharmacy__right-column">
+                                    <div className='fap-pharmacy__single-pharmacy'>
+                                        <div className="fap-pharmacy__pharmacy-details">
+                                            {services.length > 0 &&(
+                                                <p className="pharmacy-single__details small"><strong>Services:</strong>
+                                                    <span className='pharmacy-single__detail-wrapper'>
+                                                        {services.map((service, index) => (
+                                                            <span className="pharmacy-single__detail-item" key={index}>{service.trim()}</span>
+                                                        ))}
+                                                    </span>
+                                                </p>
+                                            )}
+
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>       
+    );
 };
 
 export default PharmacyDetails;

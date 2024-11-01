@@ -8,10 +8,15 @@ import fixURL from '../helpers/fix-url';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
 
 const NearbyPharmacies = ({ locations, origin }) => {
-
     console.log('NEARBY:', locations);
+    console.log('ORIGIN:', origin);
+
+    if (typeof origin === 'object' && origin !==null){
+        origin = `${origin.latitude},${origin.longitude}`;
+    }
 
     const directionsClick = (d) => {
+        console.log('directions:',d);
         window.open('https://www.google.com/maps/dir/?api=1&destination='+d[0]+','+d[1],'_blank');
     };
 
@@ -20,12 +25,12 @@ const NearbyPharmacies = ({ locations, origin }) => {
     };
 
     const moreInfoClick = (loc, origin) => {
-        const url = 'https://www.findapharmacy.com.au/new/pharmacy?pharmacyId='+loc+'&origin='+origin;
+        const url = 'https://findapharmacy.com.au/new/pharmacy?pharmacyId='+loc+'&origin='+origin;
         console.log('NEW URL:',url);
         window.location.href = url;
     };
 
-    //console.log("NEARBY", locations);
+    console.log("NEARBY", locations);
 
     const addressBlock = (d) => {
         //FORMAT ADDRESS
@@ -101,6 +106,9 @@ const NearbyPharmacies = ({ locations, origin }) => {
         //console.log('coords:', coords);
         const toRadians = (degrees) => degrees * (Math.PI / 180);
 
+
+        console.log('getDistance origin = ',origin);
+        console.log('getDistance coords= ', coords);
         const [lat1, lon1] = origin.split(',').map(Number);
         const lat2 = coords[0];
         const lon2 = coords[1];
@@ -124,24 +132,24 @@ const NearbyPharmacies = ({ locations, origin }) => {
     
 
     return (
-      <div className="pharmacy-map__results">
+      <div className="nearest-pharmacy__list-wrapper">
         {locations && locations.length > 0 ? (
             locations.map((location, index) => (
-            <div key={index} className="pharmacy-map__result-single-item">
-                <div className="pharmacy-map__pharmacy-icon">
+            <div key={index} className="nearest-pharmacy__single-item result-listing-single-item">
+                <div className="nearest-pharmacy__pharmacy-icon result-listing-icon">
                     <img src={fapIcon} alt={`Find a Pharmacy Icon - ${location.name}`}/>
                 </div>
-                <div className="pharmacy-map__pharmacy-details">
-                <h3 className="pharmacy-map__pharmacy-name">{location.name}</h3>
-                <p className="pharmacy-map__details small"><strong>Open: </strong>{openingHoursToday(location)}</p>
-                <p className="pharmacy-map__details small"><strong>Address: </strong>{addressBlock(location)}</p>
-                <p className="pharmacy-map__details small"><strong>Phone: </strong>{formatPhoneNumber(location.phone)} <a className="pharmacy-map__phone-link" href={`tel:${formatPhoneNumber(location.phone)}`}>Call Now</a></p>
-                <p className="pharmacy-map__details small"><strong>Distance: </strong>{getDistance(origin, location.geometry.coordinates)}km</p>
+                <div className="nearest-pharmacy__pharmacy-details result-listing-details">
+                    <h3 className="nearest-pharmacy__pharmacy-name result-listing-pharmacy-name">{location.name}</h3>
+                    <p className="nearest-pharmacy__details result-listing-content small"><strong>Open: </strong>{openingHoursToday(location)}</p>
+                    <p className="nearest-pharmacy__details result-listing-content small"><strong>Address: </strong>{addressBlock(location)}</p>
+                    <p className="nearest-pharmacy__details result-listing-content small"><strong>Phone: </strong>{formatPhoneNumber(location.phone)} <a className="pharmacy-map__phone-link" href={`tel:${formatPhoneNumber(location.phone)}`}>Call Now</a></p>
+                    <p className="nearest-pharmacy__details result-listing-content small"><strong>Distance: </strong>{getDistance(origin, location.geometry.coordinates)}km</p>
                 </div>
-                <div className="pharmacy-map__search-actions">
-                    <div className="pharmacy-map__search-actions-two-buttons search-actions-two-buttons">
+                <div className="nearest-pharmacy__search-actions result-listing-actions">
+                    <div className="nearest-pharmacy__search-actions results-listing-actions-two-buttons search-actions-two-buttons">
                         {location.bookingurl && (
-                            <button className="pharmacy-map__for-bookings button-yellow btn-with-backdrop btn btn-primary" onClick={()=>bookingsClick(location.bookingurl)}>
+                            <button className="nearest-pharmacy__bookings button-yellow btn-with-backdrop btn btn-secondary" onClick={()=>bookingsClick(location.bookingurl)}>
                                 <div className="backdrop">
                                     <i className="fa-solid fa-calendar-days"></i> Book Now
                                 </div>
@@ -150,7 +158,7 @@ const NearbyPharmacies = ({ locations, origin }) => {
                                 </div>
                             </button>
                         )}
-                        <button className="pharmacy-map__for-directions button-lightblue btn-with-backdrop btn btn-primary" onClick={()=>directionsClick()}>
+                        <button className="nearest-pharmacy__directions button-lightblue btn-with-backdrop btn btn-secondary" onClick={()=>directionsClick(location.geometry.coordinates)}>
                             <div className="backdrop">
                                 <i className="fa-solid fa-map-location-dot"></i> Get Directions
                             </div>
@@ -159,8 +167,8 @@ const NearbyPharmacies = ({ locations, origin }) => {
                             </div>
                         </button>
                     </div>
-                    <div className="pharmacy-map__search-actions-one-button">
-                        <button className="pharmacy-map__for-more-info button-blue btn-with-backdrop btn btn-primary" onClick={()=>moreInfoClick(location.id, origin)}>
+                    <div className="nearest-pharmacy__search-actions result-listing-actions-one-button">
+                        <button className="nearest-pharmacy__more-info button-blue btn-with-backdrop btn btn-secondary" onClick={()=>moreInfoClick(location.id, location.geometry.coordinates)}>
                             <div className="backdrop">Get more Info</div>
                             <div className="overlay">Get more Info</div>
                         </button>

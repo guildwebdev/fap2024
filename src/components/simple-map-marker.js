@@ -195,14 +195,14 @@ class SimpleMapMarker extends Component {
                                   
               </div>
 
-              <div className="fap-map__more-actions mt-3">
+              <div className="fap-map__more-actions">
                 <div className="fap-map-popup__actions">
                   <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
-                    <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn btn-primary" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
+                    <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
                       <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                       <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                     </button>
-                    <button className="fap-map-popup__for-bookings button-lightblue btn-with-backdrop btn btn-primary" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
+                    <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
   >
                       <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
                       <div className="overlay"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
