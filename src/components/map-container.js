@@ -699,6 +699,8 @@ class MapContainer extends Component {
             lng={location.geometry.coordinates[0]}
             location={location}
             selectedLocation={this.props.selectedLocation}
+            userLocationLat={this.props.userLatitude}
+            userLocationLong={this.props.userLongitude}
           />
         );
       } else {
@@ -726,13 +728,19 @@ class MapContainer extends Component {
 
     return (
       <div className="c-map-container__inner">
-        <button
-          className="c-map__locate-btn"
-          onClick={this.locateUser}
-          disabled={this.state.isLocating}
-        >
-          Use my location
-        </button>
+        <div className="location-container d-flex align-items-center">
+          <button
+            className="user-location btn btn-outline-primary"
+            onClick={this.locateUser}
+            disabled={this.state.isLocating}
+          >
+            <i className="fa-solid fa-location-dot"></i> 
+          </button>
+          <div className="location-group" onClick={this.locateUser}>
+              <p>Use My Location</p>
+            </div>
+        </div>
+        
 
         <GoogleMapReact
           bootstrapURLKeys={{ key: globalSettings.googleMapsAPIKey, v: "3.40" }}

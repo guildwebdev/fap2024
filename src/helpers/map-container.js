@@ -763,7 +763,7 @@ class MapContainer extends Component {
           onClick={this.locateUser}
           disabled={this.state.isLocating}
         >
-          Use my location
+          <i className="fa-solid fa-location-dot"></i> Use my location
         </button>
 
         <GoogleMapReact

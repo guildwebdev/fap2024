@@ -3735,7 +3735,7 @@ button.notify-modal__btn-primary {
   position: relative;
 }
 .fap-map-popup .fap-map-popup__details {
-  flex-wrap: unset;
+  /*flex-wrap: unset;*/
 }
 .c-map-container__inner {
   height: 550px;
@@ -3753,4 +3753,11 @@ button.notify-modal__btn-primary {
 }
 .services__sub-item {
   margin-top: auto;
+}
+
+
+
+.active {
+  display: block;
+  z-index: 99;
 }

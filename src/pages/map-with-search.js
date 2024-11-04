@@ -23,7 +23,11 @@ class MapWithSearch extends Component {
       locations: [],
       mapCenter: null,
       googleBounds:{},
-      selectedLocation: {}
+      selectedLocation: {},
+      userLocation: {
+        latitude: null,
+        longitude: null,
+      },
     };
 
     this.onCenterChange = this.onCenterChange.bind(this);
@@ -38,14 +42,49 @@ class MapWithSearch extends Component {
 
   
 
-    if (this.props.serviceKeyword.length < 1) {
-      this.serviceKeyword = "";
-    } else {
-      this.serviceKeyword = this.props.serviceKeyword.replace(/\s/g, "%20");
-    }
+    // Convert serviceKeyword prop to array
+  if (this.props.serviceKeyword) {
+    // Split by comma and trim whitespace
+    this.serviceKeywords = this.props.serviceKeyword
+      .split(',')
+      .map(service => service.trim());
+    
+    // URL encode each service
+    //this.serviceKeywords = this.serviceKeywords.map(service => 
+      //service.replace(/\s/g, "%20")
+    //);
+  } else {
+    this.serviceKeywords = [];
+  }
 
 
   }
+
+  componentDidMount(){
+    this.getUserLocation();
+  }
+
+  getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          this.setState({
+            userLocation: {
+              latitude,
+              longitude,
+            },
+          });
+          console.log('userLocation: ',latitude,longitude)
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
 
   /* Event handlers */
 
@@ -56,18 +95,22 @@ class MapWithSearch extends Component {
   }
 
   getFilteredResults(data) {
-    if (!this.props.serviceKeyword.length) {
+    console.log('keywords:',this.serviceKeywords);
+    if (!this.serviceKeywords.length) {
       return data;
     }
-
-    const results = data.filter(location => {
+  
+    return data.filter(location => {
       if (!location.services) return false;
-      const match = location.services.indexOf(this.props.serviceKeyword) > -1;
-      return match;
+      // Check if location has ALL selected services
+      return this.serviceKeywords.some(service => 
+        location.services.indexOf(service) > -1
+      );
     });
-
-    return results;
   }
+
+
+  
 
   onDataReceived(data) {
     const loc = this.state.selectedLocation;
@@ -116,6 +159,8 @@ class MapWithSearch extends Component {
 /*<MapExpandButton service={this.serviceKeyword}/>*/
 
   render() {
+    const { userLocation } = this.state;
+
     return (
       <div>
         <MapSearch
@@ -138,9 +183,9 @@ class MapWithSearch extends Component {
           serviceKeyword={this.props.serviceKeyword}
           defaultMapCenter={this.defaultMapCenter}
           zoom={4}
+          userLatitude={userLocation.latitude} // Pass user location as props
+          userLongitude={userLocation.longitude} // Pass user location as prop
         />
-
-        <MapExpandButton service={this.serviceKeyword}/>
       </div>
     );
   }

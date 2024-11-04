@@ -209,14 +209,16 @@ const Pharmacy = () => {
 
   // Loading state check
   if (!userLocation) {
-    return <div>Loading...</div>;
+    return <div>Loading... no userLocation</div>;
   }
 
   if (!pharmacy) {
-    return <div>Loading pharmacy data...</div>;
+    return <div>Loading no pharmacy data...</div>;
   }
 
-  const { latitude, longitude } = pharmacy.listMetaData;
+  //const { latitude, longitude } = pharmacy.listMetaData;
+  const latitude = pharmacy.listMetadata.latitude ?? [].join(',');
+  const longitude = pharmacy.listMetadata.longitude ?? [].join(',');
 
   const locations = [{
     id: (pharmacy.listMetadata.id ?? []).join(','),

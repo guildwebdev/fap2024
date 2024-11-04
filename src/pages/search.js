@@ -362,7 +362,10 @@ class Search extends Component {
     }
 
     const results = data.filter(location => {
-      const match = this.state.serviceFilters.every(item => {
+      //.every() is an AND search
+      //.some() is an OR search
+      //const match = this.state.serviceFilters.every(item => {
+      const match = this.state.serviceFilters.some(item => {
         if (!location.services) return false;
         return location.services.indexOf(item) > -1;
       });

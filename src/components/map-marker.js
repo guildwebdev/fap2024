@@ -11,6 +11,9 @@ import onSendUserAction from '../helpers/on-send-user-action';
 import getOpeningHours from '../helpers/get-opening-hours';
 import renderPropertyList from '../helpers/render-property-list';
 import renderNonMemberServices from '../helpers/render-non-member-services';
+import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import getDistance from '../helpers/get-distance';
+import OpeningHours from './opening-hours';
 
 
 class MapMarker extends Component {
@@ -24,7 +27,9 @@ class MapMarker extends Component {
     this.onBookingClicked = this.onBookingClicked.bind( this );
     this.openExternalModal = this.openExternalModal.bind (this );
   }
-    
+
+  
+   
   /* ---------- EVENT HANDLERS ---------- */
   onBookingClicked(e) {
     //Track 'Book Now' clicks
@@ -92,6 +97,8 @@ class MapMarker extends Component {
       this.props.handleMouseOver( this.props.location );
     }
   }
+
+  
 
   onSelect( e ) {
     //Pharmacy Pin is clicked
@@ -201,7 +208,7 @@ class MapMarker extends Component {
 
     //Add classes to Pharmacy Modal Container
     var containerClasses = classNames({
-      'c-map__marker-container': true,
+      'fap-map__location-container': true,
       'is-highlighted': this.props.highlighted
     });
 
@@ -210,14 +217,14 @@ class MapMarker extends Component {
       //Pharmacies that don't offer Palliative Care
       if (myServices && (myServices.indexOf('Palliative Care Prepared') == -1 || myServices.indexOf('Palliative Care Medicines Pharmacy Network – SA initiative'))){
         containerClasses = classNames({
-          'c-map__marker-container': true,
+          'fap-map__location-container': true,
           'hidden': true,
         });
       } else {
         //Pharmacies that do offer Palliative Care, but aren't in TAS
         if (this.props.location.state != 'TAS' || this.props.location != 'SA'){
           containerClasses = classNames({
-            'c-map__marker-container': true,
+            'fap-map__location-container': true,
             'hidden': true,
           });
         }
@@ -226,18 +233,18 @@ class MapMarker extends Component {
 
     //Add classes to Pharmacy Modal Info
     const bubbleClasses = classNames({
-      'c-map__info-bubble': true,
-      'is-active': this.props.active,
+      'fap-map-popup hidden': true,
+      'active': this.props.active,
     });
 
     //Add classes to Modal Heading
     var bubbleHeadingClasses = classNames({
-      'c-map__info-bubble__heading': true
+      'fap-map-popup__details': true
     });
 
     //Add classes to Pharmacy Pin
     var mapMarkerClasses = classNames({
-      'c-map__marker': true
+      'fap-map__location': true
     });
 
     //Add classes for Pharmacy Modal Icon
@@ -246,27 +253,27 @@ class MapMarker extends Component {
     } else if (this.props.location.memberType == 'Non-Member Ineligible AFSPA'){
       //AFSPA Icon
       bubbleHeadingClasses = classNames({
-        'c-map__info-bubble__heading': true,
+        'fap-map-popup__details': true,
         'afspa':true
       });
       mapMarkerClasses = classNames({
-        'c-map__marker': true,
+        'fap-map__location': true,
         'afspa':true
       });
     } else if (this.props.location.memberType == null) {
       //Null Member Type is Hidden
       mapMarkerClasses = classNames({
-        'c-map__marker': true,
+        'fap-map__location': true,
         'hidden': true
       });
     } else {
       //Non-Member Icon
       bubbleHeadingClasses = classNames({
-        'c-map__info-bubble__heading': true,
+        'fap-map__location': true,
         'nonmember':true
       });
       mapMarkerClasses = classNames({
-        'c-map__marker': true,
+        'fap-map__location': true,
         'nonmember':true
       });
     }
@@ -329,17 +336,41 @@ class MapMarker extends Component {
     const todayHours = () => {
       console.log('Today hours:', this.props.location[today]);
         if (this.props.location[today] && this.props.location[today].open){
-          return `Open ${d.open} to ${d.close}`;
+          return `${d.open} to ${d.close}`;
         } else {
           return "Closed Today";
         }
     };
     
     //Process Phone Number
-    const cleanPhone = this.props.location.phone ? this.props.location.phone.replace(/\s/g,''):'';
+    const cleanPhone = (phoneNumber) => {
+      if(!phoneNumber) return '';
+
+      let formattedNumber = phoneNumber.startsWith('+61')
+      ? '0' + phoneNumber.slice(3)
+      : phoneNumber;
+
+      return formattedNumber.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2 $3');
+    }
+
+    const directionsButton = (lat, long) => {
+      if (!lat || !long) return '';
+
+      let directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${long}`;
+      return directionsUrl;
+    }
+
+    //GET DISTANCE
+    const distanceInMeters = getDistance(
+      { lat: this.props.userLocationLat, lng: this.props.userLocationLong },
+      { lat: this.props.location.geometry.coordinates[1], lng: this.props.location.geometry.coordinates[0] }
+    );
+    const distanceInKm = (distanceInMeters / 1000).toFixed(2);
 
     //RETURNED HTML
     return (
+
+      
       <div className={containerClasses}>
         <div 
           className={mapMarkerClasses} 
@@ -349,54 +380,65 @@ class MapMarker extends Component {
         </div>
         
         <div className={bubbleClasses}>
-          <button className="c-map__info-bubble__close" onClick={this.onClose}>Close</button>
+          <button className="fap-map-popup__btn-close btn-close" onClick={this.onClose} aria-label="Close"></button>
           <div className={bubbleHeadingClasses}>
-            <h5>{ this.props.location.name }</h5>
-            <p>{ getOpeningHours( this.props.location ) }</p>
-          </div>
-
-          <div className="c-map__info-bubble__contact">
-            <p>{ this.props.location.address + (this.props.location.address2? ' '+ this.props.location.address2:'') + (this.props.location.address3? ' '+ this.props.location.address3:'')}</p>
-            <p>{ this.props.location.city } { this.props.location.postcode }</p>
-            <p>{ this.props.location.phone }</p>
-            <p><strong>{ openingHoursToday() }</strong></p>            
-            <br/>
-            <div className="c-map__info-bubble__vaccinations">
-              <p><strong>{modernaVax||modernaVaxKids||fluVax||pfizerVax||pfizerVaxKids? 'Vaccination Services':''}</strong></p>
-              <p>{modernaVax? ' '+ modernaVax:''}</p>
-              <p>{modernaVaxKids? ' '+ modernaVaxKids:''}</p>
-              <p>{novavaxVax? '' + novavaxVax:''}</p>
-              <p>{pfizerVax? ' '+ pfizerVax:''}</p>
-              <p>{pfizerVaxKids? ' '+ pfizerVaxKids:''}</p>
-              <p>{fluVax? ' '+ fluVax:''}</p>
+            <div className="fap-map-popup__pharmacy-icon">
+              <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
             </div>
-            {renderButton()}            
-          </div>
 
-          <div className="c-map__info-bubble__services">
-            <p><strong>{services? 'Services Provided:':''}</strong></p>
-            { services }
-            <br/><br/>
-            <div className="c-map__info-bubble__rat">
-              <p><strong>{lagevrioTreat||paxlovidTreat? 'COVID-19':''}</strong></p>
-              <p>{lagevrioTreat? ' '+lagevrioTreat:''}</p>
-              <p>{paxlovidTreat? ' '+paxlovidTreat:''}</p>
+            <div className="fap-map-popup__single-pharmacy">
+              
+              <div className="fap-map-popup__pharmacy-details">
+                <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{ this.props.location.name }</h3>
+                <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHoursToday() } | <OpeningHours location={this.props.location}/> </p>
+                <p className="pharmacy-map__details result-listing-content small"><strong>Address: </strong> { this.props.location.address + (this.props.location.address2? ', '+ this.props.location.address2:',') + (this.props.location.address3? ', '+ this.props.location.address3:',')} { this.props.location.city } {this.props.location.state}, { this.props.location.postcode }</p>
+                {this.props.location?.phone && (
+                  <p className="pharmacy-map__details result-listing-content small"><strong>Phone: </strong>{ cleanPhone(this.props.location.phone) } <a href={`tel:${cleanPhone(this.props.location.phone)}`}>Call Now</a></p>
+                )}                
+                {this.props.location?.email && (
+                  <p className="pharmacy-map__details result-listing-content small"><strong>Email: </strong><a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
+                )}
+                {this.props.userLocationLat && this.props.userLocationLong ? (
+                    <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distanceInKm}km</p>
+                  ) : (<p className='pharmacy-map__details result-listing-content small'>&nbsp;</p>)
+                }
+              </div>
+            </div>   
+            
+            <div className="fap-map-popup__more-actions">
+              <div className="fap-map-popup__actions">
+                <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
+                  {this.props.location?.bookingurl ? (
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
+                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+                      </button>
+                    ) : this.props.location?.phone ? (
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(`tel:${cleanPhone(this.props.location.phone)}`, '_blank')}>
+                        <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
+                        <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+                      </button>
+                    ) : (
+                      <p>&nbsp;</p>
+                    )
+                  }                  
+                  <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}>
+                    <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i> Get Directions</div>
+                    <div className="overlay"><i className="fa-solid fa-map-location-dot"></i> GetDirections</div>
+                  </button>
+                </div>
+              </div>
+              
+              <div className="fap-map-popup__single-page my-4">
+                <p className="small text-center"><a href="#" className="c-map__info-bubble__more-link" onClick={() => window.open(`../pharmacy?pharmacyId=${this.props.location.id}`)}>What do they offer me?</a></p>
+              </div>
+              
             </div>
+          
           </div>
-
-          <div className={pallCareClass}>
-            <p><strong>{pallCareBlurb? 'Palliative Care Prepared Pharmacy':''}</strong>
-            <br/>{pallCareBlurb? 'This pharmacy continuously stocks a list of palliative care medicines':''}</p>
-          </div>
-
-          <div className={saPallCareClass}>
-            <p><strong>{saPallCareBlurb? 'Palliative Care Medicines Pharmacy Network- SA initiative':''}</strong>
-            <br/>{saPallCareBlurb? 'This pharmacy continuously stocks a list of core palliative care medicines as well as providing support for patients approaching end of life.':''}</p>
-          </div>
-
-          <a href="#" className="c-map__info-bubble__more-link" onClick={this.onDetailsClick}>See details</a>
         </div>
-      </div>
+                       
+      </div>       
     );
   }
 }

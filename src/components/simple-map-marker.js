@@ -5,6 +5,7 @@ import getOpeningHours from '../helpers/get-opening-hours';
 import moment from 'moment';
 import getDistance from '../helpers/get-distance';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import OpeningHours from './opening-hours';
 
 class SimpleMapMarker extends Component {
   constructor(props) {
@@ -128,7 +129,7 @@ class SimpleMapMarker extends Component {
         var data = this.props.location.openingHourExceptions;
         for (var i = 0; i < data.length; i++){
           if (data[i].date == todayDate){
-            todayOpening = (data[i].open === "Closed") ? `Closed (${data[i].reason})`: `Open ${data[i].open} to ${data[i].close} (${data[i].reason})`;
+            todayOpening = (data[i].open === "Closed") ? `Closed (${data[i].reason})`: `${data[i].open} to ${data[i].close} (${data[i].reason})`;
             exceptionFlag = true;
           }
         }      
@@ -147,7 +148,7 @@ class SimpleMapMarker extends Component {
     const todayHours = () => {
       //console.log('Today hours:', this.props.location[today]);
         if (this.props.location[today] && this.props.location[today].open){
-          return `Open ${d.open} to ${d.close}`;
+          return `${d.open} to ${d.close}`;
         } else {
           return "Closed Today";
         }
@@ -184,13 +185,15 @@ class SimpleMapMarker extends Component {
             <div className="fap-map-popup__pharmacy-icon">
               <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
             </div>
-            <div className="fap-map-popup__singlepharmacy">
+            <div className="fap-map-popup__single-pharmacy">
               <div className="fap-map-popup__pharmacy-details">
                 <h4>{this.props.location.name}</h4>
-                <p className="pharmacy-map__details small"><strong>Open:</strong> { openingHoursToday() } | <span className="open-status open-status__opened">{currentStatus}</span></p>
+                <p className="pharmacy-map__details small"><strong>Open:</strong> { openingHoursToday() } | <OpeningHours location={this.props.location}/></p>
                 <p className="pharmacy-map__details small"><strong>Address:</strong> {streetAddress}, {cityAddress}</p>
                 <p className="pharmacy-map__details small"><strong>Phone:</strong> {formatPhoneNumber(this.props.location.phone)} <a href={`tel:${formatPhoneNumber(this.props.location.phone)}`}>Call Now</a></p>
-                <p className="pharmacy-map__details small"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
+                {this.props.location?.email && (
+                  <p className="pharmacy-map__details small"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
+                )}
                 <p className="pharmacy-map__details small"><strong>Distance:</strong> {distanceInKm}km</p>
                                   
               </div>
@@ -198,10 +201,19 @@ class SimpleMapMarker extends Component {
               <div className="fap-map__more-actions">
                 <div className="fap-map-popup__actions">
                   <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
-                    <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
-                      <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
-                      <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
-                    </button>
+                    {this.props.location?.bookingurl ? (
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
+                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                      </button>
+                    ): this.props.location?.phone ? (
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(`tel:${formatPhoneNumber(this.props.location.phone)}`, '_blank')}>
+                          <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
+                          <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+                        </button>
+                    ) : (
+                      <p>&nbsp;</p>
+                    )}
                     <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
   >
                       <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
@@ -210,8 +222,8 @@ class SimpleMapMarker extends Component {
                   </div>
                 </div>
               </div>
-
             </div>
+            
             
           </div>
         </div>

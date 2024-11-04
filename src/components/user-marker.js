@@ -12,6 +12,7 @@ class UserMarker extends Component {
     return (
       <div className="fap-map__marker-container">
         <div className="fap-map__marker fap-map__marker--user">
+          <i className="fa-solid fa-location-dot"></i>
         </div>
       </div>
     );
