@@ -19,6 +19,24 @@ class MapSearch extends Component {
     this.onStateChange = this.onStateChange.bind(this);
     this.updateStateInput = this.updateStateInput.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this); // Bind the new method
+    this.handleExternalSearch = this.handleExternalSearch.bind(this);
+  }
+
+  componentDidMount() {
+    // Listen for a custom event
+    window.addEventListener('externalSearch', this.handleExternalSearch);
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener on component unmount
+    window.removeEventListener('externalSearch', this.handleExternalSearch);
+  }
+
+  handleExternalSearch(event) {
+    const { searchValue } = event.detail;
+    this.setState({ input: searchValue }, () => {
+      this.updateInput(searchValue);
+    });
   }
 
   /* Event handlers */

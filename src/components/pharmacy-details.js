@@ -4,6 +4,7 @@ import getDistance from '../helpers/get-distance';
 import getOpeningHours from '../helpers/get-opening-hours';
 import fixURL from '../helpers/fix-url';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import OpeningHours from './opening-hours';
 
 const PharmacyDetails = ({ selectedLocation, userLocation }) => {
 console.log('details location:', userLocation);
@@ -147,7 +148,7 @@ console.log('details location:', userLocation);
                                         <div className="fap-pharmacy__pharmacy-details">
                                             <h3 className='fap-pharmacy__pharmacy-name'>{selectedLocation.name}</h3>
                                             <p className='pharmacy-single__details small'><strong>Open: </strong>{currentStatus}</p>
-                                            <p className='pharmacy-single__details small'><strong>Address: </strong>{streetAddress}, {cityAddress}</p>
+                                            <p className='pharmacy-single__details small'><strong>Address: </strong>{streetAddress}, {cityAddress} | <OpeningHours location={selectedLocation}/></p>
                                             <p className='pharmacy-single__details small'><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)} <a className="" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call Now</a></p>
                                             <p className='pharmacy-single__details small'><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</p>
                                             <p className='pharmacy-single__details small'><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></p>

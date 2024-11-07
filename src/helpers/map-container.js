@@ -757,7 +757,7 @@ class MapContainer extends Component {
     );
 
     return (
-      <div className="c-map-container__inner">
+      <div className="h-100 w-100">
         <button
           className="c-map__locate-btn"
           onClick={this.locateUser}

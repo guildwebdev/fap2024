@@ -283,25 +283,25 @@ class Search extends Component {
     if (this.state.serviceFilters.indexOf(service) === -1) {
       this.setState({
         serviceFilters: [...this.state.serviceFilters, service]
-      });
+      }, () => this.onApplyFilters()); // Add callback here
     } else {
       this.setState({
         serviceFilters: this.state.serviceFilters.filter(
           item => item !== service
         )
-      });
+      }, () => this.onApplyFilters()); // Add callback here
     }
   }
 
-  //TIME FILTERS
   onSelectTime(time) {
-    console.log(time);
     if (this.state.timeFilters.indexOf(time) === -1) {
-      this.setState({ timeFilters: [...this.state.timeFilters, time] });
+      this.setState({ 
+        timeFilters: [...this.state.timeFilters, time] 
+      }, () => this.onApplyFilters()); // Add callback here
     } else {
       this.setState({
         timeFilters: this.state.timeFilters.filter(item => item !== time)
-      });
+      }, () => this.onApplyFilters()); // Add callback here
     }
   }
 
@@ -524,20 +524,15 @@ class Search extends Component {
       "s-filtered-search__section--filters": true,
       "is-filters-expanded": this.state.filtersExpanded,
       "is-details-view": this.state.detailsViewActive,
-      "is-list-view": this.state.selectedView === "list"
+      "is-list-view": this.state.selectedView === "list",
+      "pharmacy-map__search-result-scroller": true,
+      "pharmacy-map__scroller-in-map": true,
     });
 
     return (
-      <div>
+      <div className="fap-map-container">
         <div className={filterSectionClasses}>
-          <div className="s-filtered-search__wrapper">
-            <div className="s-filtered-search__subsection">
-              <ToggleViewButtons
-                filtersApplied={this.state.filtersApplied}
-                handleFilterToggle={this.onFilterToggle}
-                handleViewToggle={this.onViewToggle}
-                selectedView={this.state.selectedView}
-              />
+          
               <SearchFilters
                 active={this.state.filtersExpanded}
                 filtersApplied={this.state.filtersApplied}
@@ -549,7 +544,9 @@ class Search extends Component {
                 selectedServices={this.state.serviceFilters}
                 selectedTimes={this.state.timeFilters}
                 services={this.state.services}
+                handleApplyFilters={this.onApplyFilters}  
               />
+         
               <SearchResults
                 handleClick={this.onShowDetailsFromResults}
                 handleMouseOver={this.onHighlightLocation}
@@ -557,25 +554,22 @@ class Search extends Component {
                 results={this.state.filteredLocations}
                 scrollToSelectedItem={this.state.scrollToItem}
                 selectedLocation={this.state.selectedLocation}
+                userLocationLat={this.props.userLatitude}
+                userLocationLong={this.props.userLongitude}
               />
-            </div>
+           
 
-            <div className="s-filtered-search__subsection s-filtered-search__details">
-              <SearchDetails
-                backHandler={this.onBackBtnClick}
-                location={this.state.selectedLocation}
-              />
-            </div>
-          </div>
+            
+
         </div>
 
-        <div className="s-filtered-search__section s-filtered-search__section--map">
+        <div className="h-100 w-100">
           <MapSearch
             defaultLocation={this.state.defaultLocation}
             handleInput={this.onLocationInput}
           />
 
-          <div className="c-map-container c-map-container--search">
+          
             <MapContainer
               centerIn={this.state.centerIn}
               defaultLocation={this.state.defaultLocation}
@@ -598,7 +592,7 @@ class Search extends Component {
               zoomIn={this.state.zoomIn}
               serviceKeyword={null}
             />
-          </div>
+          
         </div>
       </div>
     );

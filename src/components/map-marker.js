@@ -334,7 +334,7 @@ class MapMarker extends Component {
 
     //Get today's opening hours
     const todayHours = () => {
-      console.log('Today hours:', this.props.location[today]);
+      //console.log('Today hours:', this.props.location[today]);
         if (this.props.location[today] && this.props.location[today].open){
           return `${d.open} to ${d.close}`;
         } else {
@@ -430,7 +430,7 @@ class MapMarker extends Component {
               </div>
               
               <div className="fap-map-popup__single-page my-4">
-                <p className="small text-center"><a href="#" className="c-map__info-bubble__more-link" onClick={() => window.open(`../pharmacy?pharmacyId=${this.props.location.id}`)}>What do they offer me?</a></p>
+                <p className="small text-center"><a href={`/pharmacy?pharmacyId=${this.props.location.id}`} target="_blank" className="c-map__info-bubble__more-link">What do they offer me?</a></p>
               </div>
               
             </div>

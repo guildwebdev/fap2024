@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import GoogleMapReact from "google-map-react";
 import supercluster from "supercluster";
 import axios from "axios";
+import _ from 'lodash';
 
 import MapMarker from "../components/map-marker";
 import ClusterMarker from "../components/cluster-marker";
@@ -16,6 +17,16 @@ import initDatabase from "../settings/init-database";
 class MapContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.radiusInputRef = React.createRef();
+    this.radiusDisplayRef = React.createRef();
+
+    this.updateMapZoom = _.debounce((radius) => {
+      const zoom = this.radiusToZoom(radius);
+      this.setState({
+        mapProps: { ...this.state.mapProps, zoom}
+      });
+    }, 100);
 
     this.defaultMapProps = {
       center: { lat: -28.570000000000007, lng: 132.08000000000004 },
@@ -36,6 +47,7 @@ class MapContainer extends Component {
       willZoomOut: false,
       currSuperCluster: null,
       clusterClicked : false,
+      radius: 10,
     };
 
     this.createMapOptions = {
@@ -305,6 +317,7 @@ class MapContainer extends Component {
     this.onUserLocated = this.onUserLocated.bind(this);
     this.onUserLocationFailed = this.onUserLocationFailed.bind(this);
     this.getData = this.getData.bind(this);
+    this.handleRadiusChange = this.handleRadiusChange.bind(this);
   }
 
   getZoomLevelByDist(){
@@ -313,6 +326,24 @@ class MapContainer extends Component {
     }else{
       this.zoomLevelDist = 15;
     }
+  }
+
+  radiusToZoom(radius) {
+    // For a 600px container, this provides better correspondence 
+    // between visual radius and kilometer value
+    return Math.round(16 - Math.log(radius) / Math.log(1.7));
+  }
+
+  handleRadiusChange = (event) => {
+    const radius = parseInt(event.target.value);
+    
+    // Directly update display value
+    if (this.radiusDisplayRef.current) {
+      this.radiusDisplayRef.current.textContent = `${radius} km`;
+    }
+    
+    // Debounced map update
+    this.updateMapZoom(radius);
   }
 
   getData(center, dist, serviceKeyword) {
@@ -699,8 +730,6 @@ class MapContainer extends Component {
             lng={location.geometry.coordinates[0]}
             location={location}
             selectedLocation={this.props.selectedLocation}
-            userLocationLat={this.props.userLatitude}
-            userLocationLong={this.props.userLongitude}
           />
         );
       } else {
@@ -728,6 +757,12 @@ class MapContainer extends Component {
 
     return (
       <div className="c-map-container__inner">
+
+        
+          
+
+
+
         <div className="location-container d-flex align-items-center">
           <button
             className="user-location btn btn-outline-primary"

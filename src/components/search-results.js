@@ -69,9 +69,9 @@ class SearchResults extends Component {
     ));
 
     return (
-      <ul className="s-filtered-search__results">
+      <div>
         { results }
-      </ul>
+      </div>
     );
   }
 }

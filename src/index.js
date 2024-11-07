@@ -9,6 +9,7 @@ import Search from './pages/search';
 import * as serviceWorker from './serviceWorker';
 import initDatabase from "./settings/init-database";
 import Pharmacy from "./pages/pharmacy";
+import ListView from './pages/list';
 
 
 
@@ -73,6 +74,13 @@ for (let i = 0; i < pharmacyElements.length; i++) {
     );
 }
 
+const listElements = document.getElementsByClassName('app-list');
+for (let i = 0; i < listElements.length; i++) {
+    ReactDOM.render(
+        <ListView/>,
+        listElements[i]
+    );
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

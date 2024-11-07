@@ -6,6 +6,8 @@ import classNames from 'classnames';
 
 import ServicesSelector from './services-selector';
 import TimeFilterButton from './time-filter-button';
+import TimeSelector from './time-selector';
+
 
 class SearchFilters extends Component {
   constructor( props ) {
@@ -21,6 +23,7 @@ class SearchFilters extends Component {
     this.onSelectTime = this.onSelectTime.bind( this );
     this.removeOverflowWithDelay = this.removeOverflowWithDelay.bind( this );
     this.updateOverflowState = this.updateOverflowState.bind( this );
+    this.onSelectService = this.onSelectService.bind(this);
   }
 
   /* Event handlers */
@@ -36,8 +39,14 @@ class SearchFilters extends Component {
     this.removeOverflowWithDelay();
   }
 
-  onSelectTime( e ) {
-    this.props.handleSelectTime( e.target.value );
+  onSelectTime(value) {
+    this.props.handleSelectTime(value);
+    this.props.handleApplyFilters(); // Auto-apply after selection
+  }
+  
+  onSelectService(value) {
+    this.props.handleSelectService(value);
+    this.props.handleApplyFilters(); // Auto-apply after selection
   }
 
   /* Component methods */
@@ -79,65 +88,28 @@ class SearchFilters extends Component {
     const heading = this.props.filtersApplied ? 'Filters applied' : 'Filters';
 
     return (
-      <div className={classes}>
-        <a href="#" className="c-dropdown__topbar c-filters__topbar u-desktop-only" onClick={this.onFilterToggle}>
-          <i className="c-filters__icon"></i>
-          <h4 className="c-filters__heading">{ heading }</h4>
-          <button className="c-filters__close"></button>
-        </a>
-
-        <div className="c-dropdown__results">
-          <ul className="c-dropdown__results-list">
-            <li className="c-filters__section">
-              <h4 className="c-filters__subheading">Opening hours</h4>
-              <div className="c-filters__button-container">
-                <TimeFilterButton
-                  value="Now"
-                  selectedTimes={this.props.selectedTimes}
-                  handleClick={this.onSelectTime}
-                  />
-                <TimeFilterButton
-                  value="Extended hours"
-                  selectedTimes={this.props.selectedTimes}
-                  handleClick={this.onSelectTime}
-                  />
-                <TimeFilterButton
-                  value="Weekends"
-                  selectedTimes={this.props.selectedTimes}
-                  handleClick={this.onSelectTime}
-                  />
-              </div>
-            </li>
-
-            <li className="c-filters__section">
-              <h4 className="c-filters__subheading">Service provided</h4>
-
+      <div className="pharmacy-map__search-result-filter">
+        <div>
+              <TimeSelector
+                selectedTimes={this.props.selectedTimes}
+                handleSelectTime={this.onSelectTime}
+              />
               <ServicesSelector
-                {...this.props}
-                handleToggle={this.onDropdownToggle}
+                services={this.props.services}
+                selectedServices={this.props.selectedServices}
+                handleSelectService={this.onSelectService.bind(this)}
                 active={this.state.isChildrenExpanded}
-                />
-            </li>
+             
+            />
+            </div>
 
-            <li className="c-filters__section">
-              <div className="c-filters__cta">
-                <button
-                  className="c-btn c-filters__btn--cta"
-                  onClick={this.props.handleClear}>Clear filters
-                </button>
-                <button
-                  className="c-btn c-filters__btn--cta u-mobile-only"
-                  onClick={this.onFilterToggle}>Close
-                </button>
-                <button
-                  className="c-btn c-filters__btn--cta"
-                  disabled={this.props.selectedServices.length === 0 && this.props.selectedTimes.length === 0}
-                  onClick={this.props.handleApply}>Apply
-                </button>
-              </div>
-            </li>
-          </ul>
-        </div>
+              <span 
+                className="map-to-list-toggle"
+                onClick={this.props.handleClear}>
+                  <i className="fa-solid fa-filter-circle-xmark"></i>
+              </span>
+
+
       </div>
     );
   }
@@ -148,7 +120,6 @@ export default SearchFilters;
 SearchFilters.propTypes = {
   active: PropTypes.bool,
   filtersApplied: PropTypes.bool,
-  handleApply: PropTypes.func,
   handleClear: PropTypes.func,
   handleFilterToggle: PropTypes.func,
   handleSelectService: PropTypes.func,
@@ -156,4 +127,5 @@ SearchFilters.propTypes = {
   selectedServices: PropTypes.array,
   selectedTimes: PropTypes.array,
   services: PropTypes.array,
+  handleApplyFilters: PropTypes.func.isRequired,
 }

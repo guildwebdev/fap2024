@@ -7,6 +7,10 @@ import onSendUserAction from '../helpers/on-send-user-action';
 import Swal from 'sweetalert2';
 import { property } from 'lodash';
 import { trackCustom } from 'react-facebook-pixel';
+import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import OpeningHours from './opening-hours';
+import fixURL from '../helpers/fix-url';
+import getDistance from '../helpers/get-distance';
 
 const SearchResultItem = props => {
   const today = moment().format('dddd').toLowerCase();
@@ -72,7 +76,7 @@ const SearchResultItem = props => {
       var data = props.result.openingHourExceptions;
       for (var i = 0; i < data.length; i++){
         if (data[i].date == todayDate){
-          todayOpening = (data[i].open == "Closed") ? `Closed (${data[i].reason})`: `Open ${data[i].open} to ${data[i].close} (${data[i].reason})`;
+          todayOpening = (data[i].open == "Closed") ? `Closed (${data[i].reason})`: `${data[i].open} to ${data[i].close} (${data[i].reason})`;
           exceptionFlag = true;
         }
       } 
@@ -90,7 +94,7 @@ const SearchResultItem = props => {
    //Get today's opening hours
    const todayHours = () => {
       if (props.result[today] && props.result[today].open){
-        return `Open ${props.result[today].open} to ${props.result[today].close}`;
+        return `${props.result[today].open} to ${props.result[today].close}`;
       } else {
         return "Closed Today";
       }
@@ -119,6 +123,55 @@ const SearchResultItem = props => {
       }
     }
   };
+
+  const addressBlock = (d) => {
+    //FORMAT ADDRESS
+    const streetAddress = [
+        d.address,
+        d.address2,
+        d.address3
+    ].filter(Boolean).join(', ');
+    const cityAddress = [
+        d.city, 
+        d.state, 
+        d.postcode
+    ].filter(Boolean).join(' ');
+    return streetAddress+', '+cityAddress;
+  };
+  
+  const directionsClick = (d) => {
+    const url = 'https://www.google.com/maps/dir/?api=1&destination='+d[0]+','+d[1];
+    return url;
+  };
+
+  const bookingsClick = (d) => {   
+      window.open(fixURL(d), '_blank');
+  };
+
+  const moreInfoClick = (loc) => {
+      const url = 'https://findapharmacy.com.au/pharmacy?pharmacyId='+loc;
+      window.location.href = url;
+  };
+
+  const formatPhoneNumber = (phoneNumber) => {
+    if(!phoneNumber) return '';
+    let phoneStr = String(phoneNumber);
+
+    let formattedNumber = phoneStr.startsWith('+61')
+    ? '0' + phoneStr.slice(3)
+    : phoneStr;
+
+    return formattedNumber.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2 $3');
+};
+
+const distanceInMeters = getDistance(
+  { lat: props.userLocationLat, lng: props.userLocationLong },
+  { lat: props.result.geometry.coordinates[1], lng: props.result.geometry.coordinates[0] },
+  console.log('coords:'),
+  console.log(props.userLocationLat),
+  console.log(props.result.geometry.coordinates[1])
+);
+const distanceInKm = (distanceInMeters / 1000).toFixed(2);
   
   //Set style definitions
   var classes = classNames({
@@ -194,25 +247,46 @@ const SearchResultItem = props => {
 
   //THIS IS WHAT GETS PRINTED ON SCREEN
   return (
-    <li className={classes}>
-      <span 
-        className="s-filtered-search__results__link"  
-        onMouseEnter={handleMouseEnter} 
-        onMouseLeave={handleMouseLeave}
-        >
-        <h5 className="s-filtered-search__heading">
-          {props.result.name}</h5>
-        <div className="s-filtered-search__details-wrapper">
-            <p>{ openingHours() }</p>
-            <p>{ props.result.phone }</p>
+    <div className="pharmacy-map__search-result-single-item result-listing-single-item">
+      <div className="pharmacy-map__pharmacy-icon result-listing-icon">
+        <img src={fapIcon} alt={`${props.result.name} Icon`}/>
+      </div>
+      <div className="pharmacy-map__pharmacy-details result-listing-details">
+        <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{props.result.name}</h3>
+        <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHours() } | <OpeningHours location={props.result}/></p>
+        <p className="pharmacy-map__details result-listing-content small"><strong>Address: </strong>{addressBlock(props.result)}</p>
+        <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distanceInKm}km</p>
+        <p className="pharmacy-map__details result-listing-content small">
+          <a href={directionsClick(props.result.geometry.coordinates)} target="_blank">
+            <span className="pharmacy-map__details result-listing-content-direction-icon">
+              <i className="fa-solid fa-paper-plane"></i>
+            </span>
+             Get Directions
+          </a>
+        </p>
+      </div>
+      <div className="pharmacy-map__search-actions result-listing-actions">
+        <div className="pharmacy-map__search-actions result-listing-actions-two-buttons search-actions-two-buttons">
+        {props.result?.bookingurl ? (
+          <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" data-url={props.result.bookingurl} onClick={()=>bookingsClick(props.result.bookingurl)}>
+            <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+            <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+          </button>
+        ): props.result?.phone ? (
+          <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" data-phone={props.result.phone} onClick={() => window.open(`tel:${formatPhoneNumber(props.result.phone)}`, '_blank')}>
+            <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
+            <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+          </button>
+        ): (
+          <p>&nbsp;</p>
+        )}
+          <button className="nearest-pharmacy__more-info button-blue btn-with-backdrop btn btn-secondary" data-info={props.result.id} onClick={() => {moreInfoClick(props.result.id)}}>
+            <div className="backdrop">More Info <i className="fa-solid fa-arrow-right"></i></div>
+            <div className="overlay">More Info <i className="fa-solid fa-arrow-right"></i></div>
+          </button>
         </div>
-        {renderButton()}
-        <p><a href="#"
-          onClick={handleClick}
-        >See details</a></p>
-        <span className="s-filtered-search__divider"></span>
-      </span>
-    </li>
+      </div>      
+    </div>
   );
 }
 
