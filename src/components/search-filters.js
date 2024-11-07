@@ -98,6 +98,7 @@ class SearchFilters extends Component {
                 services={this.props.services}
                 selectedServices={this.props.selectedServices}
                 handleSelectService={this.onSelectService.bind(this)}
+                handleClear={this.props.handleClear}
                 active={this.state.isChildrenExpanded}
              
             />

@@ -97,6 +97,11 @@ class Search extends Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('filterByService');
+
+  }
+
   //CREATES UNIQUE ID
   uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -138,6 +143,17 @@ class Search extends Component {
     if (this.state.defaultLocation) {
       this.onLocationInput(this.state.defaultLocation);
     }
+
+    window.addEventListener('filterByService', (event) => {
+      const { service } = event.detail;
+      if (service) {
+          this.setState({
+              serviceFilters: [service]
+          }, () => {
+              this.onApplyFilters();
+          });
+      }
+  });
   }
 
   /* Event handlers */
@@ -280,17 +296,9 @@ class Search extends Component {
   }
 
   onSelectService(service) {
-    if (this.state.serviceFilters.indexOf(service) === -1) {
-      this.setState({
-        serviceFilters: [...this.state.serviceFilters, service]
-      }, () => this.onApplyFilters()); // Add callback here
-    } else {
-      this.setState({
-        serviceFilters: this.state.serviceFilters.filter(
-          item => item !== service
-        )
-      }, () => this.onApplyFilters()); // Add callback here
-    }
+    this.setState({
+      serviceFilters: service ? [service] : []
+    }, () => this.onApplyFilters());
   }
 
   onSelectTime(time) {

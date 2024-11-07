@@ -7,6 +7,7 @@ import classNames from 'classnames';
 const ServicesSelector = props => {
   const handleChange = (e) => {
     e.preventDefault();
+    props.handleSelectService('');
     props.handleSelectService(e.target.value);
   }
 
@@ -42,4 +43,5 @@ ServicesSelector.propTypes = {
   handleSelectService: PropTypes.func,
   selectedServices: PropTypes.array,
   services: PropTypes.array,
+  handleClear: PropTypes.func,
 }

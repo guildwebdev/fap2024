@@ -33,10 +33,16 @@ class MapSearch extends Component {
   }
 
   handleExternalSearch(event) {
-    const { searchValue } = event.detail;
+    const { searchValue, serviceName } = event.detail;
     this.setState({ input: searchValue }, () => {
       this.updateInput(searchValue);
     });
+
+    if (serviceName){
+      window.dispatchEvent(new CustomEvent('filterByService', {
+        detail: {service: serviceName}
+      }));
+    }
   }
 
   /* Event handlers */
