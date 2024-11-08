@@ -26,10 +26,43 @@ class MapMarker extends Component {
     this.onMouseOver = this.onMouseOver.bind( this );
     this.onBookingClicked = this.onBookingClicked.bind( this );
     this.openExternalModal = this.openExternalModal.bind (this );
+    this.state = {
+      latitude: null,
+      longitude: null,
+      error: null
+    };
+    this.isComponentMounted = false;
   }
 
-  
+  componentDidMount() {
+    this.isComponentMounted = true;
+    this.getLocation();
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
+  }
    
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (this.isComponentMounted) {
+            this.setState({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+          }
+        },
+        (error) => {
+          if (this.isComponentMounted) {
+            this.setState({ error: error.message });
+          }
+        }
+      );
+    }
+  }
+
   /* ---------- EVENT HANDLERS ---------- */
   onBookingClicked(e) {
     //Track 'Book Now' clicks
@@ -138,6 +171,13 @@ class MapMarker extends Component {
     var saPallCareBlurb = false;
     var saPallCareClass;
 
+    const distance = (this.state.latitude && this.state.longitude) ? 
+    getDistance(
+      { lat: this.state.latitude, lng: this.state.longitude },
+      { lat: parseFloat(this.props.location.geometry.coordinates[1]), 
+        lng: parseFloat(this.props.location.geometry.coordinates[0]) }
+    ) / 1000 : null;
+
     //Print Services List
     if (this.props.location.memberType == 'Premises' || this.props.location.memberType == 'Non-Member Ineligible AFSPA'){
       //All services for Members and AFSPA
@@ -235,6 +275,7 @@ class MapMarker extends Component {
     const bubbleClasses = classNames({
       'fap-map-popup hidden': true,
       'active': this.props.active,
+      'hover':this.props.highlighted
     });
 
     //Add classes to Modal Heading
@@ -398,10 +439,9 @@ class MapMarker extends Component {
                 {this.props.location?.email && (
                   <p className="pharmacy-map__details result-listing-content small"><strong>Email: </strong><a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
                 )}
-                {this.props.userLocationLat && this.props.userLocationLong ? (
-                    <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distanceInKm}km</p>
-                  ) : (<p className='pharmacy-map__details result-listing-content small'>&nbsp;</p>)
-                }
+                {(distance && !isNaN(distance)) && (
+                  <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distance.toFixed(1)}km</p>
+                )}
               </div>
             </div>   
             

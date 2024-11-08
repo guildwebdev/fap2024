@@ -51,7 +51,9 @@ class Search extends Component {
       defaultLocation: null,
       defaultLocationId: null,
       defaultLocationCoordinates: null,
-      selectedView: "map"
+      selectedView: "map",
+
+      userLocation: null
     };
 
     this.queryString = {};
@@ -153,7 +155,18 @@ class Search extends Component {
               this.onApplyFilters();
           });
       }
-  });
+    });
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.setState({
+          userLocation: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }
+        });
+      });
+    }
   }
 
   /* Event handlers */
@@ -562,8 +575,8 @@ class Search extends Component {
                 results={this.state.filteredLocations}
                 scrollToSelectedItem={this.state.scrollToItem}
                 selectedLocation={this.state.selectedLocation}
-                userLocationLat={this.props.userLatitude}
-                userLocationLong={this.props.userLongitude}
+                userLocationLat={this.state.userLocation?.latitude}  
+                userLocationLong={this.state.userLocation?.longitude}
               />
            
 

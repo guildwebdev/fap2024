@@ -49,11 +49,6 @@ class SearchResults extends Component {
   }
 
   render() {
-    console.log('Search Results incoming:');
-    console.log(this.props.results);
-    console.log('Selected Location incoming');
-    console.log(this.props.selectedLocation);
-
     const results = this.props.results.length === 0 ? 
       <div className="s-filtered-search__no-results">No results found.</div> : 
       this.props.results.map( result => (
@@ -65,6 +60,8 @@ class SearchResults extends Component {
           handleMouseOver={this.props.handleMouseOver}
           active={result.name === this.props.selectedLocation.name}
           highlighted={result.name === this.props.highlightedLocation.name}
+          userLocationLat={this.props.userLocationLat}
+          userLocationLong={this.props.userLocationLong}
           />
     ));
 
@@ -85,4 +82,6 @@ SearchResults.propTypes = {
   results: PropTypes.array,
   scrollToSelectedItem: PropTypes.bool,
   selectedLocation: PropTypes.object,
+  userLocationLat: PropTypes.number,
+  userLocationLong: PropTypes.number,
 }

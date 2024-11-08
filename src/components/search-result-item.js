@@ -48,13 +48,13 @@ const SearchResultItem = props => {
   }
 
   const handleClick = e => {
-    e.preventDefault();
-    var ratSearch = sessionStorage.getItem('ratsearch');
-    if (ratSearch){
-      onSendUserAction(props.result, 'RAT Search','','guildOnly');
-    } 
-
-    props.handleClick( props.result, true, true );
+    if (e.target.tagName.toLowerCase() === 'button') {
+      return;
+    }
+    
+    if (props.handleClick) {
+      props.handleClick(props.result);
+    }
   };
 
   const handleMouseLeave = e => {
@@ -167,11 +167,8 @@ const SearchResultItem = props => {
 const distanceInMeters = getDistance(
   { lat: props.userLocationLat, lng: props.userLocationLong },
   { lat: props.result.geometry.coordinates[1], lng: props.result.geometry.coordinates[0] },
-  console.log('coords:'),
-  console.log(props.userLocationLat),
-  console.log(props.result.geometry.coordinates[1])
 );
-const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+const distanceInKm = (distanceInMeters / 1000).toFixed(1);
   
   //Set style definitions
   var classes = classNames({
@@ -190,6 +187,12 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(2);
       }
     }
   }
+  
+  const itemClasses = classNames({
+    'pharmacy-map__search-result-single-item': true,
+    'result-listing-single-item': true,
+    'is-highlighted': props.highlighted
+  });
 
   if (props.result.memberType == 'Premises'){
     //leave classes as is
@@ -247,7 +250,12 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(2);
 
   //THIS IS WHAT GETS PRINTED ON SCREEN
   return (
-    <div className="pharmacy-map__search-result-single-item result-listing-single-item">
+    <div 
+      className={itemClasses}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="pharmacy-map__pharmacy-icon result-listing-icon">
         <img src={fapIcon} alt={`${props.result.name} Icon`}/>
       </div>
@@ -255,7 +263,9 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(2);
         <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{props.result.name}</h3>
         <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHours() } | <OpeningHours location={props.result}/></p>
         <p className="pharmacy-map__details result-listing-content small"><strong>Address: </strong>{addressBlock(props.result)}</p>
-        <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distanceInKm}km</p>
+        {(distanceInKm && !isNaN(distanceInKm)) && (
+          <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distanceInKm}km</p>
+        )}
         <p className="pharmacy-map__details result-listing-content small">
           <a href={directionsClick(props.result.geometry.coordinates)} target="_blank">
             <span className="pharmacy-map__details result-listing-content-direction-icon">
