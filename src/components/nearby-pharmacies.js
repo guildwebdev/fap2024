@@ -6,6 +6,8 @@ import getOpeningHours from '../helpers/get-opening-hours';
 import moment from 'moment';
 import fixURL from '../helpers/fix-url';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
+import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
 import OpeningHours from './opening-hours';
 
 const NearbyPharmacies = ({ locations, origin }) => {
@@ -138,7 +140,16 @@ const NearbyPharmacies = ({ locations, origin }) => {
             locations.map((location, index) => (
             <div key={index} className="nearest-pharmacy__single-item result-listing-single-item">
                 <div className="nearest-pharmacy__pharmacy-icon result-listing-icon">
-                    <img src={fapIcon} alt={`Find a Pharmacy Icon - ${location.name}`}/>
+                <img 
+                    src={
+                    location.memberType === 'Premises'
+                    ? fapIcon
+                    : location.memberType === 'Non-Member Ineligible AFSPA'
+                    ? fapIconAFSA
+                    : fapIconNonMember
+                    } 
+                    alt={`Find a Pharmacy Icon - ${location.name}`}
+                />
                 </div>
                 <div className="nearest-pharmacy__pharmacy-details result-listing-details">
                     <h3 className="nearest-pharmacy__pharmacy-name result-listing-pharmacy-name">{location.name}</h3>

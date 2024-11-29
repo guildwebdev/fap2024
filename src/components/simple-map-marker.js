@@ -5,6 +5,8 @@ import getOpeningHours from '../helpers/get-opening-hours';
 import moment from 'moment';
 import getDistance from '../helpers/get-distance';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
+import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
 import OpeningHours from './opening-hours';
 
 class SimpleMapMarker extends Component {
@@ -183,7 +185,16 @@ class SimpleMapMarker extends Component {
         <div className="fap-map-popup">
           <div className="fap-map-popup__details">
             <div className="fap-map-popup__pharmacy-icon d-none d-md-block">
-              <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
+            <img 
+                src={
+                  this.props.location.memberType === 'Premises'
+                  ? fapIcon
+                  : this.props.location.memberType === 'Non-Member Ineligible AFSPA'
+                  ? fapIconAFSA
+                  : fapIconNonMember
+                } 
+                alt={`Find a Pharmacy Icon - ${this.props.location.name}`}
+              />
             </div>
             <div className="fap-map-popup__single-pharmacy">
               <div className="fap-map-popup__pharmacy-details">

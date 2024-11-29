@@ -4,6 +4,8 @@ import getDistance from '../helpers/get-distance';
 import getOpeningHours from '../helpers/get-opening-hours';
 import fixURL from '../helpers/fix-url';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
+import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
 import OpeningHours from './opening-hours';
 
 const PharmacyDetails = ({ selectedLocation, userLocation }) => {
@@ -147,7 +149,16 @@ console.log('details location:', userLocation);
                             <div className="pharmacy-single__column">
                                 <div className="fap-pharmacy__left-column">
                                     <div className="fap-pharmacy__pharmacy-icon">
-                                    <img src={fapIcon} alt={`Find a Pharmacy Icon - ${selectedLocation.name}`}/>
+                                    <img 
+                                        src={
+                                        selectedLocation.memberType === 'Premises'
+                                        ? fapIcon
+                                        : selectedLocation.memberType === 'Non-Member Ineligible AFSPA'
+                                        ? fapIconAFSA
+                                        : fapIconNonMember
+                                        } 
+                                        alt={`Find a Pharmacy Icon - ${selectedLocation.name}`}
+                                    />
                                     </div>
                                     <div className="fap-pharmacy__single-pharmacy">
                                         <div className="fap-pharmacy__pharmacy-details">
@@ -217,6 +228,7 @@ console.log('details location:', userLocation);
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                        className="noexternal"
                                                     >
                                                         <i className="fa-brands fa-facebook"></i>
                                                     </a>
@@ -227,6 +239,7 @@ console.log('details location:', userLocation);
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                        className="noexternal"
                                                     >
                                                         <i className="fa-brands fa-instagram"></i>
                                                     </a>
@@ -237,6 +250,7 @@ console.log('details location:', userLocation);
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                        className="noexternal"
                                                     >
                                                         <i className="fa-brands fa-x-twitter"></i>
                                                     </a>
@@ -247,6 +261,7 @@ console.log('details location:', userLocation);
                                                         target="_blank" 
                                                         rel="noopener noreferrer"
                                                         style={{ fontSize: '1.8rem', marginRight: '0.5rem' }}
+                                                        className="noexternal"
                                                     >
                                                         <i className="fa-solid fa-globe"></i>
                                                     </a>

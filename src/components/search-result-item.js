@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { property } from 'lodash';
 import { trackCustom } from 'react-facebook-pixel';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
+import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
 import OpeningHours from './opening-hours';
 import fixURL from '../helpers/fix-url';
 import getDistance from '../helpers/get-distance';
@@ -257,7 +259,16 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(1);
       onMouseLeave={handleMouseLeave}
     >
       <div className="pharmacy-map__pharmacy-icon result-listing-icon">
-        <img src={fapIcon} alt={`${props.result.name} Icon`}/>
+        <img 
+          src={
+          props.result.memberType === 'Premises'
+          ? fapIcon
+          : props.result.memberType === 'Non-Member Ineligible AFSPA'
+          ? fapIconAFSA
+          : fapIconNonMember
+          } 
+          alt={`Find a Pharmacy Icon - ${props.result.name}`}
+        />
       </div>
       <div className="pharmacy-map__pharmacy-details result-listing-details">
         <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{props.result.name}</h3>

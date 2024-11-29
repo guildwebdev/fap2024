@@ -5,13 +5,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import { trackCustom } from 'react-facebook-pixel';
+import { trackCustom, trackSingleCustom } from 'react-facebook-pixel';
 
 import onSendUserAction from '../helpers/on-send-user-action';
 import getOpeningHours from '../helpers/get-opening-hours';
 import renderPropertyList from '../helpers/render-property-list';
 import renderNonMemberServices from '../helpers/render-non-member-services';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
+import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
 import getDistance from '../helpers/get-distance';
 import OpeningHours from './opening-hours';
 
@@ -255,10 +257,17 @@ class MapMarker extends Component {
     //Add 'Hidden' class to Non-Member Pharmacies - UNLESS they offer Palliative Care, and are in TAS
     if (this.props.location.memberType == "Non-Member"){
       //Pharmacies that don't offer Palliative Care
-      if (myServices && (myServices.indexOf('Palliative Care Prepared') == -1 || myServices.indexOf('Palliative Care Medicines Pharmacy Network – SA initiative'))){
+      if (myServices && (myServices.indexOf('Palliative Care Prepared (TAS)' == -1))){
         containerClasses = classNames({
           'fap-map__location-container': true,
-          'hidden': true,
+          'hidden': false,
+          'is-highlighted': this.props.highlighted
+        });
+      } else if (myServices && (myServices.indexOf('Palliative Care Medicines Pharmacy Network – SA initiative') == -1)){
+        containerClasses = classNames({
+          'fap-map__location-container': true,
+          'hidden': false,
+          'is-highlighted': this.props.highlighted
         });
       } else {
         //Pharmacies that do offer Palliative Care, but aren't in TAS
@@ -266,6 +275,7 @@ class MapMarker extends Component {
           containerClasses = classNames({
             'fap-map__location-container': true,
             'hidden': true,
+            'non-member': true,
           });
         }
       }
@@ -309,7 +319,7 @@ class MapMarker extends Component {
     } else {
       //Non-Member Icon
       bubbleHeadingClasses = classNames({
-        'fap-map__location': true,
+        'fap-map-popup__details': true,
         'nonmember':true
       });
       mapMarkerClasses = classNames({
@@ -423,7 +433,16 @@ class MapMarker extends Component {
           <button className="fap-map-popup__btn-close btn-close" onClick={this.onClose} aria-label="Close"></button>
           <div className={bubbleHeadingClasses}>
             <div className="fap-map-popup__pharmacy-icon d-none d-md-block">
-              <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
+              <img 
+                src={
+                  this.props.location.memberType === 'Premises'
+                  ? fapIcon
+                  : this.props.location.memberType === 'Non-Member Ineligible AFSPA'
+                  ? fapIconAFSA
+                  : fapIconNonMember
+                } 
+                alt={`Find a Pharmacy Icon - ${this.props.location.name}`}
+              />
             </div>
 
             <div className="fap-map-popup__single-pharmacy">
