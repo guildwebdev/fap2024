@@ -37,8 +37,9 @@ class SearchResults extends Component {
   scrollToActiveItem( prevLocation ) {
     // scrolling disabled for now - remove the whole bit later
     const parent = document.querySelector('.s-filtered-search__results');
+    if (!parent) return;
+    
     const target = parent.querySelector('.s-filtered-search__results__item.is-active');
-
     if( !target ) return;
 
     console.log(target.offsetTop, target.parentNode.offsetTop);
@@ -50,7 +51,21 @@ class SearchResults extends Component {
 
   render() {
     const results = this.props.results.length === 0 ? 
-      <div className="s-filtered-search__no-results">No results found.</div> : 
+      <>
+        <div className="alert alert-danger">
+          <p className="text-center"><i className="fa fa-triangle-exclamation"></i> <strong>No pharmacies found</strong></p>
+          <p>There are no pharmacies that match your search criteria.</p>
+        </div>
+        <div className="alert alert-warning">
+          <p className="text-center"><i className="fa fa-circle-info"></i> <strong>To find more pharmacies please try:</strong></p>
+          <ul>
+            <li>Adjust the zoom level to include a wider area</li>
+            <li>Adjust any filters that are applied</li>
+            <li>Search for a different location</li>
+          </ul>
+        </div> 
+      </>
+      : 
       this.props.results.map( result => (
 
         <SearchResultItem

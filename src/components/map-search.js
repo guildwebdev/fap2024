@@ -34,14 +34,21 @@ class MapSearch extends Component {
 
   handleExternalSearch(event) {
     const { searchValue, serviceName } = event.detail;
-    this.setState({ input: searchValue }, () => {
-      this.updateInput(searchValue);
-    });
+    
+    // Only proceed if searchValue exists and has content
+    if (searchValue && searchValue.trim()) {
+        this.setState({ input: searchValue }, () => {
+            // Check length requirement from updateInput method
+            if (searchValue.length > 3) {
+                this.updateInput(searchValue);
+            }
+        });
 
-    if (serviceName){
-      window.dispatchEvent(new CustomEvent('filterByService', {
-        detail: {service: serviceName}
-      }));
+        if (serviceName) {
+            window.dispatchEvent(new CustomEvent('filterByService', {
+                detail: {service: serviceName}
+            }));
+        }
     }
   }
 
@@ -65,9 +72,11 @@ class MapSearch extends Component {
     const str = e.target.value;
     this.setState({ input: str });
 
-    const t = setTimeout(() => {
-      this.updateInput(str);
-    }, 500);
+    if (str && str.trim()){
+      const t = setTimeout(() => {
+        this.updateInput(str);
+      }, 500);
+    }
   }
 
   /* Component methods */

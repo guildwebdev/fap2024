@@ -182,17 +182,17 @@ class SimpleMapMarker extends Component {
 
         <div className="fap-map-popup">
           <div className="fap-map-popup__details">
-            <div className="fap-map-popup__pharmacy-icon">
+            <div className="fap-map-popup__pharmacy-icon d-none d-md-block">
               <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
             </div>
             <div className="fap-map-popup__single-pharmacy">
               <div className="fap-map-popup__pharmacy-details">
                 <h4>{this.props.location.name}</h4>
-                <p className="pharmacy-map__details small"><strong>Open:</strong> { openingHoursToday() } | <OpeningHours location={this.props.location}/></p>
+                <p className="pharmacy-map__details small"><strong>Open:</strong> { openingHoursToday() } <span className='d-none d-md-inline-block'>| <OpeningHours location={this.props.location}/></span></p>
                 <p className="pharmacy-map__details small"><strong>Address:</strong> {streetAddress}, {cityAddress}</p>
-                <p className="pharmacy-map__details small"><strong>Phone:</strong> {formatPhoneNumber(this.props.location.phone)} <a href={`tel:${formatPhoneNumber(this.props.location.phone)}`}>Call Now</a></p>
+                <p className="pharmacy-map__details small"><strong>Phone:</strong> <span className='d-none d-md-inline-block'>{formatPhoneNumber(this.props.location.phone)}</span></p>
                 {this.props.location?.email && (
-                  <p className="pharmacy-map__details small"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
+                  <p className="pharmacy-map__details small d-none d-md-inline-block"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
                 )}
                 <p className="pharmacy-map__details small"><strong>Distance:</strong> {distanceInKm}km</p>
                                   
@@ -202,19 +202,19 @@ class SimpleMapMarker extends Component {
                 <div className="fap-map-popup__actions">
                   <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
                     {this.props.location?.bookingurl ? (
-                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
                         <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                         <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                       </button>
                     ): this.props.location?.phone ? (
-                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(`tel:${formatPhoneNumber(this.props.location.phone)}`, '_blank')}>
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Call Now - ${this.props.location.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(this.props.location.phone)}`, '_blank')}>
                           <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
                           <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
                         </button>
                     ) : (
                       <p>&nbsp;</p>
                     )}
-                    <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
+                    <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" aria-label={`Get directions to ${this.props.location.name}`} onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
   >
                       <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
                       <div className="overlay"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>

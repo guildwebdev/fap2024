@@ -275,8 +275,7 @@ class MapMarker extends Component {
     const bubbleClasses = classNames({
       'fap-map-popup hidden': true,
       'active': this.props.active,
-      'hover':this.props.highlighted
-    });
+     });
 
     //Add classes to Modal Heading
     var bubbleHeadingClasses = classNames({
@@ -423,7 +422,7 @@ class MapMarker extends Component {
         <div className={bubbleClasses}>
           <button className="fap-map-popup__btn-close btn-close" onClick={this.onClose} aria-label="Close"></button>
           <div className={bubbleHeadingClasses}>
-            <div className="fap-map-popup__pharmacy-icon">
+            <div className="fap-map-popup__pharmacy-icon d-none d-md-block">
               <img src={fapIcon} alt={`Find a Pharmacy Icon - ${this.props.location.name}`}/>
             </div>
 
@@ -431,13 +430,13 @@ class MapMarker extends Component {
               
               <div className="fap-map-popup__pharmacy-details">
                 <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{ this.props.location.name }</h3>
-                <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHoursToday() } | <OpeningHours location={this.props.location}/> </p>
+                <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHoursToday() } <span className='d-none d-md-inline-block'>| <OpeningHours location={this.props.location}/></span> </p>
                 <p className="pharmacy-map__details result-listing-content small"><strong>Address: </strong> { this.props.location.address + (this.props.location.address2? ', '+ this.props.location.address2:',') + (this.props.location.address3? ', '+ this.props.location.address3:',')} { this.props.location.city } {this.props.location.state}, { this.props.location.postcode }</p>
                 {this.props.location?.phone && (
-                  <p className="pharmacy-map__details result-listing-content small"><strong>Phone: </strong>{ cleanPhone(this.props.location.phone) } <a href={`tel:${cleanPhone(this.props.location.phone)}`}>Call Now</a></p>
+                  <p className="pharmacy-map__details result-listing-content small"><strong>Phone: </strong><span className='d-none d-md-inline-block'>{ cleanPhone(this.props.location.phone) }</span></p>
                 )}                
                 {this.props.location?.email && (
-                  <p className="pharmacy-map__details result-listing-content small"><strong>Email: </strong><a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
+                  <p className="pharmacy-map__details result-listing-content small d-none d-md-block"><strong>Email: </strong><a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
                 )}
                 {(distance && !isNaN(distance)) && (
                   <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distance.toFixed(1)}km</p>
@@ -449,12 +448,12 @@ class MapMarker extends Component {
               <div className="fap-map-popup__actions">
                 <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
                   {this.props.location?.bookingurl ? (
-                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"  aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
                         <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
                         <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
                       </button>
                     ) : this.props.location?.phone ? (
-                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" onClick={() => window.open(`tel:${cleanPhone(this.props.location.phone)}`, '_blank')}>
+                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"  aria-label={`Call Now - ${this.props.location.name}`} onClick={() => window.open(`tel:${cleanPhone(this.props.location.phone)}`, '_blank')}>
                         <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
                         <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
                       </button>
@@ -462,7 +461,7 @@ class MapMarker extends Component {
                       <p>&nbsp;</p>
                     )
                   }                  
-                  <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}>
+                  <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn"  aria-label={`Get directions to ${this.props.location.name}`}onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}>
                     <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i> Get Directions</div>
                     <div className="overlay"><i className="fa-solid fa-map-location-dot"></i> GetDirections</div>
                   </button>
@@ -470,7 +469,7 @@ class MapMarker extends Component {
               </div>
               
               <div className="fap-map-popup__single-page my-4">
-                <p className="small text-center"><a href={`/pharmacy?pharmacyId=${this.props.location.id}`} target="_blank" className="c-map__info-bubble__more-link">What do they offer me?</a></p>
+                <p className="small text-center"><a href={`/pharmacy?pharmacyId=${this.props.location.id}`} target="_blank"  aria-label={`Find out more about ${this.props.location.name}`} className="c-map__info-bubble__more-link">What do they offer me?</a></p>
               </div>
               
             </div>

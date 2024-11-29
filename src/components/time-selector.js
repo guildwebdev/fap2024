@@ -14,6 +14,7 @@ const TimeSelector = props => {
       className="pharmacy-map__filter-results fap-input form-control"
       value={props.selectedTimes[0] || ''}
       onChange={handleChange}
+      aria-label="Filter by opening hours"
     >
       <option value="">Opening hours</option>
       <option value="Now">Now</option>

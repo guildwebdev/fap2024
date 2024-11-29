@@ -26,6 +26,7 @@ const ServicesSelector = props => {
         className="pharmacy-map__filter-results fap-input form-control"
         value={props.selectedServices[0] || ''}
         onChange={handleChange}
+        aria-label="Filter by service"
       >
         <option value="">Services</option>
         {servicesSorted.map((service, key) => (

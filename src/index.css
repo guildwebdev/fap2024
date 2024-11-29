@@ -3361,7 +3361,9 @@ button.notify-modal__btn-primary {
     background-position: -100px 0;
   }
   .fap-map-popup {
-    width: 100%;
+    /*width: 100%;*/
+    width: 400px;
+
   }
   .search-actions-two-buttons {
     flex-direction: column;

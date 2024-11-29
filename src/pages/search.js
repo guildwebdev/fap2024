@@ -56,6 +56,17 @@ class Search extends Component {
       userLocation: null
     };
 
+    this.handleFilterByService = (event) => {
+      const {service} = event.detail;
+      if (service) {
+        this.setState({
+          serviceFilters: [service]
+        }, () => {
+          this.onApplyFilters();
+        })
+      }
+    };
+
     this.queryString = {};
 
     this.filterTimeNow = this.filterTimeNow.bind(this);
@@ -100,7 +111,8 @@ class Search extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('filterByService');
+    //window.removeEventListener('filterByService');
+    window.removeEventListener('filterByService', this.handleFilterByService)
 
   }
 

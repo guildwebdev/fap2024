@@ -59,7 +59,7 @@ console.log('details location:', userLocation);
         //const today = moment('2024-10-7').format('YYYY/MM/DD'); //Hardcode date for testing
         
         // Check if holiday hours exist and if today matches any holiday date
-        if (selectedLocation.holidayHours && selectedLocation.holidayHours.date) {
+        /*if (selectedLocation.holidayHours && selectedLocation.holidayHours.date) {
             const holidayDates = selectedLocation.holidayHours.date.split('|');
             const holidayIndex = holidayDates.findIndex(date => date === today);
           
@@ -71,7 +71,7 @@ console.log('details location:', userLocation);
                     [moment().format('dddd').toLowerCase()]: { open: holidayOpen, close: holidayClose } 
                 });
             }
-        }
+        }*/
         
         // If not a holiday, return standard opening hours
         return getOpeningHours(selectedLocation);
@@ -84,10 +84,12 @@ console.log('details location:', userLocation);
     const formatHolidayHours = (holidayHours) => {
         if (!holidayHours || !holidayHours.date) return [];
 
-        const dates = holidayHours.date.split('|');
-        const openTimes = holidayHours.open.split('|');
-        const closeTimes = holidayHours.close.split('|');
-        const reasons = holidayHours.reason.split('|');
+        console.log('holidayHours', holidayHours);
+
+        const dates = holidayHours.date;
+        const openTimes = holidayHours.open;
+        const closeTimes = holidayHours.close;
+        const reasons = holidayHours.reason;
 
         const uniqueDates = new Set();
         const uniqueHolidayHours = {};
@@ -131,6 +133,9 @@ console.log('details location:', userLocation);
 
     //CLEAN WEBSITE
 
+    //RENDER HOLIDAYS
+    /**/
+
 
   return (
         <div>
@@ -149,7 +154,7 @@ console.log('details location:', userLocation);
                                             <h3 className='fap-pharmacy__pharmacy-name'>{selectedLocation.name}</h3>
                                             <p className='pharmacy-single__details small'><strong>Open: </strong>{currentStatus}</p>
                                             <p className='pharmacy-single__details small'><strong>Address: </strong>{streetAddress}, {cityAddress} | <OpeningHours location={selectedLocation}/></p>
-                                            <p className='pharmacy-single__details small'><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)} <a className="" href={`tel:${formatPhoneNumber(selectedLocation.phone)}`}>Call Now</a></p>
+                                            <p className='pharmacy-single__details small'><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)}</p>
                                             <p className='pharmacy-single__details small'><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</p>
                                             <p className='pharmacy-single__details small'><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></p>
                                             <p className='pharmacy-single__details small'><strong>Distance: </strong>{distanceInKm}km</p>
@@ -185,7 +190,7 @@ console.log('details location:', userLocation);
                                                 {selectedLocation.phone &&( 
                                                     <div>                                           
                                                         <p className="pharmacy-single__details small"><strong>For more enquiries, call the pharmacy</strong></p>
-                                                        <button className="pharmacy-single__call-now button-blue btn-with-backdrop btn btn-secondary" onClick={() => window.open(`tel:${formatPhoneNumber(selectedLocation.phone)}`)}>
+                                                        <button className="pharmacy-single__call-now button-blue btn-with-backdrop btn btn-secondary"  aria-label={`Call now - ${selectedLocation.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(selectedLocation.phone)}`)}>
                                                             <div className="backdrop">Call now <i className='fa-solid fa-phone-flip'></i></div>
                                                             <div className="overlay">Call now <i className='fa-solid fa-phone-flip'></i></div>
                                                         </button>
@@ -196,7 +201,7 @@ console.log('details location:', userLocation);
                                                 {selectedLocation.bookingurl &&(
                                                     <div>
                                                         <p className='pharmacy-single__details small'><strong>Get your appointment</strong></p>
-                                                        <button className="button-yellow btn-with-backdrop btn btn-secondary" onClick={() => window.open(selectedLocation.bookingurl, '_blank')}>
+                                                        <button className="button-yellow btn-with-backdrop btn btn-secondary"  aria-label={`Book an appointment with ${selectedLocation.name}`} onClick={() => window.open(selectedLocation.bookingurl, '_blank')}>
                                                             <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                                                             <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                                                         </button>

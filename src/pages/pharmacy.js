@@ -6,6 +6,11 @@ import PharmacyDetails from "../components/pharmacy-details";
 import NearbyPharmacies from '../components/nearby-pharmacies';
 import fapIcon from '../imgs/find-a-pharmacy-icon.png';
 import _ from 'lodash';
+import loadingIcon from '../imgs/fap-loading.svg';
+import MapWithSearch from './map-with-search';
+import Search from './search';
+import MapBasic from './map-basic';
+import MapContainer from '../components/map-container';
 
 const Pharmacy = () => {
   const [pharmacy, setPharmacy] = useState(null);
@@ -209,11 +214,19 @@ const Pharmacy = () => {
 
   // Loading state check
   if (!userLocation) {
-    return <div>Loading... no userLocation</div>;
+    //return <div>Loading... no userLocation</div>;
+    console.log('no user location');
   }
 
   if (!pharmacy) {
-    return <div>Loading no pharmacy data...</div>;
+    return (
+      <div className="fap-map">
+        <Search
+          handleInput={() => {}}
+          defaultLocation = ""
+        />   
+      </div>
+    );
   }
 
   //const { latitude, longitude } = pharmacy.listMetaData;
@@ -314,7 +327,7 @@ const Pharmacy = () => {
   };
 
   return (
-    <div>
+    <>
       <section className="pharmacy-location">
         <div className='pharmacy-location__container container'>
           <div className='row'>
@@ -379,7 +392,7 @@ const Pharmacy = () => {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

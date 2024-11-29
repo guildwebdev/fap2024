@@ -4,6 +4,14 @@ import './App.css';
 import './index.css';
 
 function App() {
+  useEffect(() => {
+    // Remove loading overlay once React is mounted
+    const loader = document.getElementById('loading-overlay');
+    if (loader) {
+      loader.remove();
+    }
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
