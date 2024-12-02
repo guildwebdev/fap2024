@@ -5,9 +5,9 @@ import getDistance from '../helpers/get-distance';
 import getOpeningHours from '../helpers/get-opening-hours';
 import moment from 'moment';
 import fixURL from '../helpers/fix-url';
-import fapIcon from '../imgs/find-a-pharmacy-icon.png';
-import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
-import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
+import fapIcon from '../imgs/member-icon.png';
+import fapIconAFSA from '../imgs/afspa-icon.png';
+import fapIconNonMember from '../imgs/non-member-icon.png';
 import OpeningHours from './opening-hours';
 
 const NearbyPharmacies = ({ locations, origin }) => {

@@ -11,9 +11,9 @@ import onSendUserAction from '../helpers/on-send-user-action';
 import getOpeningHours from '../helpers/get-opening-hours';
 import renderPropertyList from '../helpers/render-property-list';
 import renderNonMemberServices from '../helpers/render-non-member-services';
-import fapIcon from '../imgs/find-a-pharmacy-icon.png';
-import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
-import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
+import fapIcon from '../imgs/member-icon.png';
+import fapIconAFSA from '../imgs/afspa-icon.png';
+import fapIconNonMember from '../imgs/non-member-icon.png';
 import getDistance from '../helpers/get-distance';
 import OpeningHours from './opening-hours';
 
@@ -450,9 +450,15 @@ class MapMarker extends Component {
               <div className="fap-map-popup__pharmacy-details">
                 <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{ this.props.location.name }</h3>
                 <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHoursToday() } <span className='d-none d-md-inline-block'>| <OpeningHours location={this.props.location}/></span> </p>
-                <p className="pharmacy-map__details result-listing-content small"><strong>Address: </strong> { this.props.location.address + (this.props.location.address2? ', '+ this.props.location.address2:',') + (this.props.location.address3? ', '+ this.props.location.address3:',')} { this.props.location.city } {this.props.location.state}, { this.props.location.postcode }</p>
+                <p className="pharmacy-map__details result-listing-content small">
+                  <strong>Address: </strong> 
+                  {this.props.location.address}
+                  {this.props.location.address2 && `, ${this.props.location.address2}`}
+                  {this.props.location.address3 && `, ${this.props.location.address3}`}
+                  , {this.props.location.city } {this.props.location.state} {this.props.location.postcode }
+                </p>
                 {this.props.location?.phone && (
-                  <p className="pharmacy-map__details result-listing-content small"><strong>Phone: </strong><span className='d-none d-md-inline-block'>{ cleanPhone(this.props.location.phone) }</span></p>
+                  <p className="pharmacy-map__details result-listing-content small"><strong>Phone: </strong><span className='d-inline-block'>{ cleanPhone(this.props.location.phone) }</span></p>
                 )}                
                 {this.props.location?.email && (
                   <p className="pharmacy-map__details result-listing-content small d-none d-md-block"><strong>Email: </strong><a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>

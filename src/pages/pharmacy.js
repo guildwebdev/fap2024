@@ -4,7 +4,9 @@ import SimpleMapContainer from '../components/simple-map-container';
 import '../index.css'; // Ensure the CSS file is imported
 import PharmacyDetails from "../components/pharmacy-details";
 import NearbyPharmacies from '../components/nearby-pharmacies';
-import fapIcon from '../imgs/find-a-pharmacy-icon.png';
+import fapIcon from '../imgs/member-icon.png';
+import fapIconAFSA from '../imgs/afspa-icon.png';
+import fapIconNonMember from '../imgs/non-member-icon.png';
 import _ from 'lodash';
 import loadingIcon from '../imgs/fap-loading.svg';
 import MapWithSearch from './map-with-search';
@@ -40,6 +42,7 @@ const Pharmacy = () => {
       state: (result.listMetadata.state ?? []).join(','),
       postcode: (result.listMetadata.postcode ?? []).join(','),
       phone: (result.listMetadata.phone ?? []).join(','),
+      memberType: (result.listMetadata.membershipType ?? []).join(','),
       bookingurl: (result.listMetadata.bookingurl ?? []).join(','),
       monday: {
         open: (result.listMetadata.mondayOpening ?? []).join(','),
@@ -333,7 +336,17 @@ const Pharmacy = () => {
           <div className='row'>
             <div className='pharmacy-location__column col-lg-12'>
               <div className='pharmacy-location__name-wrapper'>
-                <img src={fapIcon} className="pharmacy-location__icon" alt={`Icon for ${pharmacy.title}`}/>
+              <img 
+                src={
+                  pharmacy.listMetadata.membershipType[0] === 'Premises'
+                  ? fapIcon
+                  : pharmacy.listMetadata.membershipType[0] === 'Non-Member Ineligible AFSPA'
+                  ? fapIconAFSA
+                  : fapIconNonMember
+                } 
+                alt={`Find a Pharmacy Icon - ${pharmacy.name}`}
+                className="pharmacy-location__icon"
+              />
                 <h1 className="pharmacy-location__name">{pharmacy.title}</h1>
               </div>
               <div className="c-map-container fap-map" style={{ height: '600px', width: '100%' }}>

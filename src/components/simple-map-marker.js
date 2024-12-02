@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import getOpeningHours from '../helpers/get-opening-hours';
 import moment from 'moment';
 import getDistance from '../helpers/get-distance';
-import fapIcon from '../imgs/find-a-pharmacy-icon.png';
-import fapIconAFSA from '../imgs/find-a-pharmacy-afsa-icon.png';
-import fapIconNonMember from '../imgs/find-a-pharmacy-non-member-icon.png';
+import fapIcon from '../imgs/member-icon.png';
+import fapIconAFSA from '../imgs/afspa-icon.png';
+import fapIconNonMember from '../imgs/non-member-icon.png';
 import OpeningHours from './opening-hours';
 
 class SimpleMapMarker extends Component {
@@ -201,7 +201,7 @@ class SimpleMapMarker extends Component {
                 <h4>{this.props.location.name}</h4>
                 <p className="pharmacy-map__details small"><strong>Open:</strong> { openingHoursToday() } <span className='d-none d-md-inline-block'>| <OpeningHours location={this.props.location}/></span></p>
                 <p className="pharmacy-map__details small"><strong>Address:</strong> {streetAddress}, {cityAddress}</p>
-                <p className="pharmacy-map__details small"><strong>Phone:</strong> <span className='d-none d-md-inline-block'>{formatPhoneNumber(this.props.location.phone)}</span></p>
+                <p className="pharmacy-map__details small"><strong>Phone:</strong> <span className='d-inline-block'>{formatPhoneNumber(this.props.location.phone)}</span></p>
                 {this.props.location?.email && (
                   <p className="pharmacy-map__details small d-none d-md-inline-block"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
                 )}

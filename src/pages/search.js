@@ -29,6 +29,7 @@ import Cookies from 'js-cookie';
 class Search extends Component {
   constructor(props) {
     super(props);
+    this.mapContainerRef = React.createRef();
 
     this.state = {
       filteredLocations: [],
@@ -122,6 +123,15 @@ class Search extends Component {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.mapContainerRef.current && 
+      this.mapContainerRef.current.refs.map &&
+      !prevState.locations.length &&
+      this.state.locations.length) {
+        const locationsInBounds = this.getLocationsWithinBounds(this.state.locations);
+      }
   }
 
   componentDidMount() {
@@ -528,27 +538,44 @@ class Search extends Component {
 
   getLocationsWithinBounds(locations) {
     if (!locations) {
-      return;
+      return [];
     }
 
-    const bounds = this.refs.mapContainer.refs.map.prevBounds_;
+    try {
+      const mapContainer = this.mapContainerRef.current;
 
-    return locations.filter(location => {
-      const eastBound = location.geometry.coordinates[0] < bounds[7];
-      const westBound = location.geometry.coordinates[0] > bounds[5];
-      let inLong;
-
-      if (bounds[7] < bounds[5]) {
-        inLong = eastBound || westBound;
-      } else {
-        inLong = eastBound && westBound;
+      if (!mapContainer || !mapContainer.refs || !mapContainer.refs.map || !mapContainer.refs.map.prevBounds_){
+        console.warn('Map bounds not yet avaiable');
+        return locations;
       }
 
-      const inLat =
-        location.geometry.coordinates[1] > bounds[4] &&
-        location.geometry.coordinates[1] < bounds[6];
-      return inLat && inLong;
-    });
+      //const bounds = this.refs.mapContainer.refs.map.prevBounds_;
+      const bounds = this.mapContainerRef.current?.refs?.map?.prevBounds_;
+
+      if (!bounds) {
+        return locations;
+      }
+
+      return locations.filter(location => {
+        const eastBound = location.geometry.coordinates[0] < bounds[7];
+        const westBound = location.geometry.coordinates[0] > bounds[5];
+        let inLong;
+
+        if (bounds[7] < bounds[5]) {
+          inLong = eastBound || westBound;
+        } else {
+          inLong = eastBound && westBound;
+        }
+
+        const inLat =
+          location.geometry.coordinates[1] > bounds[4] &&
+          location.geometry.coordinates[1] < bounds[6];
+        return inLat && inLong;
+      });
+    } catch (error) {
+      console.log('Error getting locations within bounds:', error);
+      return locations;
+    }
   }
 
   render() {
@@ -618,7 +645,7 @@ class Search extends Component {
               locations={this.state.filteredLocations}
               mapCenter={this.state.mapCenter}
               googleBounds = {this.state.googleBounds}
-              ref="mapContainer"
+              ref={this.mapContainerRef}
               selectedLocation={this.state.selectedLocation}
               autoCenterToUserLocation={false}
               zoom={5}
