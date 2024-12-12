@@ -20,6 +20,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-async-script-loader": "^0.3.0",
     "react-cookies": "^0.1.1",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^16.13.1",
     "react-facebook-pixel": "^1.0.4",
     "react-is": "^16.13.1",

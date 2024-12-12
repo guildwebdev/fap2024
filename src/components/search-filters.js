@@ -45,8 +45,13 @@ class SearchFilters extends Component {
   }
   
   onSelectService(value) {
+    // If "Multiple Services" is selected, don't change the filters
+    if (value === 'Multiple Services') {
+      return;
+    }
+    
     this.props.handleSelectService(value);
-    this.props.handleApplyFilters(); // Auto-apply after selection
+    this.props.handleApplyFilters();
   }
 
   /* Component methods */

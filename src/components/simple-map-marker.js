@@ -8,6 +8,10 @@ import fapIcon from '../imgs/member-icon.png';
 import fapIconAFSA from '../imgs/afspa-icon.png';
 import fapIconNonMember from '../imgs/non-member-icon.png';
 import OpeningHours from './opening-hours';
+import { isIOS } from 'react-device-detect';
+import onSendUserAction from '../helpers/on-send-user-action';
+
+
 
 class SimpleMapMarker extends Component {
   constructor(props) {
@@ -19,6 +23,12 @@ class SimpleMapMarker extends Component {
       error: null,
     };
     this.isComponentMounted = false;
+    this.onBookingClicked = this.onBookingClicked.bind(this);
+  }
+
+  onBookingClicked(location){
+    const safariWindow = window.open();
+    onSendUserAction( location, 'Vaccination Booking', safariWindow);
   }
 
   componentDidMount() {
@@ -52,6 +62,8 @@ class SimpleMapMarker extends Component {
     }
   }
 
+  
+
   onSelect(e) {
     e.preventDefault();
     //this.props.handleSelectLocation(this.props.location, false, this.willCenterToMarker(e.target));
@@ -72,10 +84,12 @@ class SimpleMapMarker extends Component {
     );
   }
 
+  
  
 
-
   render() {
+   
+
     const {latitude, longitude, error} = this.state;
 
     console.log('SimpleMapMarker - location', this.props.location);
@@ -178,6 +192,8 @@ class SimpleMapMarker extends Component {
       'c-map__marker': true
     });
 
+    
+
     return (
       <div className="fap-map__location-container">
         <div className="fap-map__location"></div>
@@ -213,10 +229,17 @@ class SimpleMapMarker extends Component {
                 <div className="fap-map-popup__actions">
                   <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
                     {this.props.location?.bookingurl ? (
+                      isIOS ? (
                       <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
                         <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                         <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                       </button>
+                      ) : (
+                        <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => this.onBookingClicked(this.props.location)}>
+                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                      </button>
+                      )
                     ): this.props.location?.phone ? (
                       <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Call Now - ${this.props.location.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(this.props.location.phone)}`, '_blank')}>
                           <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>

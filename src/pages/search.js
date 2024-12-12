@@ -113,7 +113,9 @@ class Search extends Component {
 
   componentWillUnmount() {
     //window.removeEventListener('filterByService');
-    window.removeEventListener('filterByService', this.handleFilterByService)
+    window.removeEventListener('filterByService', this.handleFilterByService);
+    window.removeEventListener('externalSearch', this.handleExternalSearch);
+
 
   }
 
@@ -176,6 +178,27 @@ class Search extends Component {
           }, () => {
               this.onApplyFilters();
           });
+      }
+    });
+
+    window.addEventListener('externalSearch', (event) => {
+      const { searchValue, serviceName } = event.detail;
+      
+      if (searchValue) {
+        this.onLocationInput(searchValue);
+      }
+      
+      if (serviceName) {
+        // Split services string into array
+        const services = serviceName.split(',').map(s => s.trim());
+        
+        if (services.length > 0) {
+          this.setState({
+            serviceFilters: services
+          }, () => {
+            this.onApplyFilters();
+          });
+        }
       }
     });
 
@@ -403,19 +426,17 @@ class Search extends Component {
     if (!this.state.serviceFilters.length) {
       return data;
     }
-
+  
     const results = data.filter(location => {
-      //.every() is an AND search
-      //.some() is an OR search
-      //const match = this.state.serviceFilters.every(item => {
-      const match = this.state.serviceFilters.some(item => {
-        if (!location.services) return false;
+      // If location has no services, exclude it
+      if (!location.services) return false;
+  
+      // Check if location has ANY of the selected services (OR logic)
+      return this.state.serviceFilters.some(item => {
         return location.services.indexOf(item) > -1;
       });
-
-      return match;
     });
-
+  
     return results;
   }
 

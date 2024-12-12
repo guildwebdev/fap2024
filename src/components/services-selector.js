@@ -4,6 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+// In services-selector.js
+
 const ServicesSelector = props => {
   const handleChange = (e) => {
     e.preventDefault();
@@ -21,20 +23,31 @@ const ServicesSelector = props => {
 
   let servicesSorted = (props.services || []).sort();
 
+  // Get display value for select
+  const getDisplayValue = () => {
+    if (props.selectedServices.length > 1) {
+      return 'Multiple Services';
+    }
+    return props.selectedServices[0] || '';
+  }
+
   return (
-      <select 
-        className="pharmacy-map__filter-results fap-input form-control"
-        value={props.selectedServices[0] || ''}
-        onChange={handleChange}
-        aria-label="Filter by service"
-      >
-        <option value="">Services</option>
-        {servicesSorted.map((service, key) => (
-          <option key={key} value={service}>
-            {service}
-          </option>
-        ))}
-      </select>
+    <select 
+      className="pharmacy-map__filter-results fap-input form-control"
+      value={getDisplayValue()}
+      onChange={handleChange}
+      aria-label="Filter by service"
+    >
+      <option value="">Services</option>
+      {props.selectedServices.length > 1 && (
+        <option value="Multiple Services">Multiple Services</option>
+      )}
+      {servicesSorted.map((service, key) => (
+        <option key={key} value={service}>
+          {service}
+        </option>
+      ))}
+    </select>
   );
 }
 

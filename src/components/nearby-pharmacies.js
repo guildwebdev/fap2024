@@ -9,10 +9,19 @@ import fapIcon from '../imgs/member-icon.png';
 import fapIconAFSA from '../imgs/afspa-icon.png';
 import fapIconNonMember from '../imgs/non-member-icon.png';
 import OpeningHours from './opening-hours';
+import { isIOS } from 'react-device-detect';
+import onSendUserAction from '../helpers/on-send-user-action';
+
+const onBookingClicked = (bookingUrl, location) => {
+    const safariWindow = window.open();
+    onSendUserAction(location, 'Vaccination Booking', safariWindow);
+  }
 
 const NearbyPharmacies = ({ locations, origin }) => {
     console.log('NEARBY:', locations);
     console.log('ORIGIN:', origin);
+
+    
 
     if (typeof origin === 'object' && origin !==null){
         origin = `${origin.latitude},${origin.longitude}`;
@@ -162,14 +171,25 @@ const NearbyPharmacies = ({ locations, origin }) => {
                 <div className="nearest-pharmacy__search-actions result-listing-actions">
                     <div className="nearest-pharmacy__search-actions results-listing-actions-two-buttons search-actions-two-buttons">
                         {location?.bookingurl ? (
-                            <button className="nearest-pharmacy__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${location.name}`} onClick={()=>bookingsClick(location.bookingurl)}>
-                                <div className="backdrop">
-                                    <i className="fa-solid fa-calendar-days"></i> Book Now
-                                </div>
-                                <div className="overlay">
-                                    <i className="fa-solid fa-calendar-days"></i> Book Now
-                                </div>
-                            </button>
+                            isIOS ? (
+                                <button className="nearest-pharmacy__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${location.name}`} onClick={()=>bookingsClick(location.bookingurl)}>
+                                    <div className="backdrop">
+                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                    </div>
+                                    <div className="overlay">
+                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                    </div>
+                                </button>
+                            ) : (
+                                <button className="nearest-pharmacy__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${location.name}`} onClick={() => onBookingClicked(location.bookingurl, location)}>
+                                    <div className="backdrop">
+                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                    </div>
+                                    <div className="overlay">
+                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                    </div>
+                                </button>
+                            )
                         ): location?.phone ? (
                             <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Call now - ${location.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(location.phone)}`, '_blank')}>
                               <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>

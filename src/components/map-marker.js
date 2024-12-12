@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { trackCustom, trackSingleCustom } from 'react-facebook-pixel';
+import { isIOS } from 'react-device-detect';
 
 import onSendUserAction from '../helpers/on-send-user-action';
 import getOpeningHours from '../helpers/get-opening-hours';
@@ -473,25 +474,72 @@ class MapMarker extends Component {
               <div className="fap-map-popup__actions">
                 <div className="fap-map-popup__search-actions-two-buttons search-actions-two-buttons">
                   {this.props.location?.bookingurl ? (
-                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"  aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
-                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
-                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
-                      </button>
-                    ) : this.props.location?.phone ? (
-                      <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"  aria-label={`Call Now - ${this.props.location.name}`} onClick={() => window.open(`tel:${cleanPhone(this.props.location.phone)}`, '_blank')}>
-                        <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
-                        <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+                    isIOS ? (
+                      <button
+                        className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"
+                        aria-label={`Book an appointment with ${this.props.location.name}`}
+                        onClick={() => window.open(this.props.location.bookingurl, '_blank')}
+                      >
+                        <div className="backdrop">
+                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                        </div>
+                        <div className="overlay">
+                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                        </div>
                       </button>
                     ) : (
-                      <p>&nbsp;</p>
+                      <button
+                        className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"
+                        aria-label={`Book an appointment with ${this.props.location.name}`}
+                        onClick={this.onBookingClicked}
+                      >
+                        <div className="backdrop">
+                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                        </div>
+                        <div className="overlay">
+                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                        </div>
+                      </button>
                     )
-                  }                  
-                  <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn"  aria-label={`Get directions to ${this.props.location.name}`}onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}>
-                    <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i> Get Directions</div>
-                    <div className="overlay"><i className="fa-solid fa-map-location-dot"></i> GetDirections</div>
+                  ) : this.props.location?.phone ? (
+                    <button
+                      className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"
+                      aria-label={`Call Now - ${this.props.location.name}`}
+                      onClick={() => window.open(`tel:${cleanPhone(this.props.location.phone)}`, '_blank')}
+                    >
+                      <div className="backdrop">
+                        <i className="fa-solid fa-phone"></i> Call Now
+                      </div>
+                      <div className="overlay">
+                        <i className="fa-solid fa-phone"></i> Call Now
+                      </div>
+                    </button>
+                  ) : (
+                    <p>&nbsp;</p>
+                  )}
+                  <button
+                    className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn"
+                    aria-label={`Get directions to ${this.props.location.name}`}
+                    onClick={() =>
+                      window.open(
+                        directionsButton(
+                          this.props.location.geometry.coordinates[1],
+                          this.props.location.geometry.coordinates[0]
+                        ),
+                        '_blank'
+                      )
+                    }
+                  >
+                    <div className="backdrop">
+                      <i className="fa-solid fa-map-location-dot"></i> Get Directions
+                    </div>
+                    <div className="overlay">
+                      <i className="fa-solid fa-map-location-dot"></i> Get Directions
+                    </div>
                   </button>
                 </div>
               </div>
+
               
               <div className="fap-map-popup__single-page my-4">
                 <p className="small text-center"><a href={`/pharmacy?pharmacyId=${this.props.location.id}`} target="_blank"  aria-label={`Find out more about ${this.props.location.name}`} className="c-map__info-bubble__more-link">What do they offer me?</a></p>

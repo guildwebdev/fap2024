@@ -13,6 +13,7 @@ import fapIconNonMember from '../imgs/non-member-icon.png';
 import OpeningHours from './opening-hours';
 import fixURL from '../helpers/fix-url';
 import getDistance from '../helpers/get-distance';
+import { isIOS } from 'react-device-detect';
 
 const SearchResultItem = props => {
   const today = moment().format('dddd').toLowerCase();
@@ -289,10 +290,17 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(1);
       <div className="pharmacy-map__search-actions result-listing-actions">
         <div className="pharmacy-map__search-actions result-listing-actions-two-buttons search-actions-two-buttons">
         {props.result?.bookingurl ? (
-          <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${props.result.name}`} data-url={props.result.bookingurl} onClick={()=>bookingsClick(props.result.bookingurl)}>
-            <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
-            <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
-          </button>
+          isIOS ? (
+            <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${props.result.name}`} data-url={props.result.bookingurl} onClick={()=>bookingsClick(props.result.bookingurl)}>
+              <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+              <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+            </button>
+          ) : (
+            <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${props.result.name}`} data-url={props.result.bookingurl} onClick={onBookingClicked}>
+              <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+              <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+            </button>
+          )
         ): props.result?.phone ? (
           <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary"  aria-label={`Call now - ${props.result.name}`} data-phone={props.result.phone} onClick={() => window.open(`tel:${formatPhoneNumber(props.result.phone)}`, '_blank')}>
             <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
