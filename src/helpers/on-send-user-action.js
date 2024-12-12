@@ -17,30 +17,35 @@ async function getClientIp ()  {
 }
 
 function sendData(data, location, mywin, guild) {
-  // upload to endpoint
-  axios.post(globalSettings.sendUserActionURL, JSON.stringify(data), {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .catch(error => {
-    console.error('Error calling PGA service', error);
-  });    
-  
-  //console.log('guild: '+guild);
-
-  if (guild == undefined){
-    //console.log('send facebook');
-    ReactPixel.track('CompleteRegistration');
- 
-    // attempt to load the url in a new tab
-    if (location.bookingurl){
-      if (mywin != null){
-        mywin.location = location.bookingurl;
-        mywin.opener = null;
+  try {
+    // Send analytics data
+    axios.post(globalSettings.sendUserActionURL, JSON.stringify(data), {
+      headers: {
+        'Content-Type': 'application/json'
       }
-    }
-  } 
+    })
+    .catch(error => {
+      console.error('Error calling PGA service', error);
+    });    
+
+    if (guild == undefined && location.bookingurl) {
+      ReactPixel.track('CompleteRegistration');
+ 
+      // Add error handling for window opening
+      try {
+        if (mywin != null) {
+          mywin.location = location.bookingurl;
+          mywin.opener = null;
+        }
+      } catch (windowError) {
+        console.error('Error opening booking URL:', windowError);
+        // Fallback - maybe open in same window or show error message
+        window.open(location.bookingurl, '_blank');
+      }
+    } 
+  } catch (error) {
+    console.error('Error in sendData:', error);
+  }
 }
 
 const onSendUserAction = (location, userAction, win, guild) => {
