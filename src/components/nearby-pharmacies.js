@@ -24,7 +24,8 @@ const NearbyPharmacies = ({ locations, origin }) => {
     };
 
     const bookingsClick = (d) => {        
-        window.open(fixURL(d[0]), '_blank');
+        //window.open(fixURL(d[0]), '_blank');
+        window.open(fixURL(d), '_blank');
     };
 
     const moreInfoClick = (loc, origin) => {

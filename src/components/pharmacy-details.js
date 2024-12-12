@@ -166,8 +166,12 @@ console.log('details location:', userLocation);
                                             <p className='pharmacy-single__details small'><strong>Open: </strong>{currentStatus}</p>
                                             <p className='pharmacy-single__details small'><strong>Address: </strong>{streetAddress}, {cityAddress} | <OpeningHours location={selectedLocation}/></p>
                                             <p className='pharmacy-single__details small'><strong>Phone: </strong>{formatPhoneNumber(selectedLocation.phone)}</p>
-                                            <p className='pharmacy-single__details small'><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</p>
-                                            <p className='pharmacy-single__details small'><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></p>
+                                            {selectedLocation.fax && (
+                                                <p className='pharmacy-single__details small'><strong>Fax: </strong>{formatPhoneNumber(selectedLocation.fax)}</p>
+                                            )}
+                                            {selectedLocation.email && (
+                                                <p className='pharmacy-single__details small'><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></p>
+                                            )}
                                             <p className='pharmacy-single__details small'><strong>Distance: </strong>{distanceInKm}km</p>
 
                                             <hr className='pharmacy-single__separator'/>                                               
