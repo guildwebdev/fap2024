@@ -221,7 +221,9 @@ class SimpleMapMarker extends Component {
                 {this.props.location?.email && (
                   <p className="pharmacy-map__details small d-none d-md-inline-block"><strong>Email:</strong> <a href={`mailto:${this.props.location.email}`}>{this.props.location.email}</a></p>
                 )}
-                <p className="pharmacy-map__details small"><strong>Distance:</strong> {distanceInKm}km</p>
+                {latitude && longitude &&(
+                  <p className="pharmacy-map__details small"><strong>Distance:</strong> {distanceInKm}km</p>
+                )}
                                   
               </div>
 
@@ -231,27 +233,27 @@ class SimpleMapMarker extends Component {
                     {this.props.location?.bookingurl ? (
                       isIOS ? (
                       <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => window.open(this.props.location.bookingurl, '_blank')}>
-                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
-                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book now</div>
+                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book now</div>
                       </button>
                       ) : (
                         <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Book an appointment with ${this.props.location.name}`} onClick={() => this.onBookingClicked(this.props.location)}>
-                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
-                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
+                        <div className="backdrop"><i className="fa-solid fa-calendar-days"></i>Book now</div>
+                        <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book now</div>
                       </button>
                       )
                     ): this.props.location?.phone ? (
                       <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Call Now - ${this.props.location.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(this.props.location.phone)}`, '_blank')}>
-                          <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
-                          <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+                          <div className="backdrop"><i className="fa-solid fa-phone"></i> Call now</div>
+                          <div className="overlay"><i className="fa-solid fa-phone"></i> Call now</div>
                         </button>
                     ) : (
                       <p>&nbsp;</p>
                     )}
                     <button className="fap-map-popup__for-directions button-lightblue btn-with-backdrop btn" aria-label={`Get directions to ${this.props.location.name}`} onClick={() => window.open(directionsButton(this.props.location.geometry.coordinates[1], this.props.location.geometry.coordinates[0]), '_blank')}
   >
-                      <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
-                      <div className="overlay"><i className="fa-solid fa-map-location-dot"></i>Get Directions</div>
+                      <div className="backdrop"><i className="fa-solid fa-map-location-dot"></i>Get directions</div>
+                      <div className="overlay"><i className="fa-solid fa-map-location-dot"></i>Get directions</div>
                     </button>
                   </div>
                 </div>

@@ -61,7 +61,8 @@ class SearchResults extends Component {
           <ul>
             <li>Adjust the zoom level to include a wider area</li>
             <li>Adjust any filters that are applied</li>
-            <li>Search for a different location</li>
+            <li>Try to search for a suburb or town instead of a postcode</li>
+            <li>Search for a different location altogether</li>
           </ul>
         </div> 
       </>

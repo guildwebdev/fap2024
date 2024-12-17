@@ -467,14 +467,14 @@ textarea.fap-input {
   border-left: 2px solid #60b5d5;
 }
 .search-service {
-  background: white url("https://findapharmacy.com.au/new/_design/_css/_img/icon-chevron-down.svg") no-repeat calc(100% - 20px) calc(100% - 15px);
+  background: white url("https://findapharmacy.com.au/_design/_css/_img/icon-chevron-down.svg") no-repeat calc(100% - 20px) calc(100% - 15px);
   background-size: 15px;
 }
 .pharmacy-map__search-service {
   background-position: calc(100% - 40px) calc(100% - 15px);
 }
 .search-filter-input {
-  background: #fff9e9 url("https://findapharmacy.com.au/new/_design/_css/_img/icon-magnifying-glass.svg") no-repeat calc(100% - 13px) calc(100% - 13px);
+  background: #fff9e9 url("https://findapharmacy.com.au/_design/_css/_img/icon-magnifying-glass.svg") no-repeat calc(100% - 13px) calc(100% - 13px);
   background-size: 15px;
 }
 .pharmacy-map__search-wrapper {
@@ -486,7 +486,7 @@ textarea.fap-input {
 }
 select.fap-input {
   padding-right: 40px;
-  background-image: url("https://findapharmacy.com.au/new/_design/_css/_img/icon-chevron-down.svg");
+  background-image: url("https://findapharmacy.com.au/_design/_css/_img/icon-chevron-down.svg");
   background-position: calc(100% - 20px) calc(100% - 15px);
   background-repeat: no-repeat;
   background-size: 15px;
@@ -494,13 +494,13 @@ select.fap-input {
 select.pharmacy-map__filter-results {
   width: calc(100% - 70px);
   padding-inline: 40px;
-  background-image: url("https://findapharmacy.com.au/new/_design/_css/_img/icon-sliders.svg"), url("https://findapharmacy.com.au/new/_design/_css/_img/icon-chevron-down.svg");
+  background-image: url("https://findapharmacy.com.au/_design/_css/_img/icon-sliders.svg"), url("https://findapharmacy.com.au/_design/_css/_img/icon-chevron-down.svg");
   background-position: 16px 19px, calc(100% - 16px) calc(100% - 20px);
   background-repeat: no-repeat;
   background-size: 15px;
 }
 .search-input {
-  background: white url("https://findapharmacy.com.au/new/_design/_css/_img/icon-magnifying-glass.svg") no-repeat 20px 13px;
+  background: white url("https://findapharmacy.com.au/_design/_css/_img/icon-magnifying-glass.svg") no-repeat 20px 13px;
   background-size: 20px;
   padding: 11px 50px !important;
 }
@@ -2207,7 +2207,7 @@ ul.list-icon-link li a:hover {
   margin: 20px 10%;
 }
 .subscribe__wrapper {
-  background: #fff9e9 url(https://findapharmacy.com.au/new/_design/_css/_img/pattern-news-background.svg) 0 0;
+  background: #fff9e9 url(https://findapharmacy.com.au/_design/_css/_img/pattern-news-background.svg) 0 0;
   background-size: 400px;
   padding: 50px;
   border-radius: calc(10px * 3);
@@ -2408,7 +2408,7 @@ section.my-pharmacy .my-pharmacy__content-wrapper .my-pharmacy__action .my-pharm
   gap: 10px;
 }
 .nearest-pharmacy__column-wrapper {
-  background: #fff9e9 url("https://findapharmacy.com.au/new/_design/_css/_img/pattern-news-background.svg") 0 0;
+  background: #fff9e9 url("https://findapharmacy.com.au/_design/_css/_img/pattern-news-background.svg") 0 0;
   background-size: 400px;
   padding: 50px;
   border-radius: calc(10px * 3);
@@ -2428,7 +2428,7 @@ section.my-pharmacy .my-pharmacy__content-wrapper .my-pharmacy__action .my-pharm
   background-color: rgba(96, 181, 213, 0.2);
 }
 .latest-updates__column-wrapper {
-  background: #fff9e9 url("https://findapharmacy.com.au/new/_design/_css/_img/pattern-news-background.svg") 0 0;
+  background: #fff9e9 url("https://findapharmacy.com.au/_design/_css/_img/pattern-news-background.svg") 0 0;
   background-size: 400px;
   padding: 50px;
   border-radius: calc(10px * 3);
@@ -2609,7 +2609,7 @@ section.my-pharmacy .my-pharmacy__content-wrapper .my-pharmacy__action .my-pharm
 .related-topics .related-topics__container .related-topics__wrapper .related-topics__action-wrap {
   width: calc(100% - 750px);
   text-align: center;
-  background: #dff0f7 url("https://findapharmacy.com.au/new/_design/_css/_img/pattern-news-background.svg") 0 0;
+  background: #dff0f7 url("https://findapharmacy.com.au/_design/_css/_img/pattern-news-background.svg") 0 0;
   background-size: 400px;
   padding: 50px;
   border: 1px solid #60b5d5;
@@ -2678,7 +2678,7 @@ section.my-pharmacy .my-pharmacy__content-wrapper .my-pharmacy__action .my-pharm
   width: calc((100% / 5) - 20px);
 }
 .error-body {
-  background: #fff9e9 url(https://findapharmacy.com.au/new/_design/_css/_img/pattern-news-background.svg) 0 0;
+  background: #fff9e9 url(https://findapharmacy.com.au/_design/_css/_img/pattern-news-background.svg) 0 0;
   background-size: 400px;
   margin-top: -30px;
   border-radius: 0 0 30px 30px;

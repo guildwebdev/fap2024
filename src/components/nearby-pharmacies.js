@@ -38,7 +38,7 @@ const NearbyPharmacies = ({ locations, origin }) => {
     };
 
     const moreInfoClick = (loc, origin) => {
-        const url = 'https://findapharmacy.com.au/new/pharmacy?pharmacyId='+loc+'&origin='+origin;
+        const url = 'https://findapharmacy.com.au/pharmacy?pharmacyId='+loc+'&origin='+origin;
         console.log('NEW URL:',url);
         window.location.href = url;
     };
@@ -174,36 +174,36 @@ const NearbyPharmacies = ({ locations, origin }) => {
                             isIOS ? (
                                 <button className="nearest-pharmacy__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${location.name}`} onClick={()=>bookingsClick(location.bookingurl)}>
                                     <div className="backdrop">
-                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                        <i className="fa-solid fa-calendar-days"></i> Book now
                                     </div>
                                     <div className="overlay">
-                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                        <i className="fa-solid fa-calendar-days"></i> Book now
                                     </div>
                                 </button>
                             ) : (
                                 <button className="nearest-pharmacy__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${location.name}`} onClick={() => onBookingClicked(location.bookingurl, location)}>
                                     <div className="backdrop">
-                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                        <i className="fa-solid fa-calendar-days"></i> Book now
                                     </div>
                                     <div className="overlay">
-                                        <i className="fa-solid fa-calendar-days"></i> Book Now
+                                        <i className="fa-solid fa-calendar-days"></i> Book now
                                     </div>
                                 </button>
                             )
                         ): location?.phone ? (
                             <button className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn" aria-label={`Call now - ${location.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(location.phone)}`, '_blank')}>
-                              <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
-                              <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+                              <div className="backdrop"><i className="fa-solid fa-phone"></i> Call now</div>
+                              <div className="overlay"><i className="fa-solid fa-phone"></i> Call now</div>
                             </button>
                           ) : (
                             <p>&nbsp;</p>
                           )}
                         <button className="nearest-pharmacy__directions button-lightblue btn-with-backdrop btn btn-secondary" aria-label={`Get directions to ${location.name}`} onClick={()=>directionsClick(location.geometry.coordinates)}>
                             <div className="backdrop">
-                                <i className="fa-solid fa-map-location-dot"></i> Get Directions
+                                <i className="fa-solid fa-map-location-dot"></i> Get directions
                             </div>
                             <div className="overlay">
-                                <i className="fa-solid fa-map-location-dot"></i> Get Directions
+                                <i className="fa-solid fa-map-location-dot"></i> Get directions
                             </div>
                         </button>
                     </div>

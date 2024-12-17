@@ -392,7 +392,7 @@ const Pharmacy = () => {
                 <div className="container">
                   <div className="row">
                     <div className="col-lg-12">
-                      <h2 className="nearest-pharmacy__column-title">Your Nearest Pharmacies</h2>
+                      <h2 className="nearest-pharmacy__column-title">Your nearest pharmacies</h2>
                       <NearbyPharmacies
                         locations={nearbyLocations}
                         origin={userLocation}

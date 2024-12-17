@@ -283,7 +283,7 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(1);
             <span className="pharmacy-map__details result-listing-content-direction-icon">
               <i className="fa-solid fa-paper-plane"></i>
             </span>
-             Get Directions
+             Get directions
           </a>
         </p>
       </div>
@@ -292,26 +292,26 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(1);
         {props.result?.bookingurl ? (
           isIOS ? (
             <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${props.result.name}`} data-url={props.result.bookingurl} onClick={()=>bookingsClick(props.result.bookingurl)}>
-              <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
-              <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+              <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book now</div>
+              <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book now</div>
             </button>
           ) : (
             <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary" aria-label={`Book an appointment with ${props.result.name}`} data-url={props.result.bookingurl} onClick={onBookingClicked}>
-              <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
-              <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book Now</div>
+              <div className="backdrop"><i className="fa-solid fa-calendar-days"></i> Book now</div>
+              <div className="overlay"><i className="fa-solid fa-calendar-days"></i> Book now</div>
             </button>
           )
         ): props.result?.phone ? (
           <button className="pharmacy-map__bookings button-yellow btn-with-backdrop btn btn-secondary"  aria-label={`Call now - ${props.result.name}`} data-phone={props.result.phone} onClick={() => window.open(`tel:${formatPhoneNumber(props.result.phone)}`, '_blank')}>
-            <div className="backdrop"><i className="fa-solid fa-phone"></i> Call Now</div>
-            <div className="overlay"><i className="fa-solid fa-phone"></i> Call Now</div>
+            <div className="backdrop"><i className="fa-solid fa-phone"></i> Call now</div>
+            <div className="overlay"><i className="fa-solid fa-phone"></i> Call now</div>
           </button>
         ): (
           <p>&nbsp;</p>
         )}
           <button className="nearest-pharmacy__more-info button-blue btn-with-backdrop btn btn-secondary"  aria-label={`Find out more about ${props.result.name}`} data-info={props.result.id} onClick={() => {moreInfoClick(props.result.id)}}>
-            <div className="backdrop">More Info <i className="fa-solid fa-arrow-right"></i></div>
-            <div className="overlay">More Info <i className="fa-solid fa-arrow-right"></i></div>
+            <div className="backdrop">More info <i className="fa-solid fa-arrow-right"></i></div>
+            <div className="overlay">More info <i className="fa-solid fa-arrow-right"></i></div>
           </button>
         </div>
       </div>      

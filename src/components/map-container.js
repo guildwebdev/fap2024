@@ -772,7 +772,7 @@ class MapContainer extends Component {
             <i className="fa-solid fa-location-dot"></i> 
           </button>
           <div className="location-group" onClick={this.locateUser}>
-              <p>Use My Location</p>
+              <p>Use my location</p>
             </div>
         </div>
         

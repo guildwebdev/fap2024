@@ -481,10 +481,10 @@ class MapMarker extends Component {
                         onClick={() => window.open(this.props.location.bookingurl, '_blank')}
                       >
                         <div className="backdrop">
-                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                          <i className="fa-solid fa-calendar-days"></i> Book now
                         </div>
                         <div className="overlay">
-                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                          <i className="fa-solid fa-calendar-days"></i> Book now
                         </div>
                       </button>
                     ) : (
@@ -494,10 +494,10 @@ class MapMarker extends Component {
                         onClick={this.onBookingClicked}
                       >
                         <div className="backdrop">
-                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                          <i className="fa-solid fa-calendar-days"></i> Book now
                         </div>
                         <div className="overlay">
-                          <i className="fa-solid fa-calendar-days"></i> Book Now
+                          <i className="fa-solid fa-calendar-days"></i> Book now
                         </div>
                       </button>
                     )
@@ -508,10 +508,10 @@ class MapMarker extends Component {
                       onClick={() => window.open(`tel:${cleanPhone(this.props.location.phone)}`, '_blank')}
                     >
                       <div className="backdrop">
-                        <i className="fa-solid fa-phone"></i> Call Now
+                        <i className="fa-solid fa-phone"></i> Call now
                       </div>
                       <div className="overlay">
-                        <i className="fa-solid fa-phone"></i> Call Now
+                        <i className="fa-solid fa-phone"></i> Call now
                       </div>
                     </button>
                   ) : (
@@ -531,10 +531,10 @@ class MapMarker extends Component {
                     }
                   >
                     <div className="backdrop">
-                      <i className="fa-solid fa-map-location-dot"></i> Get Directions
+                      <i className="fa-solid fa-map-location-dot"></i> Get directions
                     </div>
                     <div className="overlay">
-                      <i className="fa-solid fa-map-location-dot"></i> Get Directions
+                      <i className="fa-solid fa-map-location-dot"></i> Get directions
                     </div>
                   </button>
                 </div>

@@ -73,8 +73,18 @@ class MapSearch extends Component {
     this.setState({ input: str });
 
     if (str && str.trim()){
-      const t = setTimeout(() => {
+      clearTimeout(this.debounceTimeout);
+
+      this.debounceTimeout = setTimeout(() => {
         this.updateInput(str);
+
+        if (!window.dataLayer){
+          window.dataLayer = [];
+        }
+        window.dataLayer.push({
+          event: 'locationSearch',
+          location: str
+        });
       }, 500);
     }
   }
@@ -114,6 +124,7 @@ class MapSearch extends Component {
               placeholder={this.props.title || 'Search by location'}
               type="text"
               value={this.state.input}
+              data-location={this.state.input}
             />
             <select
               className="c-dropdown__input c-dropdown__embed c-state form-select"

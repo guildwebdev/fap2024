@@ -21,11 +21,20 @@ function onBookingClicked(e) {
   }
 
     //GET DISTANCE
-    const distanceInMeters = getDistance(
-        { lat: userLocation.latitude, lng: userLocation.longitude },
-        { lat: selectedLocation.geometry.coordinates[1], lng: selectedLocation.geometry.coordinates[0] }
-    );
-    const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+    const calculateDistance = () => {
+        if (userLocation && 
+            userLocation.latitude && 
+            userLocation.longitude && 
+            selectedLocation?.geometry?.coordinates) {
+            const distanceInMeters = getDistance(
+                { lat: userLocation.latitude, lng: userLocation.longitude },
+                { lat: selectedLocation.geometry.coordinates[1], lng: selectedLocation.geometry.coordinates[0] }
+            );
+            const distanceInKm = (distanceInMeters / 1000).toFixed(2);
+            return distanceInKm !== "0.00" ? distanceInKm : null;
+        }
+        return null;
+    };
 
     //FORMAT ADDRESS
     const streetAddress = [
@@ -185,13 +194,17 @@ function onBookingClicked(e) {
                                             {selectedLocation.email && (
                                                 <p className='pharmacy-single__details small'><strong>Email: </strong><a href={`mailto:${selectedLocation.email}`}>{selectedLocation.email}</a></p>
                                             )}
-                                            <p className='pharmacy-single__details small'><strong>Distance: </strong>{distanceInKm}km</p>
+                                            {calculateDistance() && (
+                                                <p className='pharmacy-single__details small'>
+                                                    <strong>Distance: </strong>{calculateDistance()}km
+                                                </p>
+                                            )}
 
                                             <hr className='pharmacy-single__separator'/>                                               
 
                                             {formattedHolidayHours.length > 0 &&(
                                                 <div>
-                                                    <p className='pharmacy-single__details small'><strong>Holiday Trading Hours</strong>
+                                                    <p className='pharmacy-single__details small'><strong>Holiday trading hours</strong>
                                                         <span className='pharmacy-single__detail-wrapper'>
                                                             {formattedHolidayHours.map((holiday, index) => (
                                                                 <span className='pharmacy-single__detail-item' key={index}>
@@ -204,7 +217,7 @@ function onBookingClicked(e) {
                                                 </div>
                                             )}
     
-                                            <p className='pharmacy-single__details small'><strong>Standard Trading Hours</strong>
+                                            <p className='pharmacy-single__details small'><strong>Standard trading hours</strong>
                                                 <span className='pharmacy-single__detail-wrapper'>
                                                     {days.map(day => (
                                                         <span className='pharmacy-single__detail-item' key={day}>{day}: {formatOpeningHours(day)}</span>
@@ -215,17 +228,6 @@ function onBookingClicked(e) {
                                             <hr className='pharmacy-single__separator'/>
             
                                             <div className="pharmacy-single__actions">
-                                                {selectedLocation.phone &&( 
-                                                    <div>                                           
-                                                        <p className="pharmacy-single__details small"><strong>For more enquiries, call the pharmacy</strong></p>
-                                                        <button className="pharmacy-single__call-now button-blue btn-with-backdrop btn btn-secondary"  aria-label={`Call now - ${selectedLocation.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(selectedLocation.phone)}`)}>
-                                                            <div className="backdrop">Call now <i className='fa-solid fa-phone-flip'></i></div>
-                                                            <div className="overlay">Call now <i className='fa-solid fa-phone-flip'></i></div>
-                                                        </button>
-                                                        <hr className='pharmacy-single__separator'/>
-                                                    </div>
-                                                )}
-
                                                 {selectedLocation.bookingurl &&(
                                                     <div>
                                                         <p className='pharmacy-single__details small'><strong>Get your appointment</strong></p>
@@ -240,6 +242,17 @@ function onBookingClicked(e) {
                                                                 <div className="overlay"><i className="fa-solid fa-calendar-days"></i>Book Now</div>
                                                             </button>
                                                         )}
+                                                        <hr className='pharmacy-single__separator'/>
+                                                    </div>
+                                                )}
+
+                                                {selectedLocation.phone &&( 
+                                                    <div>                                           
+                                                        <p className="pharmacy-single__details small"><strong>For more enquiries, call the pharmacy</strong></p>
+                                                        <button className="pharmacy-single__call-now button-blue btn-with-backdrop btn btn-secondary"  aria-label={`Call now - ${selectedLocation.name}`} onClick={() => window.open(`tel:${formatPhoneNumber(selectedLocation.phone)}`)}>
+                                                            <div className="backdrop">Call now <i className='fa-solid fa-phone-flip'></i></div>
+                                                            <div className="overlay">Call now <i className='fa-solid fa-phone-flip'></i></div>
+                                                        </button>
                                                         <hr className='pharmacy-single__separator'/>
                                                     </div>
                                                 )}
