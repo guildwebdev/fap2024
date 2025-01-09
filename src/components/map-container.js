@@ -48,6 +48,7 @@ class MapContainer extends Component {
       currSuperCluster: null,
       clusterClicked : false,
       radius: 10,
+      zoom: this.defaultMapProps.zoom,
     };
 
     this.createMapOptions = {
@@ -449,7 +450,11 @@ class MapContainer extends Component {
 
   componentDidMount() {
     this.locateUser(this.props.useLocateFlag);
+
+    
   }
+
+ 
 
   componentDidUpdate(prevProps) {
 

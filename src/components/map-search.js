@@ -35,13 +35,11 @@ class MapSearch extends Component {
   handleExternalSearch(event) {
     const { searchValue, serviceName } = event.detail;
     
-    // Only proceed if searchValue exists and has content
     if (searchValue && searchValue.trim()) {
         this.setState({ input: searchValue }, () => {
-            // Check length requirement from updateInput method
-            if (searchValue.length > 3) {
-                this.updateInput(searchValue);
-            }
+          if (searchValue.length > 3) {
+            this.updateInput(searchValue);
+          }
         });
 
         if (serviceName) {
@@ -50,7 +48,7 @@ class MapSearch extends Component {
             }));
         }
     }
-  }
+}
 
   /* Event handlers */
   handleSearchClick() {
