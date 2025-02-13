@@ -123,6 +123,14 @@ class MapSearch extends Component {
               type="text"
               value={this.state.input}
               data-location={this.state.input}
+              onKeyDown={(e) => {
+                if (!/^[a-zA-Z\s]$/.test(e.key) && 
+                  // Allow special keys like backspace, delete, arrows etc
+                  !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }
+              }
             />
             <select
               className="c-dropdown__input c-dropdown__embed c-state form-select"

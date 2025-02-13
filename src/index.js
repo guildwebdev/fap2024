@@ -2,7 +2,6 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import MapBasic from './pages/map-basic';
 import MapWithSearch from './pages/map-with-search';
 import Search from './pages/search';

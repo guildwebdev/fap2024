@@ -650,6 +650,18 @@ class MapContainer extends Component {
       isLocating: false,
       initialLocationSet: true,
       willZoomOut: true
+    }, () => {
+      if (!this.state.locations.length) {
+        const defaultCenter = this.props.defaultMapCenter || this.defaultMapProps.center;
+        this.centerMapTo(defaultCenter);
+
+        const initialRadius = 500;
+        console.log('going to re-get data');
+        this.getData(defaultCenter, initialRadius, this.state.serviceKeyword)
+          .then(response => {
+            this.props.handleDataReceived(response.results);
+          });
+      }
     });
 
     if (!this.state.locations.length) {

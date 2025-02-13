@@ -13,12 +13,25 @@ import MapWithSearch from './map-with-search';
 import Search from './search';
 import MapBasic from './map-basic';
 import MapContainer from '../components/map-container';
+import { Helmet } from 'react-helmet';
+import { select } from 'react-cookies';
 
-const Pharmacy = () => {
+const sendGTMEvent = (pharmacyName) => {
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      'event': 'pharmacyView',
+      'pharmacy': pharmacyName
+    });
+  }
+};
+
+const Pharmacy = ({pharmacyLocation}) => {
   const [pharmacy, setPharmacy] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyLocations, setNearby] = useState(null);
   const [origin, setOrigin] = useState(null);
+  const [pharmacyData, setPharmacyData] = useState(null);
+  var pharmacyAddress, pharmacyName, pharmacyStreetAddress = "";
 
   const handleLocationSuccess = (position) => {
     setUserLocation({
@@ -200,7 +213,12 @@ const Pharmacy = () => {
       const response = await axios.get(`https://search.guild.org.au/s/search.json?collection=pharmacy-loc&form=json&num_ranks=1&sort=prox&query=!padnull&meta_id=${id}`);
       const data = response.data;
       if (data && data.response && data.response.resultPacket && data.response.resultPacket.results) {
-        const pharmacyData = data.response.resultPacket.results[0]
+        const pharmacyData = data.response.resultPacket.results[0];
+
+        if (pharmacyData.title) {
+          sendGTMEvent(pharmacyData.title);
+        }
+
         setPharmacy(pharmacyData);
         console.log('pharmacy set:',data.response.resultPacket.results[0]);
         //console.log('Pharmacy data:',data.response.resultPacket.results[0]);
@@ -274,6 +292,19 @@ const Pharmacy = () => {
     address: (pharmacy.listMetadata.address ?? []).join(','),
     address2: (pharmacy.listMetadata.address2 ?? []).join(','),
     address3: (pharmacy.listMetadata.address3 ?? []).join(','),
+    streetAddress: [
+      pharmacy.listMetadata.address,
+      pharmacy.listMetadata.address2,
+      pharmacy.listMetadata.address3
+    ].filter(Boolean).join(', '),
+    fulladdress: [
+      pharmacy.listMetadata.address,
+      pharmacy.listMetadata.address2,
+      pharmacy.listMetadata.address3,
+      pharmacy.listMetadata.city,
+      pharmacy.listMetadata.state,
+      pharmacy.listMetadata.postcode
+    ].filter(Boolean).join(', '),
     city: (pharmacy.listMetadata.city ?? []).join(','),
     state: (pharmacy.listMetadata.state ?? []).join(','),
     postcode: (pharmacy.listMetadata.postcode ?? []).join(','),
@@ -329,8 +360,44 @@ const Pharmacy = () => {
     }
   };
 
+  console.log('coords:',selectedLocation.latitude);
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": selectedLocation.name,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": selectedLocation.streetAddress,
+      "addressLocality": selectedLocation.city,
+      "addressRegion": selectedLocation.state,
+      "postalCode": selectedLocation.postcode,
+      "addressCountry": "AU"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": selectedLocation.geometry.coordinates[1],
+      "longitude": selectedLocation.geometry.coordinates[0]
+    },
+    "telephone": selectedLocation.phone,
+    "image": "https://findapharmacy.com.au/__data/assets/image/0029/148286/find-a-pharmacy-icon.png",
+    "url": `https://findapharmacy.com.au/pharmacy?pharmacyId=${selectedLocation.id}`
+  };
+
   return (
     <>
+      <Helmet>
+          <title>{`${selectedLocation.name} - Find a Pharmacy`}</title>
+          <meta name="description" content={`Visit ${selectedLocation.name} located at ${selectedLocation.fulladdress}. Services include ${selectedLocation.services.replace(/\|/g,', ')}`} />
+          <meta property="og:title" content={`${selectedLocation.name} - Find a Pharmacy`} />
+          <meta property="og:description" content={`Visit ${selectedLocation.name} located at ${selectedLocation.fulladdress}`} />
+          <meta property="og:type" content="business.business" />
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+          <meta property="test" content="something"/>
+      </Helmet>
+      
       <section className="pharmacy-location">
         <div className='pharmacy-location__container container'>
           <div className='row'>

@@ -130,6 +130,9 @@ class MapWithSearch extends Component {
     }else{
       address = '&address='+address;
     }
+
+    
+
     const url =
       globalSettings.geocodeURL +
       address +
@@ -166,7 +169,7 @@ class MapWithSearch extends Component {
         <MapSearch
           defaultLocation={this.state.defaultLocation}
           handleInput={this.onLocationInput}
-          title="Other location"
+          title="My town/city"
         />
 
         <MapContainer

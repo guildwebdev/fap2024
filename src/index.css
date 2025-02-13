@@ -3745,10 +3745,10 @@ button.notify-modal__btn-primary {
     left: 50px;
 }
 .fap-map__location {
-  background-image: url(https://www.findapharmacy.com.au/__data/assets/file/0026/41669/cross-with-bg.svg?v=0.1.2);
+  background-image: url(https://findapharmacy.com.au/__data/assets/image/0019/145513/fap-btn-icon.png);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 35px;
+  height: 40px;
   width: 35px;
   position:relative;
 }
