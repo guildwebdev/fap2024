@@ -114,9 +114,9 @@ const NearbyPharmacies = ({ locations, origin }) => {
     };
 
     const getDistance = (origin, coords) => {
-        //console.log('GET DISTANCE');
-        //console.log('origin:', origin);
-        //console.log('coords:', coords);
+        console.log('GET DISTANCE');
+        console.log('origin:', origin);
+        console.log('coords:', coords);
         const toRadians = (degrees) => degrees * (Math.PI / 180);
 
 

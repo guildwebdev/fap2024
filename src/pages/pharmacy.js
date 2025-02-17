@@ -43,10 +43,12 @@ const Pharmacy = ({pharmacyLocation}) => {
 
   const nearbyPharmacies = (results) => {
     return results.map(result => ({
-      name: result.title,
+
+      
+      name: (result.listMetadata.name ?? []).join(','),
       id: (result.listMetadata.id ?? []).join(','),
       geometry: {
-        coordinates: [parseFloat(result.listMetadata.latitude), parseFloat(result.listMetadata.longitude)]
+        coordinates: [parseFloat(result.listMetadata.x[0].split(';')[0]), parseFloat(result.listMetadata.x[0].split(';')[1])]
       },
       address: (result.listMetadata.address ?? []).join(','),
       address2: (result.listMetadata.address2 ?? []).join(','),
@@ -55,35 +57,35 @@ const Pharmacy = ({pharmacyLocation}) => {
       state: (result.listMetadata.state ?? []).join(','),
       postcode: (result.listMetadata.postcode ?? []).join(','),
       phone: (result.listMetadata.phone ?? []).join(','),
-      memberType: (result.listMetadata.membershipType ?? []).join(','),
+      memberType: (result.listMetadata.memberType ?? []).join(','),
       bookingurl: (result.listMetadata.bookingurl ?? []).join(','),
       monday: {
-        open: (result.listMetadata.mondayOpening ?? []).join(','),
-        close: (result.listMetadata.mondayClosing ?? []).join(',')
+        open: (result.listMetadata.mondayOpen ?? []).join(','),
+        close: (result.listMetadata.mondayClose ?? []).join(',')
       },
       tuesday: {
-        open: (result.listMetadata.tuesdayOpening ?? []).join(','),
-        close: (result.listMetadata.tuesdayClosing ?? []).join(',')
+        open: (result.listMetadata.tuesdayOpen ?? []).join(','),
+        close: (result.listMetadata.tuesdayClose ?? []).join(',')
       },
       wednesday: {
-        open: (result.listMetadata.wednesdayOpening ?? []).join(','),
-        close: (result.listMetadata.wednesdayClosing ?? []).join(',')
+        open: (result.listMetadata.wednesdayOpen ?? []).join(','),
+        close: (result.listMetadata.wednesdayClose ?? []).join(',')
       },
       thursday: {
-        open: (result.listMetadata.thursdayOpening ?? []).join(','),
-        close: (result.listMetadata.thursdayClosing ?? []).join(',')
+        open: (result.listMetadata.thursdayOpen ?? []).join(','),
+        close: (result.listMetadata.thursdayClose ?? []).join(',')
       },
       friday: {
-        open: (result.listMetadata.fridayOpening ?? []).join(','),
-        close: (result.listMetadata.fridayClosing ?? []).join(',')
+        open: (result.listMetadata.fridayOpen ?? []).join(','),
+        close: (result.listMetadata.fridayClose ?? []).join(',')
       },
       saturday: {
-        open: (result.listMetadata.saturdayOpening ?? []).join(','),
-        close: (result.listMetadata.saturdayClosing ?? []).join(',')
+        open: (result.listMetadata.saturdayOpen ?? []).join(','),
+        close: (result.listMetadata.saturdayClose ?? []).join(',')
       },
       sunday: {
-        open: (result.listMetadata.sundayOpening ?? []).join(','),
-        close: (result.listMetadata.sundayClosing ?? []).join(',')
+        open: (result.listMetadata.sundayOpene ?? []).join(','),
+        close: (result.listMetadata.sundayClose ?? []).join(',')
       },
       holidayHours: {
         date: result.listMetadata.PTHEDate,
@@ -194,7 +196,8 @@ const Pharmacy = ({pharmacyLocation}) => {
     } 
     console.log('new fetch as origin:', loc, id);
     try {
-      const response = await axios.get(`https://search.guild.org.au/s/search.json?collection=pharmacy-loc&form=json&num_ranks=3&sort=prox&start_rank=1&meta_id=!${id}&query=!padnull&origin=${loc}`);
+      //const response = await axios.get(`https://search.guild.org.au/s/search.json?collection=pharmacy-loc&form=json&num_ranks=3&sort=prox&start_rank=1&meta_id=!${id}&query=!padnull&origin=${loc}`);
+      const response = await axios.get(`https://dxp-au-search.funnelback.squiz.cloud/s/search.json?collection=tpgoa~sp-locations&profile=react-data&num_ranks=3&sort=prox&start_rank=1&meta_id=!${id}&query=!padnull&origin=${loc}`);
       const data = response.data;
       if (data && data.response && data.response.resultPacket && data.response.resultPacket.results) {
         const cleanData = nearbyPharmacies(data.response.resultPacket.results);
@@ -210,7 +213,8 @@ const Pharmacy = ({pharmacyLocation}) => {
 
   const fetchPharmacyData = async (id) => {
     try {
-      const response = await axios.get(`https://search.guild.org.au/s/search.json?collection=pharmacy-loc&form=json&num_ranks=1&sort=prox&query=!padnull&meta_id=${id}`);
+      //const response = await axios.get(`https://search.guild.org.au/s/search.json?collection=pharmacy-loc&form=json&num_ranks=1&sort=prox&query=!padnull&meta_id=${id}`);
+      const response = await axios.get(`https://dxp-au-search.funnelback.squiz.cloud/s/search.json?collection=tpgoa~sp-locations&profile=react-data&num_ranks=1&sort=prox&query=!padnull&meta_id=${id}`);
       const data = response.data;
       if (data && data.response && data.response.resultPacket && data.response.resultPacket.results) {
         const pharmacyData = data.response.resultPacket.results[0];
@@ -251,12 +255,15 @@ const Pharmacy = ({pharmacyLocation}) => {
   }
 
   //const { latitude, longitude } = pharmacy.listMetaData;
-  const latitude = pharmacy.listMetadata.latitude ?? [].join(',');
-  const longitude = pharmacy.listMetadata.longitude ?? [].join(',');
+  //const latitude = pharmacy.listMetadata.latitude ?? [].join(',');
+  //const longitude = pharmacy.listMetadata.longitude ?? [].join(',');
+
+  const [latitude = '', longitude = ''] = (pharmacy.listMetadata.x[0] || '').split(';');
+
 
   const locations = [{
     id: (pharmacy.listMetadata.id ?? []).join(','),
-    name: pharmacy.title,
+    name: (pharmacy.listMetadata.name ?? []).join(','),
     geometry: {
       coordinates: [parseFloat(longitude), parseFloat(latitude)]
     },
@@ -277,7 +284,7 @@ const Pharmacy = ({pharmacyLocation}) => {
     instagram: (pharmacy.listMetadata.instagram ?? []).join(','),
     bookingurl: (pharmacy.listMetadata.bookingurl ?? []).join(','),
     gcvpBookingURL: (pharmacy.listMetadata.gcvpBookingURL ?? []).join(','),
-    memberType: (pharmacy.listMetadata.membershipType ?? []).join(','),
+    memberType: (pharmacy.listMetadata.memberType ?? []).join(','),
     extendedHours: (pharmacy.listMetadata.extendedHours ?? []).join(','),
     weekends: (pharmacy.listMetadata.weekends ?? []).join(','),
     kmFromOrigin: pharmacy.kmFromOrigin
@@ -285,7 +292,7 @@ const Pharmacy = ({pharmacyLocation}) => {
 
   const selectedLocation = {
     id: (pharmacy.listMetadata.id ?? []).join(','),
-    name: pharmacy.title,
+    name: (pharmacy.listMetadata.name ?? []).join(','),
     geometry: {
       coordinates: [parseFloat(longitude), parseFloat(latitude)]
     },
@@ -319,38 +326,38 @@ const Pharmacy = ({pharmacyLocation}) => {
     instagram: (pharmacy.listMetadata.instagram ?? []).join(','),
     bookingurl: (pharmacy.listMetadata.bookingurl ?? []).join(','),
     gcvpBookingURL: (pharmacy.listMetadata.gcvpBookingURL ?? []).join(','),
-    memberType: (pharmacy.listMetadata.membershipType ?? []).join(','),
+    memberType: (pharmacy.listMetadata.memberType ?? []).join(','),
     extendedHours: (pharmacy.listMetadata.extendedHours ?? []).join(','),
     weekends: (pharmacy.listMetadata.weekends ?? []).join(','),
     kmFromOrigin: pharmacy.kmFromOrigin,
     active: true,
     monday: {
-      open: (pharmacy.listMetadata.mondayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.mondayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.mondayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.mondayClose ?? []).join(',')
     },
     tuesday: {
-      open: (pharmacy.listMetadata.tuesdayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.tuesdayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.tuesdayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.tuesdayClose ?? []).join(',')
     },
     wednesday: {
-      open: (pharmacy.listMetadata.wednesdayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.wednesdayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.wednesdayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.wednesdayClose ?? []).join(',')
     },
     thursday: {
-      open: (pharmacy.listMetadata.thursdayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.thursdayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.thursdayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.thursdayClose ?? []).join(',')
     },
     friday: {
-      open: (pharmacy.listMetadata.fridayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.fridayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.fridayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.fridayClose ?? []).join(',')
     },
     saturday: {
-      open: (pharmacy.listMetadata.saturdayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.saturdayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.saturdayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.saturdayClose ?? []).join(',')
     },
     sunday: {
-      open: (pharmacy.listMetadata.sundayOpening ?? []).join(','),
-      close: (pharmacy.listMetadata.sundayClosing ?? []).join(',')
+      open: (pharmacy.listMetadata.sundayOpen ?? []).join(','),
+      close: (pharmacy.listMetadata.sundayClose ?? []).join(',')
     },
     holidayHours: {
       date: pharmacy.listMetadata.PTHEDate,
@@ -405,16 +412,16 @@ const Pharmacy = ({pharmacyLocation}) => {
               <div className='pharmacy-location__name-wrapper'>
               <img 
                 src={
-                  pharmacy.listMetadata.membershipType[0] === 'Premises'
+                  pharmacy.listMetadata.memberType[0] === 'Premises'
                   ? fapIcon
-                  : pharmacy.listMetadata.membershipType[0] === 'Non-Member Ineligible AFSPA'
+                  : pharmacy.listMetadata.memberType[0] === 'Non-Member Ineligible AFSPA'
                   ? fapIconAFSA
                   : fapIconNonMember
                 } 
                 alt={`Find a Pharmacy Icon - ${pharmacy.name}`}
                 className="pharmacy-location__icon"
               />
-                <h1 className="pharmacy-location__name">{pharmacy.title}</h1>
+                <h1 className="pharmacy-location__name">{selectedLocation.name}</h1>
               </div>
               <div className="c-map-container fap-map" style={{ height: '600px', width: '100%' }}>
                 <SimpleMapContainer
@@ -439,7 +446,7 @@ const Pharmacy = ({pharmacyLocation}) => {
               <div className="breadcrumbs-nav__wrapper col-lg-12">
                 <a href="/" className="breadcrumbs-nav__parents"><i className="fa-solid fa-house-medical"></i></a>                        
                 <span className="seperator">/</span>              
-                <a href="#" className="breadcrumbs-nav__current-page">Pharmacy - {pharmacy.title}</a>
+                <a href="#" className="breadcrumbs-nav__current-page">Pharmacy - {selectedLocation.name}</a>
               </div>
             </div>
           </div>
