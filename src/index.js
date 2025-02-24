@@ -54,6 +54,14 @@ for (let i = 0; i < searchElements.length; i++) {
     );
 }
 
+const vicElements = document.getElementsByClassName('app-vic-search');
+for (let i = 0; i < searchElements.length; i++) {
+    ReactDOM.render(
+        <VicSearch />,
+        searchElements[i]
+    );
+}
+
 const servicesLandingElements = document.getElementsByClassName('app-services-landing');
 for (let i = 0; i < servicesLandingElements.length; i++) {
     ReactDOM.render(
