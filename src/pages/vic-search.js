@@ -11,7 +11,7 @@ import _ from "lodash";
 import moment from "moment";
 
 import ToggleViewButtons from "../components/toggle-view-buttons";
-import SearchFilters from "../components/search-filters";
+import VicSearchFilters from "../components/vic-search-filters";
 import SearchResults from "../components/search-results";
 import SearchDetails from "../components/search-details";
 import MapSearch from "../components/map-search";
@@ -53,6 +53,7 @@ class VicSearch extends Component {
       defaultLocationId: null,
       defaultLocationCoordinates: null,
       selectedView: "map",
+      selectedServices: [],
 
       userLocation: null
     };
@@ -89,6 +90,14 @@ class VicSearch extends Component {
     this.onSelectService = this.onSelectService.bind(this);
     this.onSelectTime = this.onSelectTime.bind(this);
     this.onViewToggle = this.onViewToggle.bind(this);
+  }
+
+  handleSelectService = (service) => {
+    this.setState({
+      selectedServices: service ? [service] : []
+    }, () => {
+      this.handleApplyFilters();
+    });
   }
 
   /* Component lifecycle events */

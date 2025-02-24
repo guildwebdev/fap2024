@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import MapBasic from './pages/map-basic';
 import MapWithSearch from './pages/map-with-search';
 import Search from './pages/search';
+import VicSearch from './pages/vic-search';
 import * as serviceWorker from './serviceWorker';
 import initDatabase from "./settings/init-database";
 import Pharmacy from "./pages/pharmacy";

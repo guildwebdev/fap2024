@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import ServicesSelector from './services-selector';
+import VicServicesSelector from './vic-services-selector';
 import TimeFilterButton from './time-filter-button';
 import TimeSelector from './time-selector';
 
@@ -95,8 +95,7 @@ class VicSearchFilters extends Component {
     return (
       <div className="pharmacy-map__search-result-filter">
         <div>
-              <ServicesSelector
-                services={this.props.services}
+              <VicServicesSelector
                 selectedServices={this.props.selectedServices}
                 handleSelectService={this.onSelectService.bind(this)}
                 handleClear={this.props.handleClear}
