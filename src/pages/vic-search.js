@@ -31,6 +31,14 @@ class VicSearch extends Component {
     super(props);
     this.mapContainerRef = React.createRef();
 
+    this.predefinedServices = [
+      'Urinary tract infection (UTI) diagnosis & treatment',
+      'Hormonal contraception',
+      'Travel health',
+      'Shingles diagnosis & treatment',
+      'Psoriasis (mild flare ups) diagnosis & treatment'
+    ];
+
     this.state = {
       filteredLocations: [],
       locations: [],
@@ -221,6 +229,13 @@ class VicSearch extends Component {
         });
       });
     }
+
+    this.setState({
+      serviceFilters: this.predefinedServices
+    }, () => {
+      this.onApplyFilters();
+    });
+
   }
 
   /* Event handlers */
@@ -244,10 +259,10 @@ class VicSearch extends Component {
 
   onClearFilters() {
     this.setState({
-      serviceFilters: [],
+      serviceFilters: this.predefinedServices,
       timeFilters: [],
-      filteredLocations: this.state.locations,
-      filtersApplied: false
+      filteredLocations: this.getFilteredResults(this.state.locations),
+      filtersApplied: true
     });
   }
 
@@ -256,6 +271,8 @@ class VicSearch extends Component {
 
     console.log('Locations incoming:');
     console.log(locs);
+
+    const filteredLocations = this.getFilteredResults(locs);
 
     // for some reason in dev we get duplicates
     const locations = [];
@@ -267,7 +284,7 @@ class VicSearch extends Component {
 
     let state = {
       locations: locations,
-      filteredLocations: this.getFilteredResults(locations),
+      filteredLocations: filteredLocations,
       selectedLocation: this.state.selectedLocation,
       services: getPropertiesByKey("services", data)
     };
@@ -432,20 +449,21 @@ class VicSearch extends Component {
   }
 
   getResultsFilteredByService(data) {
-    if (!this.state.serviceFilters.length) {
-      return data;
-    }
-  
+    // If no specific service filters are selected, filter by all predefined services
+    const filtersToApply = this.state.serviceFilters.length ? 
+    this.state.serviceFilters : 
+    this.predefinedServices;
+
     const results = data.filter(location => {
       // If location has no services, exclude it
       if (!location.services) return false;
-  
-      // Check if location has ANY of the selected services (OR logic)
-      return this.state.serviceFilters.some(item => {
-        return location.services.indexOf(item) > -1;
-      });
+
+      // Check if location has ANY of the predefined services
+      return filtersToApply.some(service => 
+        location.services.indexOf(service) > -1
+      );
     });
-  
+
     return results;
   }
 

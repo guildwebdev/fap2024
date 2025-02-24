@@ -29,10 +29,12 @@ const VicServicesSelector = props => {
     {display:'Mild plaque psoriasis', search: 'Psoriasis (mild flare ups) diagnosis & treatment'}
   ];
 
+  
+
   // Get display value for select
   const getDisplayValue = () => {
     if (props.selectedServices.length > 1) {
-      return 'Multiple Services';
+      return 'Services';
     }
     const selectedService = services.find(service => service.search === props.selectedServices[0]);
     return selectedService ? selectedService.display : '';
