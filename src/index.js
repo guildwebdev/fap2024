@@ -56,10 +56,12 @@ for (let i = 0; i < searchElements.length; i++) {
 }
 
 const vicElements = document.getElementsByClassName('app-vic-search');
-for (let i = 0; i < searchElements.length; i++) {
+console.log('found vic elements');
+for (let i = 0; i < vicElements.length; i++) {
+    console.log('rendering vicsearch to element:',vicElements.length);
     ReactDOM.render(
         <VicSearch />,
-        searchElements[i]
+        vicElements[i]
     );
 }
 

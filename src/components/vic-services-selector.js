@@ -8,7 +8,8 @@ const VicServicesSelector = props => {
   const handleChange = (e) => {
     e.preventDefault();
     props.handleSelectService('');
-    props.handleSelectService(e.target.value);
+    const selectedService = services.find(service => service.display === e.target.value);
+    props.handleSelectService(selectedService.search);
   }
 
   const classes = classNames({
@@ -21,11 +22,11 @@ const VicServicesSelector = props => {
 
   // Hardcoded services list
   const services = [
-    'Urinary tract infection',
-    'Oral contraceptive',
-    'Travel health vaccines',
-    'Shingles',
-    'Mild plaque psoriasis'
+    {display:'Urinary tract infection', search: 'Urinary tract infection (UTI) diagnosis & treatment'},
+    {display:'Oral contraceptive', search: 'Hormonal contraception'},
+    {display:'Travel health vaccines', search: 'Travel health'},
+    {display:'Shingles', search: 'Shingles diagnosis & treatment'},
+    {display:'Mild plaque psoriasis', search: 'Psoriasis (mild flare ups) diagnosis & treatment'}
   ];
 
   // Get display value for select
@@ -33,7 +34,8 @@ const VicServicesSelector = props => {
     if (props.selectedServices.length > 1) {
       return 'Multiple Services';
     }
-    return props.selectedServices[0] || '';
+    const selectedService = services.find(service => service.search === props.selectedServices[0]);
+    return selectedService ? selectedService.display : '';
   }
 
   return (
@@ -48,8 +50,8 @@ const VicServicesSelector = props => {
         <option value="Multiple Services">Multiple Services</option>
       )}
       {services.map((service, key) => (
-        <option key={key} value={service}>
-          {service}
+        <option key={key} value={service.display}>
+          {service.display}
         </option>
       ))}
     </select>
