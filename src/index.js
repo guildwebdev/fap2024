@@ -6,6 +6,7 @@ import MapBasic from './pages/map-basic';
 import MapWithSearch from './pages/map-with-search';
 import Search from './pages/search';
 import VicSearch from './pages/vic-search';
+import QldSearch from './pages/qld-search';
 import * as serviceWorker from './serviceWorker';
 import initDatabase from "./settings/init-database";
 import Pharmacy from "./pages/pharmacy";
@@ -62,6 +63,16 @@ for (let i = 0; i < vicElements.length; i++) {
     ReactDOM.render(
         <VicSearch />,
         vicElements[i]
+    );
+}
+
+const qldElements = document.getElementsByClassName('app-qld-search');
+console.log('found qld elements');
+for (let i = 0; i < qldElements.length; i++) {
+    console.log('rendering vicsearch to element:',qldElements.length);
+    ReactDOM.render(
+        <QldSearch />,
+        qldElements[i]
     );
 }
 

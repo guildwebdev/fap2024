@@ -4,12 +4,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import VicServicesSelector from './vic-services-selector';
+import QldServicesSelector from './qld-services-selector';
 import TimeFilterButton from './time-filter-button';
 import TimeSelector from './time-selector';
 
 
-class VicSearchFilters extends Component {
+class QldSearchFilters extends Component {
   constructor( props ) {
     super( props );
 
@@ -98,7 +98,7 @@ class VicSearchFilters extends Component {
     return (
       <div className="pharmacy-map__search-result-filter">
         <div>
-              <VicServicesSelector
+              <QldServicesSelector
                 selectedServices={this.props.selectedServices}
                 handleSelectService={this.onSelectService.bind(this)}
                 handleClear={this.props.handleClear}
@@ -119,9 +119,9 @@ class VicSearchFilters extends Component {
   }
 }
 
-export default VicSearchFilters;
+export default QldSearchFilters;
 
-VicSearchFilters.propTypes = {
+QldSearchFilters.propTypes = {
   active: PropTypes.bool,
   filtersApplied: PropTypes.bool,
   handleClear: PropTypes.func,

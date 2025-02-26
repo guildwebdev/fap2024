@@ -11,7 +11,7 @@ import _ from "lodash";
 import moment from "moment";
 
 import ToggleViewButtons from "../components/toggle-view-buttons";
-import VicSearchFilters from "../components/vic-search-filters";
+import QldSearchFilters from "../components/qld-search-filters";
 import SearchResults from "../components/search-results";
 import SearchDetails from "../components/search-details";
 import MapSearch from "../components/map-search";
@@ -26,18 +26,19 @@ import globalSettings from "../settings/global";
 import postcodes from "../settings/data";
 import Cookies from 'js-cookie';
 
-class VicSearch extends Component {
+class QldSearch extends Component {
   constructor(props) {
     super(props);
     this.mapContainerRef = React.createRef();
 
     this.predefinedServices = [
-      'Urinary tract infection (UTI) diagnosis & treatment',
-      'Hormonal contraception',
-      'Travel health',
-      'Shingles diagnosis & treatment',
-      'Psoriasis (mild flare ups) diagnosis & treatment'
-    ];
+        'Wound care',
+        'Asthma management',
+        'Travel health',
+        'Weight management',
+        'Quit smoking support',
+        ''
+      ];
 
     this.state = {
       filteredLocations: [],
@@ -646,7 +647,7 @@ class VicSearch extends Component {
       <div className="fap-map-container">
         <div className={filterSectionClasses}>
           
-              <VicSearchFilters
+              <QldSearchFilters
                 active={this.state.filtersExpanded}
                 filtersApplied={this.state.filtersApplied}
                 handleFilterToggle={this.onFilterToggle}
@@ -712,4 +713,4 @@ class VicSearch extends Component {
   }
 }
 
-export default VicSearch;
+export default QldSearch;

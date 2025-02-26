@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const VicServicesSelector = props => {
+const QldServicesSelector = props => {
   const handleChange = (e) => {
     e.preventDefault();
     props.handleSelectService('');
@@ -22,11 +22,19 @@ const VicServicesSelector = props => {
 
   // Hardcoded services list
   const services = [
-    {display:'Urinary tract infection', search: 'Urinary tract infection (UTI) diagnosis & treatment'},
-    {display:'Oral contraceptive', search: 'Hormonal contraception'},
-    {display:'Travel health vaccines', search: 'Travel health'},
-    {display:'Shingles', search: 'Shingles diagnosis & treatment'},
-    {display:'Mild plaque psoriasis', search: 'Psoriasis (mild flare ups) diagnosis & treatment'}
+    {display:'Minor wound management', search: 'Wound care'},
+    {display:'Nausea and vomiting', search: ''},
+    {display:'Mild pain and inflammation', search: ''},
+    {display:'Reflux and heartburn', search: ''},
+    {display:'Hay fever', search: ''},
+    {display:'Ear infections', search: ''},
+    {display:'Cardiovascular disease risk reduction ', search: ''},
+    {display:'Asthma', search: 'Asthma management'},
+    {display:'Chronic obstructive pulmonary disease (COPD)', search: 'Asthma management'},
+    {display:'Quit smoking support', search: 'Quit smoking support'},
+    {display:'Oral health screening and fluoride application', search: ''},
+    {display:'Travel health', search: 'Travel health'},
+    {display:'Weight and obesity management', search: 'Weight management'}
   ];
 
   
@@ -57,10 +65,10 @@ const VicServicesSelector = props => {
   );
 };
 
-VicServicesSelector.propTypes = {
+QldServicesSelector.propTypes = {
   active: PropTypes.bool,
   handleSelectService: PropTypes.func,
   selectedServices: PropTypes.array,
 };
 
-export default VicServicesSelector;
+export default QldServicesSelector;
