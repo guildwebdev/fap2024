@@ -17,7 +17,7 @@ const QldServicesSelector = props => {
     'c-dropdown--services': true,
     'c-filters__dropdown': true,
     'is-active': props.active,
-    'is-filters-selected': props.selectedServices && props.selectedServices.length > 0,
+    'is-filters-selected': props.selectedServices.length > 0,
   });
 
   // Hardcoded services list
@@ -41,22 +41,11 @@ const QldServicesSelector = props => {
 
   // Get display value for select
   const getDisplayValue = () => {
-    // First check if we have a specific display name set
-    if (props.selectedServiceDisplay) {
-      return props.selectedServiceDisplay;
-    }
-    
     if (props.selectedServices.length > 1) {
       return 'Services';
     }
-    
-    // Only try to find by search value if we have one
-    if (props.selectedServices && props.selectedServices[0]) {
-      const selectedService = services.find(service => service.search === props.selectedServices[0]);
-      return selectedService ? selectedService.display : '';
-    }
-    
-    return '';
+    const selectedService = services.find(service => service.search === props.selectedServices[0]);
+    return selectedService ? selectedService.display : '';
   }
 
   return (
@@ -80,11 +69,6 @@ QldServicesSelector.propTypes = {
   active: PropTypes.bool,
   handleSelectService: PropTypes.func,
   selectedServices: PropTypes.array,
-  selectedServiceDisplay: PropTypes.string
 };
-
-QldServicesSelector.defaultProps = {
-  selectedServices: [],
-}
 
 export default QldServicesSelector;

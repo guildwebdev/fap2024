@@ -32,13 +32,13 @@ class QldSearch extends Component {
     this.mapContainerRef = React.createRef();
 
     this.predefinedServices = [
-        'Wound care',
-        'Asthma management',
-        'Travel health',
-        'Weight management',
-        'Quit smoking support',
-        ''
-      ];
+      'Wound care',
+      'Asthma management',
+      'Quit smoking support',
+      'Travel health',
+      'Weight management',
+      ''
+    ];
 
     this.state = {
       filteredLocations: [],
@@ -68,30 +68,13 @@ class QldSearch extends Component {
     };
 
     this.handleFilterByService = (event) => {
-      const { service, displayName } = event.detail;
-  
+      const {service} = event.detail;
       if (service) {
         this.setState({
-          serviceFilters: [service],
-          selectedServiceDisplay: null // Reset display name when using service directly
+          serviceFilters: [service]
         }, () => {
           this.onApplyFilters();
-        });
-      } else if (displayName) {
-        const services = [
-          // Your services array
-        ];
-        
-        const matchedService = services.find(s => s.display === displayName);
-        
-        if (matchedService) {
-          this.setState({
-            serviceFilters: matchedService.search ? [matchedService.search] : [],
-            selectedServiceDisplay: displayName // Store the display name
-          }, () => {
-            this.onApplyFilters();
-          });
-        }
+        })
       }
     };
 
