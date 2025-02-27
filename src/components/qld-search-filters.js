@@ -98,20 +98,20 @@ class QldSearchFilters extends Component {
     return (
       <div className="pharmacy-map__search-result-filter">
         <div>
-              <QldServicesSelector
-                selectedServices={this.props.selectedServices}
-                handleSelectService={this.onSelectService.bind(this)}
-                handleClear={this.props.handleClear}
-                active={this.state.isChildrenExpanded}
-             
-            />
-            </div>
+          <QldServicesSelector
+            selectedServices={this.state.serviceFilters}
+            selectedServiceDisplay={this.state.selectedServiceDisplay}
+            handleSelectService={this.onSelectService.bind(this)}
+            handleClear={this.props.handleClear}
+            active={this.state.isChildrenExpanded}
+          />
+        </div>
 
-              <span 
-                className="map-to-list-toggle"
-                onClick={this.props.handleClear}>
-                  <i className="fa-solid fa-filter-circle-xmark"></i>
-              </span>
+        <span 
+          className="map-to-list-toggle"
+          onClick={this.props.handleClear}>
+            <i className="fa-solid fa-filter-circle-xmark"></i>
+        </span>
 
 
       </div>

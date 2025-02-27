@@ -68,13 +68,30 @@ class QldSearch extends Component {
     };
 
     this.handleFilterByService = (event) => {
-      const {service} = event.detail;
+      const { service, displayName } = event.detail;
+  
       if (service) {
         this.setState({
-          serviceFilters: [service]
+          serviceFilters: [service],
+          selectedServiceDisplay: null // Reset display name when using service directly
         }, () => {
           this.onApplyFilters();
-        })
+        });
+      } else if (displayName) {
+        const services = [
+          // Your services array
+        ];
+        
+        const matchedService = services.find(s => s.display === displayName);
+        
+        if (matchedService) {
+          this.setState({
+            serviceFilters: matchedService.search ? [matchedService.search] : [],
+            selectedServiceDisplay: displayName // Store the display name
+          }, () => {
+            this.onApplyFilters();
+          });
+        }
       }
     };
 
