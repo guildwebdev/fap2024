@@ -5,11 +5,18 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const QldServicesSelector = props => {
+  const [selectedId, setSelectedId] = React.useState('');
+
   const handleChange = (e) => {
     e.preventDefault();
+    const selectedId = parseInt(e.target.value);
+    setSelectedId(selectedId); // Store the selected ID
+    
     props.handleSelectService('');
-    const selectedService = services.find(service => service.display === e.target.value);
-    props.handleSelectService(selectedService.search);
+    const selectedService = services.find(service => service.id === selectedId);
+    if (selectedService) {
+      props.handleSelectService(selectedService.search);
+    }
   }
 
   const classes = classNames({
@@ -22,45 +29,45 @@ const QldServicesSelector = props => {
 
   // Hardcoded services list
   const services = [
-    {display:'Minor wound management', search: 'Wound care'},
-    {display:'Nausea and vomiting', search: ''},
-    {display:'Mild pain and inflammation', search: ''},
-    {display:'Reflux and heartburn', search: ''},
-    {display:'Hay fever', search: ''},
-    {display:'Ear infections', search: ''},
-    {display:'Cardiovascular disease risk reduction ', search: ''},
-    {display:'Asthma', search: 'Asthma management'},
-    {display:'Chronic obstructive pulmonary disease', search: 'Asthma management'},
-    {display:'Quit smoking support', search: 'Quit smoking support'},
-    {display:'Oral health screening and fluoride application', search: ''},
-    {display:'Travel health', search: 'Travel health'},
-    {display:'Weight and obesity management', search: 'Weight management'}
-  ];
+    {id: 1, display:'Minor wound management', search: 'Wound care'},
+    {id: 2, display:'Nausea and vomiting', search: 'Full Scope of Practice Pilot'},
+    {id: 3, display:'Mild pain and inflammation', search: 'Full Scope of Practice Pilot'},
+    {id: 4, display:'Reflux and heartburn', search: 'Full Scope of Practice Pilot'},
+    {id: 5, display:'Hay fever', search: 'Full Scope of Practice Pilot'},
+    {id: 6, display:'Ear infections', search: 'Full Scope of Practice Pilot'},
+    {id: 7, display:'Cardiovascular disease risk reduction ', search: 'Full Scope of Practice Pilot'},
+    {id: 8, display:'Asthma', search: 'Asthma management'},
+    {id: 9, display:'Chronic obstructive pulmonary disease', search: 'Asthma management'},
+    {id: 10, display:'Quit smoking support', search: 'Quit smoking support'},
+    {id: 11, display:'Oral health screening and fluoride application', search: 'Full Scope of Practice Pilot'},
+    {id: 12, display:'Travel health', search: 'Travel health'},
+    {id: 13, display:'Weight and obesity management', search: 'Weight management'}
+];
 
   
 
   // Get display value for select
   const getDisplayValue = () => {
     if (props.selectedServices.length > 1) {
-      return 'Services';
+      return '';
     }
     const selectedService = services.find(service => service.search === props.selectedServices[0]);
-    return selectedService ? selectedService.display : '';
+    return selectedService ? selectedService.id : '';
   }
 
   return (
     <select 
-      className="pharmacy-map__filter-results fap-input form-control"
-      value={getDisplayValue()}
-      onChange={handleChange}
-      aria-label="Filter by service"
+        className="pharmacy-map__filter-results fap-input form-control"
+        value={selectedId || ''}
+        onChange={handleChange}
+        aria-label="Filter by service"
     >
-      <option value="">Services</option>
-      {services.map((service, key) => (
-        <option key={key} value={service.display}>
-          {service.display}
-        </option>
-      ))}
+        <option value="">Services</option>
+        {services.map((service) => (
+            <option key={service.id} value={service.id}>
+                {service.display}
+            </option>
+        ))}
     </select>
   );
 };

@@ -37,7 +37,7 @@ class QldSearch extends Component {
       'Quit smoking support',
       'Travel health',
       'Weight management',
-      ''
+      'Full Scope of Practice Pilot'
     ];
 
     this.state = {
