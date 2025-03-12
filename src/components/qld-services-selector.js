@@ -10,7 +10,7 @@ const QldServicesSelector = props => {
   const handleChange = (e) => {
     e.preventDefault();
     const selectedId = parseInt(e.target.value);
-    setSelectedId(selectedId); // Store the selected ID
+    setSelectedId(selectedId);
     
     props.handleSelectService('');
     const selectedService = services.find(service => service.id === selectedId);
@@ -18,6 +18,13 @@ const QldServicesSelector = props => {
       props.handleSelectService(selectedService.search);
     }
   }
+
+  React.useEffect(() => {
+    // If selectedServices is empty, reset the selectedId
+    if (props.selectedServices.length === 0) {
+      setSelectedId('');
+    }
+  }, [props.selectedServices]);
 
   const classes = classNames({
     'c-dropdown': true,
@@ -29,6 +36,7 @@ const QldServicesSelector = props => {
 
   // Hardcoded services list
   const services = [
+    {id: 0, display:'Services', search: ''},
     {id: 1, display:'Minor wound management', search: 'Wound care'},
     {id: 2, display:'Nausea and vomiting', search: 'Full Scope of Practice Pilot'},
     {id: 3, display:'Mild pain and inflammation', search: 'Full Scope of Practice Pilot'},
@@ -62,7 +70,6 @@ const QldServicesSelector = props => {
         onChange={handleChange}
         aria-label="Filter by service"
     >
-        <option value="">Services</option>
         {services.map((service) => (
             <option key={service.id} value={service.id}>
                 {service.display}

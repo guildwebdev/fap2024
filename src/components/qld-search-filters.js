@@ -32,13 +32,13 @@ class QldSearchFilters extends Component {
     this.setState({ isChildrenExpanded: !this.state.isChildrenExpanded }, this.updateOverflowState );
   }
 
-  onFilterToggle( e ) {
+  onFilterToggle(e) {
     e.preventDefault();
     this.setState({
       isChildrenExpanded: false
     }, () => {
+      // Make sure this calls the parent's handleFilterToggle which should clear the services
       this.props.handleFilterToggle();
-      this.removeOverflowWithDelay();
     });
   }
 
@@ -109,7 +109,13 @@ class QldSearchFilters extends Component {
 
               <span 
                 className="map-to-list-toggle"
-                onClick={this.props.handleClear}>
+                onClick={(e) => {
+                  // Call the original handleClear prop
+                  this.props.handleClear();
+                  
+                  // Reset the service selector
+                  this.onSelectService('');
+                }}>
                   <i className="fa-solid fa-filter-circle-xmark"></i>
               </span>
 
