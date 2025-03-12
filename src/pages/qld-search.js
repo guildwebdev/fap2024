@@ -207,12 +207,15 @@ class QldSearch extends Component {
       }
       
       if (serviceName) {
-        // Split services string into array
-        const services = serviceName.split(',').map(s => s.trim());
-        
-        if (services.length > 0) {
+        // Find the matching service from the predefined services
+        const matchingService = this.predefinedServices.find(service => 
+          service.toLowerCase() === serviceName.toLowerCase()
+        );
+    
+        if (matchingService) {
           this.setState({
-            serviceFilters: services
+            serviceFilters: [matchingService],
+            filtersApplied: true
           }, () => {
             this.onApplyFilters();
           });

@@ -20,10 +20,33 @@ const QldServicesSelector = props => {
   }
 
   React.useEffect(() => {
+    
     // If selectedServices is empty, reset the selectedId
     if (props.selectedServices.length === 0) {
       setSelectedId('');
     }
+
+    const handleServiceSelection = (event) => {
+      const { serviceId } = event.detail;
+      
+      // Update the selected ID
+      setSelectedId(serviceId);
+      
+      // Find and update the corresponding service
+      const selectedService = services.find(service => service.id === serviceId);
+      if (selectedService) {
+        props.handleSelectService(selectedService.search);
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('selectService', handleServiceSelection);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('selectService', handleServiceSelection);
+    };
+
   }, [props.selectedServices]);
 
   const classes = classNames({
