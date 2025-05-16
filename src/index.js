@@ -7,6 +7,7 @@ import MapWithSearch from './pages/map-with-search';
 import Search from './pages/search';
 import VicSearch from './pages/vic-search';
 import QldSearch from './pages/qld-search';
+import TasSearch from './pages/tas-search';
 import * as serviceWorker from './serviceWorker';
 import initDatabase from "./settings/init-database";
 import Pharmacy from "./pages/pharmacy";
@@ -63,6 +64,16 @@ for (let i = 0; i < vicElements.length; i++) {
     ReactDOM.render(
         <VicSearch />,
         vicElements[i]
+    );
+}
+
+const tasElements = document.getElementsByClassName('app-tas-search');
+console.log('found tas elements');
+for (let i = 0; i < tasElements.length; i++) {
+    console.log('rendering tassearch to element:',tasElements.length);
+    ReactDOM.render(
+        <TasSearch />,
+        tasElements[i]
     );
 }
 

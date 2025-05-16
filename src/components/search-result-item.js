@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import he from 'he';
 import moment from 'moment';
 import renderPropertyList from '../helpers/render-property-list';
 import onSendUserAction from '../helpers/on-send-user-action';
@@ -79,7 +80,7 @@ const SearchResultItem = props => {
       var data = props.result.openingHourExceptions;
       for (var i = 0; i < data.length; i++){
         if (data[i].date == todayDate){
-          todayOpening = (data[i].open == "Closed") ? `Closed (${data[i].reason})`: `${data[i].open} to ${data[i].close} (${data[i].reason})`;
+          todayOpening = (data[i].open == "Closed") ? `Closed (${he.decode(data[i].reason)})`: `${data[i].open} to ${data[i].close} (${he.decode(data[i].reason)})`;
           exceptionFlag = true;
         }
       } 

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import he from 'he';
 import getDistance from '../helpers/get-distance';
 import getOpeningHours from '../helpers/get-opening-hours';
 import fixURL from '../helpers/fix-url';
@@ -208,7 +209,7 @@ function onBookingClicked(e) {
                                                         <span className='pharmacy-single__detail-wrapper'>
                                                             {formattedHolidayHours.map((holiday, index) => (
                                                                 <span className='pharmacy-single__detail-item' key={index}>
-                                                                    {holiday.date} {holiday.hours} ({holiday.reason})
+                                                                    {holiday.date} {holiday.hours} ({he.decode(holiday.reason)})
                                                                 </span>
                                                             ))}
                                                         </span>

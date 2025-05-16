@@ -47,6 +47,7 @@ class SimpleMapContainer extends Component {
       panControl: false,
       mapTypeControl: false,
       scrollwheel: false,
+      zoomControl: true,
       // styles: [
       //   {
       //     stylers: [
@@ -768,6 +769,7 @@ class SimpleMapContainer extends Component {
           options={{
             ...this.createMapOptions,
             zoomControl: false,
+            cameraControl: false,
           }}
           zoom={this.state.mapProps.zoom}
           center={this.props.mapCenter}

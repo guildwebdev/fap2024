@@ -46,16 +46,8 @@ class MapContainer extends Component {
       panControl: false,
       mapTypeControl: false,
       scrollwheel: false,
-      // styles: [
-      //   {
-      //     stylers: [
-      //       { saturation: -100 },
-      //       { gamma: 0.7 },
-      //       { lightness: 5 },
-      //       { visibility: "on" }
-      //     ]
-      //   }
-      // ]
+      zoomControl: true,
+
       styles:[
         {
           "elementType": "geometry",

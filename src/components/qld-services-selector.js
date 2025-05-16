@@ -66,13 +66,19 @@ const QldServicesSelector = props => {
     {id: 4, display:'Reflux and heartburn', search: 'Full Scope of Practice Pilot'},
     {id: 5, display:'Hay fever', search: 'Full Scope of Practice Pilot'},
     {id: 6, display:'Ear infections', search: 'Full Scope of Practice Pilot'},
-    {id: 7, display:'Cardiovascular disease risk reduction ', search: 'Full Scope of Practice Pilot'},
+    {id: 7, display:'Cardiovascular disease risk reduction', search: 'Full Scope of Practice Pilot'},
+    {id: 19, display: 'Hormonal contraception', search: 'Hormonal contraception'},
     {id: 8, display:'Asthma', search: 'Asthma management'},
     {id: 9, display:'Chronic obstructive pulmonary disease', search: 'Asthma management'},
     {id: 10, display:'Quit smoking support', search: 'Quit smoking support'},
-    {id: 11, display:'Oral health screening and fluoride application', search: 'Full Scope of Practice Pilot'},
+    //{id: 11, display:'Oral health screening and fluoride application', search: 'Full Scope of Practice Pilot'},
     {id: 12, display:'Travel health', search: 'Travel health'},
-    {id: 13, display:'Weight and obesity management', search: 'Weight management'}
+    {id: 13, display:'Weight and obesity management', search: 'Weight management'},
+    {id: 14, display:'Shingles', search:'Shingles diagnosis & treatment'},
+    {id: 15, display:'School sores', search:'Skin conditions treatment'},
+    {id: 16, display:'Eczema', search:'Skin conditions treatment'},
+    {id: 17, display:'Psoriasis', search:'Psoriasis (mild flare ups) diagnosis & treatment'},
+    {id: 18, display:'Mild to moderate acne', search:'Skin conditions treatment'}
 ];
 
   

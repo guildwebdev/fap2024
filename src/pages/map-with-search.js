@@ -169,7 +169,7 @@ class MapWithSearch extends Component {
         <MapSearch
           defaultLocation={this.state.defaultLocation}
           handleInput={this.onLocationInput}
-          title="My town/city"
+          title="My town/state"
         />
 
         <MapContainer

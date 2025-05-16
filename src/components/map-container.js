@@ -58,6 +58,8 @@ class MapContainer extends Component {
       panControl: false,
       mapTypeControl: false,
       scrollwheel: false,
+      zoomControl: true,
+      cameraControl: false,
       // styles: [
       //   {
       //     stylers: [

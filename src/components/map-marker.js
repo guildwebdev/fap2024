@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import he from 'he';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { trackCustom, trackSingleCustom } from 'react-facebook-pixel';
@@ -368,7 +369,7 @@ class MapMarker extends Component {
         var data = this.props.location.openingHourExceptions;
         for (var i = 0; i < data.length; i++){
           if (data[i].date == todayDate){
-            todayOpening = (data[i].open === "Closed") ? `Closed (${data[i].reason})`: `Open ${data[i].open} to ${data[i].close} (${data[i].reason})`;
+            todayOpening = (data[i].open === "Closed") ? `Closed (${he.decode(data[i].reason)})`: `Open ${data[i].open} to ${data[i].close} (${he.decode(data[i].reason)})`;
             exceptionFlag = true;
           }
         }      

@@ -12,15 +12,15 @@ const OpeningHours = ({ location }) => {
     const dayLower = dayName.toLowerCase();
     const schedule = location[dayLower];
     
-    return schedule && schedule.open ? (      
+    return schedule && (schedule.open != 'Closed') ? (      
       <span className="open-status__schedule-time small">
-        <span className="open-status__schedule-date">{dayName}</span>
-        : {schedule.open} - {schedule.close}
+        <span className="open-status__schedule-date"><strong>{dayName}</strong>:</span>
+        {schedule.open} - {schedule.close}
       </span>
     ) : (
       <span className="open-status__schedule-time small">
-        <span className="open-status__schedule-date">{dayName}</span>
-        : Closed
+        <span className="open-status__schedule-date"><strong>{dayName}</strong>:</span>
+        Closed
       </span>
     );
   };
