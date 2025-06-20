@@ -20,7 +20,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0022/144238/jquery-3.7.1.min.js"></script>
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0019/144235/bootstrap.min.js"></script> <!--Bootstrap 5.3.3-->
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0020/144236/popper.min.js"></script>
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0030/148755/owlcarousel.2-3-4.min.js"></script>
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0021/144237/sweetalert.min.js"></script>
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0027/158751/datatables-2.3.1.js"></script>
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0024/148281/find-a-pharmacy-2024.js"></script>
+    <script src="https://findapharmacy.com.au/__data/assets/js_file/0022/159115/gpy-form.js"></script>
     
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -61,13 +68,201 @@
       <!--<div id="app-search" class="s-filtered-search__app-container"></div>-->
       <!--<div id="app-services-landing" class="c-map-container c-map-container&#45;&#45;services c-map-container&#45;&#45;summary-only" serviceKeyword="Vaccination Services - COVID" defaultMapCenter='{"lat":-20.917574,"lng":142.702789}' ></div>-->
 
-      <!--<div class="app-pharmacy s-filtered-search__app-container"></div>--><!--INDIVIDUAL PHARMACY PAGE-->
+      <div class="app-pharmacy s-filtered-search__app-container"></div><!--INDIVIDUAL PHARMACY PAGE-->
       <!--<div class="app-services-landing s-filtered-search__app-container" serviceKeyword="Weight Management,Wound Management,Document Witnessing Service"></div>--><!--FILTERED SERVICES PAGE-->
       <!--<div class="app-search s-filtered-search__app-container pharmacy-map__search-results-map pharmacy-map-toggle-view d-block"></div>--><!--NORMAL SEARCH PAGE-->
       <!--<div class="app-list s-filtered-search__app-container"></div>--><!--LIST VIEW PAGE-->
       <!--MULTIPLE SERVICES USE QUERYSTRING: ?services=Service1,Service2,Service3-->
       <!--<div class="app-vic-search s-filtered-search__app-container pharmacy-map__search-results-map pharmacy-map-toggle-view d-block"></div>--><!--VIC Scope-->
-      <div class="app-tas-search s-filtered-search__app-container pharmacy-map__search-results-map pharmacy-map-toggle-view d-block"></div><!--TAS Scope-->
+      <!--<div class="app-tas-search s-filtered-search__app-container pharmacy-map__search-results-map pharmacy-map-toggle-view d-block"></div>--><!--TAS Scope-->
       <!--<div class="app-qld-search s-filtered-search__app-container pharmacy-map__search-results-map pharmacy-map-toggle-view d-block"></div>--><!--QLD Scope-->
+
+
+      <!--GPY-->
+      <div class="notify-modal modal fade" id="fap-gpy-landing-modal" tabindex="-1" aria-hidden="true" style="
+    /* display: block; */
+">
+        <div class="notify-modal__modal-dialog modal-dialog modal-fullscreen">
+            <div class="notify-modal__modal-content header__modal-content modal-content">
+                <div class="notify-modal__modal-body header__modal-form modal-body">
+                    
+                    <div class="container">
+                        <div class="row notify-modal__modal-row header__modal-row align-items-center">
+                            <div class="col-md-6">
+                                <h2 class="header__modal-title">Guild Pharmacy Awards</h2>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="notify-modal__subscribe-actions header__modal-text">
+                                    <div class="notify-modal__input-group modal-form__wrapper">
+                                        
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras euismod rutrum orci ut ullamcorper. Quisque elementum fermentum ipsum in consequat. In eget ligula non mauris sagittis consequat. Suspendisse imperdiet rhoncus tortor in accumsan. Ut a tempus odio, ac faucibus dolor.</p>-->
+                                                <h3 class="mb-3 center">Select your category</h3>
+                                                <button class="notify-modal__btn-primary header__modal-action button-yellow btn-with-backdrop btn btn-secondary mb-3" id="fap_gpy_pharmacy_action"><div class="backdrop">
+                                                    <i class="fa-solid fa-house-medical"></i>
+                                                    Pharmacy of the Year
+                                                </div><div class="overlay">
+                                                    <i class="fa-solid fa-house-medical"></i>
+                                                    Pharmacy of the Year
+                                                </div></button>
+                                                <button class="notify-modal__btn-primary header__modal-action button-yellow btn-with-backdrop btn btn-secondary mb-3" id="fap_gpy_pharmacist_action"><div class="backdrop">
+                                                    <i class="fa-solid fa-user"></i>
+                                                    Pharmacist of the Year
+                                                </div><div class="overlay">
+                                                    <i class="fa-solid fa-user"></i>
+                                                    Pharmacist of the Year
+                                                </div></button>
+                                                <button class="notify-modal__btn-primary header__modal-action button-yellow btn-with-backdrop btn btn-secondary" id="fap_gpy_student_action"><div class="backdrop">
+                                                    <i class="fa-solid fa-user-graduate"></i>
+                                                    Student Pharmacist of the Year
+                                                </div><div class="overlay">
+                                                    <i class="fa-solid fa-user-graduate"></i>
+                                                    Student Pharmacist of the Year
+                                                </div></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>   
+                        <button type="button" class="notify-modal__btn-close header__btn-close btn-close" data-bs-dismiss="modal" aria-label="Close" id="gpy-landing-modal-close">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notify-modal modal fade" id="fap-gpy-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div class="notify-modal__modal-dialog modal-dialog modal-fullscreen">
+          <div class="notify-modal__modal-content header__modal-content modal-content">
+              <div class="notify-modal__modal-body header__modal-form modal-body">
+                  
+                  <div class="container">
+                      <div class="row notify-modal__modal-row header__modal-row align-items-center">
+                          <div class="col-md-6">
+                              <h2 class="header__modal-title">Guild Pharmacy Awards</h2>
+                          </div>
+                          
+                          <div class="col-md-6">
+                              <div class="notify-modal__subscribe-actions header__modal-text">
+                                  
+                                  <!--ADD SQUIZ FORM HERE-->
+                                  <form id="fap-gpy-form">
+                                      <div class="notify-modal__input-group modal-form__wrapper">
+  
+                                          <div class="row">
+                                              <div class="col-sm-12 col-md-6">
+                                                  <input type="text" class="notify-modal__notify-name fap-input form-control" id="gpy_first_name" name="gpy_first_name" placeholder="First name" aria-label="First name">
+                                              </div>
+                                              <div class="col-sm-12 col-md-6">
+                                                  <input type="text" class="notify-modal__notify-name fap-input form-control" id="gpy_last_name" name="gpy_last_name" placeholder="Last name" aria-label="Last name">
+                                              </div>
+                                              <div class="col-sm-12">    
+                                                  <input type="email" class="notify-modal__notify-email fap-input form-control" id="gpy_email" name="gpy_email" placeholder="Email" aria-label="Email">
+                                              </div>
+                                              <div class="col-sm-12 col-md-6">
+                                                  <input type="text" class="notify-modal__notify-phone fap-input form-control" id="gpy_phone_number" name="gpy_phone_number" placeholder="Phone" maxlength="10" minlength="10" aria-label="Phone">
+                                              </div>
+                                              <div class="col-sm-12 col-md-6">
+                                                  <input type="text" class="notify-modal__notify-postcode fap-input form-control" id="gpy_postcode_or_zip_code" name="gpy_postcode_or_zip_code" placeholder="Postcode" maxlength="4" minlength="4" aria-label="Postcode">
+                                              </div>
+                                              <div class="col-sm-12">
+                                                  <select class="notify-modal__notify-state fap-input form-control" id="gpy_state" name="gpy_state" aria-label="State">
+                                                      <option disabled="" selected="">State</option>
+                                                      <option value="ACT">Australian Capital Territory</option>
+                                                      <option value="NSW">New South Wales</option>
+                                                      <option value="NT">Northern Territory</option>
+                                                      <option value="QLD">Queensland</option>
+                                                      <option value="SA">South Australia</option>
+                                                      <option value="TAS">Tasmania</option>
+                                                      <option value="VIC">Victoria</option>
+                                                      <option value="WA">Western Australia</option>
+                                                  </select>
+                                                  
+                                                  <select class="notify-modal__notify-pharmacy fap-input form-control" id="gpy_pharmacy" name="gpy_pharmacy" aria-label="Pharmacy">
+                                                      <option disabled="" selected="" id="null_pharmacy">Pharmacy</option>
+                                                  </select>
+                                                  
+                                                  <input type="text" class="notify-modal__notify-pharmacist fap-input form-control" id="gpy_pharmacist" name="gpy_pharmacist" placeholder="Pharmacist" aria-label="Pharmacist" style="display: none;">
+                                                  
+                                                  <input type="text" class="notify-modal__notify-student fap-input form-control" id="gpy_student" name="gpy_student" placeholder="Student Pharmacist" aria-label="Student Pharmacist" style="display: none;">
+                                                  
+                                                  <div class="notify-modal__notify-textbox fap-input form-control" id="needs_or_services">
+                                                      <label for="gpy_reason" class="form-label">I'm nominating this pharmacy because:</label>
+                                                      <textarea class="form-control" id="gpy_reason" name="gpy_reason" rows="5"></textarea>
+                                                  </div>
+                                                  
+                                              </div>
+                                          </div>
+  
+                                          <button type="submit" class="notify-modal__btn-primary header__modal-action button-yellow btn-with-backdrop btn btn-secondary" onclick="submit_gpy(event)" id="fap_gpy_submit" disabled=""><div class="backdrop">
+                                                  Submit nomination
+                                          </div><div class="overlay">
+                                                  Submit nomination
+                                          </div></button>
+                                      </div>
+                                  </form>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+  
+                  <button type="button" class="notify-modal__btn-close header__btn-close btn-close" data-bs-dismiss="modal" aria-label="Close">
+                      <i class="fa-solid fa-xmark"></i>
+                  </button>
+              </div>
+              
+              <div class="container data-collection">
+                  <div class="services__list-wrapper small">
+                      <p>INSERT DATA COLLECTION STATEMENT</p>
+                  </div>
+              </div>
+              
+          </div>
+      </div>
+  </div>
+
+
+  <div class="notify-modal modal fade" id="fap-gpy-modal-list" tabindex="-1" aria-hidden="true">
+    <div class="notify-modal__modal-dialog modal-dialog modal-fullscreen">
+        <div class="notify-modal__modal-content header__modal-content modal-content">
+            <div class="notify-modal__modal-body header__modal-form modal-body">
+                
+                <div class="container">
+                    <div class="row notify-modal__modal-row header__modal-row align-items-center">
+                        <div class="col-12">
+                            <div class="notify-modal__input-group modal-form__wrapper">
+                                <h2>Select Pharmacy</h2>
+                                <table id="pharmacy-tables" class="table table-striped table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Pharmacy</th>
+                                            <th>Town/City</th>
+                                            <th>State</th>
+                                            <th>Postcode</th>
+                                            <th>Nominate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="notify-modal__btn-close header__btn-close btn-close" data-bs-dismiss="modal" aria-label="Close" id="gpy-list-modal-close">
+                    <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+      
   </body>
 </html>

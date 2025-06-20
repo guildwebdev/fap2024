@@ -394,15 +394,14 @@ const Pharmacy = ({pharmacyLocation}) => {
   return (
     <>
       <Helmet>
-          <title>{`${selectedLocation.name} - Find a Pharmacy`}</title>
+          <title>{`${selectedLocation.name} | Find a Pharmacy`}</title>
           <meta name="description" content={`Visit ${selectedLocation.name} located at ${selectedLocation.fulladdress}. Services include ${selectedLocation.services.replace(/\|/g,', ')}`} />
-          <meta property="og:title" content={`${selectedLocation.name} - Find a Pharmacy`} />
+          <meta property="og:title" content={`${selectedLocation.name} | Find a Pharmacy`} />
           <meta property="og:description" content={`Visit ${selectedLocation.name} located at ${selectedLocation.fulladdress}`} />
           <meta property="og:type" content="business.business" />
           <script type="application/ld+json">
             {JSON.stringify(structuredData)}
           </script>
-          <meta property="test" content="something"/>
       </Helmet>
       
       <section className="pharmacy-location">

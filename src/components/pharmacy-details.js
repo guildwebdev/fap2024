@@ -161,6 +161,20 @@ function onBookingClicked(e) {
     //RENDER HOLIDAYS
     /**/
 
+    const handleNominateClick = () => {
+        window.gpySelectedPharmacy = selectedLocation.id;
+        if (typeof window.createQueryPharmacy === 'function'){
+          console.log('id: ', selectedLocation.id);
+          console.log('name: ', selectedLocation.name);
+          window.createQueryPharmacy(selectedLocation.id, selectedLocation.name);
+        }
+        const gpyModal = document.getElementById('fap-gpy-landing-modal');
+        if (gpyModal && window.bootstrap) {
+          const modal = new window.bootstrap.Modal(gpyModal);
+          modal.show();
+        }
+      }
+
 
   return (
         <div>
@@ -225,6 +239,16 @@ function onBookingClicked(e) {
                                                     ))}
                                                 </span>
                                             </p>
+
+                                            <hr className='pharmacy-single__separator'/>
+
+                                            <div className="pharmacy-single__actions">
+                                                <p className='pharmacy-single__details small'><strong>Guild Pharmacy Awards</strong></p>
+                                                <button className="button-blue btn-with-backdrop btn btn-secondary" aria-label={`Nominate ${selectedLocation.name} for a Guild Pharmacy Award`} onClick={handleNominateClick}>
+                                                    <div className="backdrop"><i className="fa-solid fa-star"></i>Nominate for Award</div>
+                                                    <div className="overlay"><i className="fa-solid fa-star"></i>Nominate for Award</div>
+                                                </button>
+                                            </div>
 
                                             <hr className='pharmacy-single__separator'/>
             
