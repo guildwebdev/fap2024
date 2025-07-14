@@ -64,28 +64,6 @@ class MapWithSearch extends Component {
     this.getUserLocation();
   }
 
-  getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          this.setState({
-            userLocation: {
-              latitude,
-              longitude,
-            },
-          });
-          console.log('userLocation: ',latitude,longitude)
-        },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
-
   /* Event handlers */
 
   onCenterChange(center) {

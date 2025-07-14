@@ -275,7 +275,7 @@ const distanceInKm = (distanceInMeters / 1000).toFixed(1);
       <div className="pharmacy-map__pharmacy-details result-listing-details">
         <h3 className="pharmacy-map__pharmacy-name result-listing-pharmacy-name">{props.result.name}</h3>
         <p className="pharmacy-map__details result-listing-content small"><strong>Open: </strong>{ openingHours() } | <OpeningHours location={props.result}/></p>
-        <p className="pharmacy-map__details result-listing-content small"><strong>Address: </strong>{addressBlock(props.result)}</p>
+        <p className="pharmacy-map__details result-listing-content small" data-postcode={`${props.result.postcode}`}><strong>Address: </strong>{addressBlock(props.result)}</p>
         {(distanceInKm && !isNaN(distanceInKm)) && (
           <p className="pharmacy-map__details result-listing-content small"><strong>Distance: </strong>{distanceInKm}km</p>
         )}

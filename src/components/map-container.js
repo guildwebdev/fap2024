@@ -614,8 +614,16 @@ class MapContainer extends Component {
     }
   }
 
-  onUserLocationFailed() {
+  onUserLocationFailed(e) {
     console.log("failed to locate user");
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'location_access_error',
+      location_error_code: e.code,
+      location_error_message: e.message
+    });
+
     if (
       (!this.state.isLocating && this.state.initialLocationSet) ||
       this.state.defaultLocation

@@ -5,6 +5,8 @@ import logo from './logo.svg';
 
 function App() {
   useEffect(() => {
+    
+
     // Remove loading overlay once React is mounted
     const loader = document.getElementById('loading-overlay');
     if (loader) {

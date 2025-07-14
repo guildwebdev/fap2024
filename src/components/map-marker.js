@@ -471,7 +471,7 @@ class MapMarker extends Component {
                   {this.props.location.address}
                   {this.props.location.address2 && `, ${this.props.location.address2}`}
                   {this.props.location.address3 && `, ${this.props.location.address3}`}
-                  , {this.props.location.city } {this.props.location.state} {this.props.location.postcode }
+                  , {this.props.location.city } {this.props.location.state} <span className="pharmacy-map__pharmacy-postcode">{this.props.location.postcode }</span>
                 </p>
                 {this.props.location?.phone && (
                   <p className="pharmacy-map__details result-listing-content small"><strong>Phone: </strong><span className='d-inline-block'>{ cleanPhone(this.props.location.phone) }</span></p>
@@ -512,6 +512,7 @@ class MapMarker extends Component {
                         className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"
                         aria-label={`Book an appointment with ${this.props.location.name}`}
                         onClick={() => window.open(this.props.location.bookingurl, '_blank')}
+                        data-url={`${this.props.location.bookingurl}`}
                       >
                         <div className="backdrop">
                           <i className="fa-solid fa-calendar-days"></i> Book now
@@ -525,6 +526,7 @@ class MapMarker extends Component {
                         className="fap-map-popup__for-bookings button-yellow btn-with-backdrop btn"
                         aria-label={`Book an appointment with ${this.props.location.name}`}
                         onClick={this.onBookingClicked}
+                        data-url={`${this.props.location.bookingurl}`}
                       >
                         <div className="backdrop">
                           <i className="fa-solid fa-calendar-days"></i> Book now
