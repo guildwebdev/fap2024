@@ -84,14 +84,16 @@ class MapWithSearch extends Component {
   // Toggle service selection
   onToggleService(service) {
     const { selectedServices } = this.state;
-    
+  
     let newSelectedServices;
     if (selectedServices.includes(service)) {
+      // Remove the service
       newSelectedServices = selectedServices.filter(s => s !== service);
     } else {
-      newSelectedServices = [...selectedServices, service];
+      // Replace all services with just this one (radio button behavior)
+      newSelectedServices = [service];
     }
-    
+  
     // Update state and re-filter immediately
     this.setState({
       selectedServices: newSelectedServices
@@ -202,11 +204,13 @@ class MapWithSearch extends Component {
         {/* Remove the old renderServiceFilters() call */}
         
         <div className="map-wrapper">
-          <MapFilters
-            availableServices={this.availableServices}
-            selectedServices={selectedServices}
-            onToggleService={this.onToggleService}
-          />
+          {this.availableServices.length > 1 && (
+            <MapFilters
+              availableServices={this.availableServices}
+              selectedServices={selectedServices}
+              onToggleService={this.onToggleService}
+            />
+          )}
           
           <MapContainer
             autoCenterToUserLocation={true}

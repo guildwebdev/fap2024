@@ -22,7 +22,7 @@ class MapFilters extends Component {
     }));
   }
 
-  handleServiceSelect(selectedService) {
+   handleServiceSelect(selectedService) {
     const { selectedServices, onToggleService } = this.props;
     
     // If this service is already selected, do nothing (radio button behavior)
@@ -30,15 +30,8 @@ class MapFilters extends Component {
       return;
     }
     
-    // Clear all current selections first
-    [...selectedServices].forEach(service => {
-      onToggleService(service);
-    });
-    
-    // Use setTimeout to ensure the clear operations complete before selecting new
-    setTimeout(() => {
-      onToggleService(selectedService);
-    }, 0);
+    // Just toggle the service - the parent will handle the replacement logic
+    onToggleService(selectedService);
   }
 
   handleAllSelect() {
@@ -82,7 +75,7 @@ class MapFilters extends Component {
         {isExpanded && (
           <div className="filters-panel">
             <div className="filters-header">
-              <h4>Filter by Services</h4>
+              <h4>Filter by services</h4>
             </div>
             
             <div className="filters-content">

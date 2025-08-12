@@ -3952,7 +3952,6 @@ button.notify-modal__btn-primary {
   position: relative;
 }
 
-/* Map Filters Styles */
 .map-filters-container {
   position: absolute;
   bottom: 20px;
@@ -3962,14 +3961,13 @@ button.notify-modal__btn-primary {
   flex-direction: column;
   align-items: flex-start;
 }
-
 .fap-filters {
   width: 48px;
   height: 48px;
   border-radius: 50%;
   background: white;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3977,13 +3975,11 @@ button.notify-modal__btn-primary {
   transition: all 0.3s ease;
   position: relative;
 }
-
 .fap-filters:hover {
   background: #f8f9fa;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
 .fap-filters .filter-count {
   position: absolute;
   top: -8px;
@@ -3999,11 +3995,10 @@ button.notify-modal__btn-primary {
   font-size: 12px;
   font-weight: bold;
 }
-
 .filters-panel {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   border: 1px solid #e0e0e0;
   max-width: 300px;
   min-width: 250px;
@@ -4011,7 +4006,6 @@ button.notify-modal__btn-primary {
   overflow-y: auto;
   animation: slideUp 0.3s ease-out;
 }
-
 .filters-header {
   display: flex;
   justify-content: space-between;
@@ -4019,21 +4013,18 @@ button.notify-modal__btn-primary {
   padding: 15px 15px 10px 15px;
   border-bottom: 1px solid #eee;
 }
-
 .filters-header h4 {
   margin: 0;
   font-size: 16px;
   font-weight: bold;
   color: #333;
 }
-
 .filters-content {
   padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
 .service-checkbox {
   display: flex;
   align-items: center;
@@ -4046,43 +4037,35 @@ button.notify-modal__btn-primary {
   transition: all 0.2s ease;
   user-select: none;
 }
-
 .service-checkbox:hover {
   background: #f8f9fa;
   border-color: #007bff;
 }
-
 .service-checkbox.selected {
   background: #e3f2fd;
   border-color: #007bff;
   color: #1976d2;
 }
-
 .service-checkbox input[type="checkbox"] {
   margin: 0;
 }
-
 .checkbox-label {
   font-size: 14px;
   font-weight: normal;
 }
-
 .service-checkbox.selected .checkbox-label {
   font-weight: 600;
 }
-
 .active-filters {
   padding: 10px 15px;
   background: #f8f9fa;
   border-top: 1px solid #eee;
   color: #666;
 }
-
 .clear-all {
   font-size: 12px;
   padding: 4px 8px;
 }
-
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -4093,14 +4076,11 @@ button.notify-modal__btn-primary {
     transform: translateY(0);
   }
 }
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .map-filters-container {
     bottom: 10px;
     left: 10px;
   }
-  
   .filters-panel {
     max-width: calc(100vw - 40px);
     min-width: 200px;
