@@ -175,6 +175,17 @@ function onBookingClicked(e) {
         }
       }
 
+      /*
+      <hr className='pharmacy-single__separator'/>
+
+                                            <div className="pharmacy-single__actions">
+                                                <p className='pharmacy-single__details small'><strong>Guild Pharmacy Awards</strong></p>
+                                                <button className="button-blue btn-with-backdrop btn btn-secondary" aria-label={`Nominate ${selectedLocation.name} for a Guild Pharmacy Award`} onClick={handleNominateClick}>
+                                                    <div className="backdrop"><i className="fa-solid fa-star"></i>Nominate for Award</div>
+                                                    <div className="overlay"><i className="fa-solid fa-star"></i>Nominate for Award</div>
+                                                </button>
+                                            </div>
+      */
 
   return (
         <div>
@@ -240,15 +251,7 @@ function onBookingClicked(e) {
                                                 </span>
                                             </p>
 
-                                            <hr className='pharmacy-single__separator'/>
-
-                                            <div className="pharmacy-single__actions">
-                                                <p className='pharmacy-single__details small'><strong>Guild Pharmacy Awards</strong></p>
-                                                <button className="button-blue btn-with-backdrop btn btn-secondary" aria-label={`Nominate ${selectedLocation.name} for a Guild Pharmacy Award`} onClick={handleNominateClick}>
-                                                    <div className="backdrop"><i className="fa-solid fa-star"></i>Nominate for Award</div>
-                                                    <div className="overlay"><i className="fa-solid fa-star"></i>Nominate for Award</div>
-                                                </button>
-                                            </div>
+                                            
 
                                             <hr className='pharmacy-single__separator'/>
             

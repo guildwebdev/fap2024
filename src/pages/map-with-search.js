@@ -8,11 +8,11 @@ import axios from "axios";
 import MapContainer from "../components/map-container";
 import MapSearch from "../components/map-search";
 import MapExpandButton from "../components/map-expand-button";
+import MapFilters from "../components/map-filters"; // Add this import
 import globalSettings from "../settings/global";
 import centerMapToAddress from "../helpers/center-map-to-address";
 import onSelectLocation from "../helpers/on-select-location";
 import postcodes from "../settings/data";
-
 
 class MapWithSearch extends Component {
   constructor(props) {
@@ -21,46 +21,95 @@ class MapWithSearch extends Component {
     this.state = {
       centerIn: false,
       locations: [],
+      filteredLocations: [],
       mapCenter: null,
-      googleBounds:{},
+      googleBounds: {},
       selectedLocation: {},
       userLocation: {
         latitude: null,
         longitude: null,
       },
+      selectedServices: [],
+      availableServices: []
     };
 
     this.onCenterChange = this.onCenterChange.bind(this);
     this.onDataReceived = this.onDataReceived.bind(this);
     this.onLocationInput = this.onLocationInput.bind(this);
     this.onSelectLocation = onSelectLocation.bind(this);
-    if(props.defaultMapCenter){
+    this.onToggleService = this.onToggleService.bind(this);
+    this.applyServiceFilters = this.applyServiceFilters.bind(this);
+    this.onToggleService = this.onToggleService.bind(this);
+
+    if (props.defaultMapCenter) {
       this.defaultMapCenter = JSON.parse(props.defaultMapCenter);
-      console.log(this.defaultMapCenter)
+      console.log(this.defaultMapCenter);
     }
 
+    if (this.props.serviceKeyword) {
+      this.availableServices = this.props.serviceKeyword
+        .split(',')
+        .map(service => service.trim());
+    } else {
+      this.availableServices = [];
+    }
+  }
 
-  
+  getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            userLocation: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            }
+          });
+        },
+        (error) => {
+          console.error('Error getting user location:', error);
+          // Set a default location if geolocation fails
+          this.setState({
+            userLocation: {
+              latitude: -25.2744,
+              longitude: 133.7751
+            }
+          });
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+      );
+    }
+  }
 
-    // Convert serviceKeyword prop to array
-  if (this.props.serviceKeyword) {
-    // Split by comma and trim whitespace
-    this.serviceKeywords = this.props.serviceKeyword
-      .split(',')
-      .map(service => service.trim());
+  // Toggle service selection
+  onToggleService(service) {
+    const { selectedServices } = this.state;
     
-    // URL encode each service
-    //this.serviceKeywords = this.serviceKeywords.map(service => 
-      //service.replace(/\s/g, "%20")
-    //);
-  } else {
-    this.serviceKeywords = [];
+    let newSelectedServices;
+    if (selectedServices.includes(service)) {
+      newSelectedServices = selectedServices.filter(s => s !== service);
+    } else {
+      newSelectedServices = [...selectedServices, service];
+    }
+    
+    // Update state and re-filter immediately
+    this.setState({
+      selectedServices: newSelectedServices
+    }, () => {
+      this.applyServiceFilters();
+    });
   }
 
-
+  // Apply service filters to current location data
+  applyServiceFilters() {
+    const { locations } = this.state;
+    const filteredData = this.getFilteredResults(locations);
+    this.setState({
+      filteredLocations: filteredData
+    });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getUserLocation();
   }
 
@@ -73,29 +122,32 @@ class MapWithSearch extends Component {
   }
 
   getFilteredResults(data) {
-    console.log('keywords:',this.serviceKeywords);
-    if (!this.serviceKeywords.length) {
+    const { selectedServices } = this.state;
+    
+    // If no services selected, show all data
+    if (!selectedServices.length) {
       return data;
     }
-  
+
     return data.filter(location => {
       if (!location.services) return false;
-      // Check if location has ALL selected services
-      return this.serviceKeywords.some(service => 
-        location.services.indexOf(service) > -1
+      
+      // Check if location has ANY of the selected services (case-insensitive)
+      return selectedServices.some(service => 
+        location.services.toLowerCase().includes(service.toLowerCase())
       );
     });
   }
 
-
-  
-
   onDataReceived(data) {
     const loc = this.state.selectedLocation;
+    
+    // Apply current service filters to the new data
+    const filteredData = this.getFilteredResults(data);
 
     this.setState({
-      filteredLocations: this.getFilteredResults(data),
-      locations: this.getFilteredResults(data),
+      locations: data,
+      filteredLocations: filteredData,
       selectedLocation: loc
     });
   }
@@ -104,12 +156,10 @@ class MapWithSearch extends Component {
     const regPostcode = /^[0-9]{4}$/;
 
     if (address.length == 4 && regPostcode.test(address) && address in postcodes) {
-      address = '&address='+postcodes[address]+' '+address;
-    }else{
-      address = '&address='+address;
+      address = '&address=' + postcodes[address] + ' ' + address;
+    } else {
+      address = '&address=' + address;
     }
-
-    
 
     const url =
       globalSettings.geocodeURL +
@@ -135,38 +185,47 @@ class MapWithSearch extends Component {
     }`;
   }
 
+  
   /* Component methods */
 
-/*<MapExpandButton service={this.serviceKeyword}/>*/
-
   render() {
-    const { userLocation } = this.state;
+    const { userLocation, filteredLocations, selectedServices } = this.state;
 
     return (
-      <div>
+      <div className="map-with-search-container">
         <MapSearch
           defaultLocation={this.state.defaultLocation}
           handleInput={this.onLocationInput}
           title="My town/state"
         />
 
-        <MapContainer
-          autoCenterToUserLocation={true}
-          centerIn={this.state.centerIn}
-          handleCenterChange={this.onCenterChange}
-          handleSelectLocation={this.onSelectLocation}
-          handleDataReceived={this.onDataReceived}
-          handleDetailsClick={this.onDetailsClick}
-          locations={this.state.locations}
-          mapCenter={this.state.mapCenter}
-          googleBounds={this.state.googleBounds}
-          selectedLocation={this.state.selectedLocation}
-          serviceKeyword={this.props.serviceKeyword}
-          defaultMapCenter={this.defaultMapCenter}
-          zoom={4}
-          userLatitude={userLocation.latitude} // Pass user location as props
-          userLongitude={userLocation.longitude} // Pass user location as prop
-        />
+        {/* Remove the old renderServiceFilters() call */}
+        
+        <div className="map-wrapper">
+          <MapFilters
+            availableServices={this.availableServices}
+            selectedServices={selectedServices}
+            onToggleService={this.onToggleService}
+          />
+          
+          <MapContainer
+            autoCenterToUserLocation={true}
+            centerIn={this.state.centerIn}
+            handleCenterChange={this.onCenterChange}
+            handleSelectLocation={this.onSelectLocation}
+            handleDataReceived={this.onDataReceived}
+            handleDetailsClick={this.onDetailsClick}
+            locations={filteredLocations}
+            mapCenter={this.state.mapCenter}
+            googleBounds={this.state.googleBounds}
+            selectedLocation={this.state.selectedLocation}
+            serviceKeyword={this.props.serviceKeyword}
+            defaultMapCenter={this.defaultMapCenter}
+            zoom={4}
+            userLatitude={userLocation.latitude}
+            userLongitude={userLocation.longitude}
+          />
+        </div>
       </div>
     );
   }
