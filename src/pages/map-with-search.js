@@ -124,7 +124,7 @@ class MapWithSearch extends Component {
     });
   }
 
-  getFilteredResults(data) {
+  /*getFilteredResults(data) {
     const { selectedServices } = this.state;
     
     // If no services selected, show all data
@@ -136,6 +136,36 @@ class MapWithSearch extends Component {
       if (!location.services) return false;
       
       // Check if location has ANY of the selected services (case-insensitive)
+      return selectedServices.some(service => 
+        location.services.toLowerCase().includes(service.toLowerCase())
+      );
+    });
+  }*/
+  getFilteredResults(data) {
+    const { selectedServices } = this.state;
+    
+    // If no services selected but we have serviceKeyword prop, 
+    // filter by available services
+    if (!selectedServices.length && this.availableServices.length > 0) {
+      return data.filter(location => {
+        if (!location.services) return false;
+        
+        // Check if location has ANY of the available services
+        return this.availableServices.some(service => 
+          location.services.toLowerCase().includes(service.toLowerCase())
+        );
+      });
+    }
+    
+    // If no services selected and no serviceKeyword, show all data
+    if (!selectedServices.length) {
+      return data;
+    }
+  
+    // Filter by selected services
+    return data.filter(location => {
+      if (!location.services) return false;
+      
       return selectedServices.some(service => 
         location.services.toLowerCase().includes(service.toLowerCase())
       );
