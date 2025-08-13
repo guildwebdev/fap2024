@@ -48,7 +48,8 @@ class MapWithSearch extends Component {
 
     if (this.props.serviceKeyword) {
       this.availableServices = this.props.serviceKeyword
-        .split(',')
+        //.split(',')
+        .split('|')
         .map(service => service.trim());
     } else {
       this.availableServices = [];
