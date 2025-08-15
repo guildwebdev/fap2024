@@ -66,6 +66,9 @@ function onBookingClicked(e) {
     const formatOpeningHours = (day) => {
         const dayLower = day.toLowerCase();
         if (selectedLocation[dayLower] && selectedLocation[dayLower].open && selectedLocation[dayLower].close){
+            if (selectedLocation[dayLower].open === 'Closed' || selectedLocation[dayLower].close === 'Close'){
+                return 'Closed';
+            }
             const openTime = moment(selectedLocation[dayLower].open, 'HH:mm').format('h:mm A');
             const closeTime = moment(selectedLocation[dayLower].close, 'HH:mm').format('h:mm A');
             return `${openTime} - ${closeTime}`;
