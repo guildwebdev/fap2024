@@ -206,6 +206,26 @@ class SimpleMapMarker extends Component {
       }
     }
 
+    /*
+    <div className="fap-map-popup__more-actions mb-3">
+                <div className="fap-map-popup__nominate">
+                  <div className="fap-map-popup__search-actions-one-button search-actions-one-button">
+                    <button 
+                      className="fap-map-popup__for-award button-blue btn-with-backdrop btn" 
+                      aria-label={`Nominate ${this.props.location.name} for a Guild Pharmacy Award`} 
+                      onClick={handleNominateClick}>
+                      <div className="backdrop">
+                        <i className="fa-solid fa-star"></i> Nominate for Award
+                      </div>
+                      <div className="overlay">
+                        <i className="fa-solid fa-star"></i> Nominate for Award
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              */
+
     return (
       <div className="fap-map__location-container">
         <div className="fap-map__location"></div>
@@ -239,23 +259,7 @@ class SimpleMapMarker extends Component {
                                   
               </div>
 
-              <div className="fap-map-popup__more-actions mb-3">
-                <div className="fap-map-popup__nominate">
-                  <div className="fap-map-popup__search-actions-one-button search-actions-one-button">
-                    <button 
-                      className="fap-map-popup__for-award button-blue btn-with-backdrop btn" 
-                      aria-label={`Nominate ${this.props.location.name} for a Guild Pharmacy Award`} 
-                      onClick={handleNominateClick}>
-                      <div className="backdrop">
-                        <i className="fa-solid fa-star"></i> Nominate for Award
-                      </div>
-                      <div className="overlay">
-                        <i className="fa-solid fa-star"></i> Nominate for Award
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              
 
               <div className="fap-map__more-actions">
                 <div className="fap-map-popup__actions">
